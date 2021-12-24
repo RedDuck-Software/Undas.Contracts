@@ -262,6 +262,7 @@ contract Marketplace {
         IERC721(staking.token).transferFrom(staking.taker, staking.maker, staking.tokenId);
         // return collateral
         payable(staking.taker).transfer(staking.collateral);
+        // change status
         staking.status = StakeStatus.FinishedRentForNFT;
     }
 }
