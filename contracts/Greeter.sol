@@ -125,6 +125,7 @@ contract Marketplace {
         
         return
             token.ownerOf(listingId) == listing.seller
+            && token.isApprovedForAll(listing.seller, address(this))
             && listing.status == ListingStatus.Active;
     }
 
@@ -133,9 +134,8 @@ contract Marketplace {
         IERC721 token = IERC721(listing.token);
 
 		require(msg.sender != listing.seller, "Seller cannot be buyer");
-		require(listing.status == ListingStatus.Active, "Listing is not active");
 		require(msg.value >= listing.price, "Insufficient payment");
-        require(token.ownerOf(listingId) == listing.seller, "Seller is not owner");
+        require(isBuyable(listingId), "not buyable");
 
 		listing.status = ListingStatus.Sold;
 
@@ -229,15 +229,21 @@ contract Marketplace {
         staking.paymentsAmount++;
     }
 
-    // require that premium was not paid, and if so, give the previous owner of NFT (maker) the collateral.
-    function claimCollateral(uint stakingId) public
+    function isCollateralClaimable(uint stakingId) view public 
     {
         Staking memory staking = _stakings[stakingId];
         require(staking.status == StakeStatus.Quoted, "non-active staking");
         require(staking.maker == msg.sender, "not maker");
 
         uint requiredPayments = (block.timestamp - staking.startRentalUTC) / premiumPeriod;
-        require(staking.paymentsAmount < requiredPayments, "premiums have been paid");
+        require(staking.paymentsAmount < requiredPayments || staking.deadline > block.timestamp, "premiums have been paid and deadline is yet to be reached");
+    }
+
+    // require that premium was not paid, and if so, give the previous owner of NFT (maker) the collateral.
+    function claimCollateral(uint stakingId) public
+    {
+        Staking memory staking = _stakings[stakingId];
+        isCollateralClaimable(stakingId);
 
         payable(staking.maker).transfer(staking.collateral);
         staking.status = StakeStatus.FinishedRentForCollateral;
@@ -254,6 +260,8 @@ contract Marketplace {
 
         // return nft
         IERC721(staking.token).transferFrom(staking.taker, staking.maker, staking.tokenId);
+        // return collateral
+        payable(staking.taker).transfer(staking.collateral);
         staking.status = StakeStatus.FinishedRentForNFT;
     }
 }
