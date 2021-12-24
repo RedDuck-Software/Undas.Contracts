@@ -137,6 +137,8 @@ contract Marketplace {
 		require(msg.value >= listing.price, "Insufficient payment");
         require(isBuyable(listingId), "not buyable");
 
+        // todo: move the fee (bidFee) to our DAO account
+
 		listing.status = ListingStatus.Sold;
 
 		token.transferFrom(listing.seller, msg.sender, listing.tokenId);
@@ -151,6 +153,11 @@ contract Marketplace {
 		);
 	}
 
+    // todo: add a public function without "only seller" restriction that will 
+    // 1. check if NFT is not on the owners acconut
+    // 2. if so, do everything as in cancel() (remove the listing, replace last item with current)
+    // 3. 50% of bidFee is sent to the account of person who called the function, 50% to our DAO
+    // we send 50% of bidfee to the msg.sender to incentivize people to find and remove inactive listings
 	function cancel(uint listingId) public {
 		Listing storage listing = _listings[listingId];
 
