@@ -1,9 +1,10 @@
-pragma solidity ^0.6.2;
-pragma experimental ABIEncoderV2;
+// // SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Pausable.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract OnlyOne is ERC20PausableUpgradeSafe
-{
-    
+contract OnlyOne is ERC20 {
+    constructor() ERC20("ONLY ONE", "ONE") {
+        _mint(msg.sender, 100 * 10**18);
+    }
 }
