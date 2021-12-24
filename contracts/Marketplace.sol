@@ -1,11 +1,11 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
-pragma experimental ABIEncoderV2;
 
 import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract Marketplace {
+contract Marketplace is ReentrancyGuard {
     enum ListingStatus {
         Active,
         Sold,
@@ -34,7 +34,7 @@ contract Marketplace {
         uint256 collateral;
         uint256 premium;
         uint256 startRentalUTC;
-        uint256 lastPaymentUTC;
+        uint256 rentalExpiresUTC;
         uint256 paymentsAmount;
         uint256 deadline;
         address token;
@@ -76,10 +76,10 @@ contract Marketplace {
 
     uint256 _bidFee;
 
-    uint256 _listingsLength;
+    uint256 _listingsLastIndex;
     mapping(uint256 => Listing) _listings;
 
-    uint256 _stakingsLength;
+    uint256 _stakingsLastIndex;
     mapping(uint256 => Staking) _stakings;
 
     uint256 constant premiumPeriod = 7 days;
@@ -88,7 +88,7 @@ contract Marketplace {
         address tokenContract,
         uint256 tokenId,
         uint256 priceWei
-    ) external payable {
+    ) external payable nonReentrant {
         require(
             IERC721(tokenContract).isApprovedForAll(
                 address(msg.sender),
@@ -98,7 +98,7 @@ contract Marketplace {
         );
         require(msg.value >= _bidFee, "bidFee");
 
-        Listing memory listing = Listing(
+        _listings[_listingsLastIndex++] = Listing(
             ListingStatus.Active,
             msg.sender,
             priceWei,
@@ -106,12 +106,8 @@ contract Marketplace {
             tokenId
         );
 
-        _listings[_listingsLength] = listing;
-
-        _listingsLength++;
-
         emit Listed(
-            _listingsLength - 1,
+            _listingsLastIndex - 1,
             msg.sender,
             tokenContract,
             tokenId,
@@ -200,7 +196,7 @@ contract Marketplace {
         );
         require(msg.value >= _bidFee, "bidFee");
 
-        Staking memory stakingQuote = Staking(
+        Staking memory stakingQuote = _stakings[_stakingsLastIndex++] = Staking(
             StakeStatus.Quoted,
             msg.sender,
             address(0),
@@ -214,12 +210,8 @@ contract Marketplace {
             tokenId
         );
 
-        _stakings[_stakingsLength] = stakingQuote;
-
-        _stakingsLength++;
-
         emit QuotedForStaking(
-            _stakingsLength - 1,
+            _stakingsLastIndex - 1,
             msg.sender,
             tokenContract,
             tokenId,
@@ -229,7 +221,7 @@ contract Marketplace {
         );
     }
 
-    function rentNFT(uint256 stakingId) public payable {
+    function rentNFT(uint256 stakingId) public payable nonReentrant {
         Staking memory staking = _stakings[stakingId];
 
         require(
@@ -237,23 +229,24 @@ contract Marketplace {
                 address(msg.sender),
                 address(this)
             ),
-            "allowance not set"
+            "!allowance"
         );
         require(
             msg.value >= staking.collateral + staking.premium,
-            "collateral"
+            "!collateral"
         );
 
-        staking.lastPaymentUTC = block.timestamp;
+        staking.rentalExpiresUTC = block.timestamp + premiumPeriod;
         staking.startRentalUTC = block.timestamp;
         staking.taker = msg.sender;
         staking.status = StakeStatus.Staking;
         staking.paymentsAmount = 1;
 
         // todo immediatelly send premium and fees to corresponding accounts
+        _stakings[stakingId] = staking;
 
         // todo think: what if it doesn't have a revert in case of no allowance and does nothing?
-        IERC721(staking.token).transferFrom(
+        IERC721(staking.token).safeTransferFrom(
             staking.maker,
             staking.taker,
             staking.tokenId
@@ -264,11 +257,14 @@ contract Marketplace {
     function payPremium(uint256 stakingId) public payable {
         Staking memory staking = _stakings[stakingId];
 
-        require(msg.value >= staking.premium);
+        require(staking.status == StakeStatus.Staking, "status != staking");
+        require(msg.value >= staking.premium, "");
+        require(block.timestamp < staking.rentalExpiresUTC, "");
 
-        staking.lastPaymentUTC = block.timestamp;
-
+        staking.rentalExpiresUTC += premiumPeriod;
         staking.paymentsAmount++;
+
+        _stakings[stakingId] = staking;
     }
 
     function isCollateralClaimable(uint256 stakingId) public view {
@@ -278,6 +274,7 @@ contract Marketplace {
 
         uint256 requiredPayments = (block.timestamp - staking.startRentalUTC) /
             premiumPeriod;
+
         require(
             staking.paymentsAmount < requiredPayments ||
                 staking.deadline > block.timestamp,
