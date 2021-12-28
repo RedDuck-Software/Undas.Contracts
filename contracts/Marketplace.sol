@@ -186,7 +186,7 @@ contract Marketplace is ReentrancyGuard {
         uint256 collateralWei,
         uint256 premiumWei,
         uint256 deadlineUTC
-    ) public payable nonReetrant {
+    ) public payable nonReentrant {
         require(
             IERC721(tokenContract).isApprovedForAll(
                 address(msg.sender),
@@ -202,7 +202,6 @@ contract Marketplace is ReentrancyGuard {
             address(0),
             collateralWei,
             premiumWei,
-            0,
             0,
             0,
             deadlineUTC,
@@ -258,8 +257,8 @@ contract Marketplace is ReentrancyGuard {
         Staking storage staking = _stakings[stakingId];
 
         require(staking.status == StakeStatus.Staking, "status != staking");
-        require(msg.value = staking.premium, "premium");
-        require(block.timestamp < deadlineUTC, "deadline reached");
+        require(msg.value == staking.premium, "premium");
+        require(block.timestamp < staking.deadline, "deadline reached");
 
         staking.paymentsAmount++;
     }
@@ -279,6 +278,7 @@ contract Marketplace is ReentrancyGuard {
         );
     }
 
+
     // require that premium was not paid, and if so, give the previous owner of NFT (maker) the collateral.
     function claimCollateral(uint256 stakingId) public
     {
@@ -287,6 +287,7 @@ contract Marketplace is ReentrancyGuard {
 
         staking.status = StakeStatus.FinishedRentForCollateral;
         payable(staking.maker).transfer(staking.collateral);
+        delete _stakings[stakingId];
     }
 
     function stopRental(uint256 stakingId) public nonReentrant {
@@ -312,5 +313,6 @@ contract Marketplace is ReentrancyGuard {
         );
         // return collateral
         payable(staking.taker).transfer(staking.collateral);
+        delete _stakings[stakingId];
     }
 }
