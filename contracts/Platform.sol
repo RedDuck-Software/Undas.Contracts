@@ -21,28 +21,28 @@ contract Staking is Context {
         token = _token;
     }
 
-    /// @notice returns array of staking periods in months
-    function getStakePeriods() public pure returns(uint256[] memory) { 
-        return [2,3,4];
-    }
+    // /// @notice returns array of staking periods in months
+    // function getStakePeriods() public pure returns(uint256[] memory) { 
+    //     return [2,3,4];
+    // }
 
-    /// @notice returns array of staking periods in months with precition 
-    function getStakePeriodsMultipliers() public pure returns(uint256[] memory) { 
-        return [2,3,4];
-    }
+    // /// @notice returns array of staking periods in months with precition 
+    // function getStakePeriodsMultipliers() public pure returns(uint256[] memory) { 
+    //     return [2,3,4];
+    // }
 
-    function calculateUserRewards(address user) public view returns(uint256) {
-        return 0;
-    }
+    // function calculateUserRewards(address user) public view returns(uint256) {
+    //     return 0;
+    // }
 
     function stake(uint256 stakePeriod) external {
-        uint256 rewards = calculateUserRewards(_msgSender());
+        // uint256 rewards = calculateUserRewards(_msgSender());
 
-        require(rewards == 0, "!rewards");
+        // require(rewards == 0, "!rewards");
 
-        userStaking[_msgSender()].push(
-            StakingInfo({reservedRewards: _msgSender(), stakePeriod: })
-        );
+        // userStaking[_msgSender()].push(
+        //     StakingInfo({reservedRewards: _msgSender(), stakePeriod: })
+        // );
     }
 
     function claimFor(address staker, uint256 amount) external {}
