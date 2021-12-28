@@ -34,7 +34,6 @@ contract Marketplace is ReentrancyGuard {
         uint256 collateral;
         uint256 premium;
         uint256 startRentalUTC;
-        uint256 rentalExpiresUTC;
         uint256 paymentsAmount;
         uint256 deadline;
         address token;
@@ -124,7 +123,7 @@ contract Marketplace is ReentrancyGuard {
     }
 
     function isBuyable(uint256 listingId) public view returns (bool) {
-        Listing storage listing = _listings[listingId];
+        Listing memory listing = _listings[listingId];
         IERC721 token = IERC721(listing.token);
 
         return
@@ -133,7 +132,7 @@ contract Marketplace is ReentrancyGuard {
             listing.status == ListingStatus.Active;
     }
 
-    function buyToken(uint256 listingId) external payable {
+    function buyToken(uint256 listingId) external payable nonReentrant {
         Listing storage listing = _listings[listingId];
         IERC721 token = IERC721(listing.token);
 
@@ -145,7 +144,7 @@ contract Marketplace is ReentrancyGuard {
 
         listing.status = ListingStatus.Sold;
 
-        token.transferFrom(listing.seller, msg.sender, listing.tokenId);
+        token.safeTransferFrom(listing.seller, msg.sender, listing.tokenId);
         payable(listing.seller).transfer(listing.price);
 
         emit Sale(
@@ -162,7 +161,7 @@ contract Marketplace is ReentrancyGuard {
     // 2. if so, do everything as in cancel() (remove the listing, replace last item with current)
     // 3. 50% of bidFee is sent to the account of person who called the function, 50% to our DAO
     // we send 50% of bidfee to the msg.sender to incentivize people to find and remove inactive listings
-    function cancel(uint256 listingId) public {
+    function cancel(uint256 listingId) nonReentrant public {
         Listing storage listing = _listings[listingId];
 
         require(msg.sender == listing.seller, "Only seller can cancel listing");
@@ -173,7 +172,8 @@ contract Marketplace is ReentrancyGuard {
 
         listing.status = ListingStatus.Cancelled;
 
-        payable(listing.seller).transfer(_bidFee);
+        // lets not return the whole fee, but return less. to incentivize people not to cancel.
+        payable(listing.seller).transfer(_bidFee / 2);
 
         emit CancelBid(listingId, listing.seller);
     }
@@ -186,7 +186,7 @@ contract Marketplace is ReentrancyGuard {
         uint256 collateralWei,
         uint256 premiumWei,
         uint256 deadlineUTC
-    ) public payable {
+    ) public payable nonReetrant {
         require(
             IERC721(tokenContract).isApprovedForAll(
                 address(msg.sender),
@@ -210,6 +210,8 @@ contract Marketplace is ReentrancyGuard {
             tokenId
         );
 
+        _stakings[_stakingsLastIndex++] = stakingQuote;
+
         emit QuotedForStaking(
             _stakingsLastIndex - 1,
             msg.sender,
@@ -221,8 +223,9 @@ contract Marketplace is ReentrancyGuard {
         );
     }
 
-    function rentNFT(uint256 stakingId) public payable nonReentrant {
-        Staking memory staking = _stakings[stakingId];
+    function rentNFT(uint stakingId) public payable
+    {
+        Staking storage staking = _stakings[stakingId];
 
         require(
             IERC721(staking.token).isApprovedForAll(
@@ -236,15 +239,12 @@ contract Marketplace is ReentrancyGuard {
             "!collateral"
         );
 
-        staking.rentalExpiresUTC = block.timestamp + premiumPeriod;
         staking.startRentalUTC = block.timestamp;
         staking.taker = msg.sender;
         staking.status = StakeStatus.Staking;
         staking.paymentsAmount = 1;
 
         // todo immediatelly send premium and fees to corresponding accounts
-        _stakings[stakingId] = staking;
-
         // todo think: what if it doesn't have a revert in case of no allowance and does nothing?
         IERC721(staking.token).safeTransferFrom(
             staking.maker,
@@ -255,16 +255,13 @@ contract Marketplace is ReentrancyGuard {
 
     // todo - distribute the premium among everyone
     function payPremium(uint256 stakingId) public payable {
-        Staking memory staking = _stakings[stakingId];
+        Staking storage staking = _stakings[stakingId];
 
         require(staking.status == StakeStatus.Staking, "status != staking");
-        require(msg.value >= staking.premium, "");
-        require(block.timestamp < staking.rentalExpiresUTC, "");
+        require(msg.value = staking.premium, "premium");
+        require(block.timestamp < deadlineUTC, "deadline reached");
 
-        staking.rentalExpiresUTC += premiumPeriod;
         staking.paymentsAmount++;
-
-        _stakings[stakingId] = staking;
     }
 
     function isCollateralClaimable(uint256 stakingId) public view {
@@ -283,16 +280,17 @@ contract Marketplace is ReentrancyGuard {
     }
 
     // require that premium was not paid, and if so, give the previous owner of NFT (maker) the collateral.
-    function claimCollateral(uint256 stakingId) public {
-        Staking memory staking = _stakings[stakingId];
+    function claimCollateral(uint256 stakingId) public
+    {
+        Staking storage staking = _stakings[stakingId];
         isCollateralClaimable(stakingId);
 
-        payable(staking.maker).transfer(staking.collateral);
         staking.status = StakeStatus.FinishedRentForCollateral;
+        payable(staking.maker).transfer(staking.collateral);
     }
 
-    function stopRental(uint256 stakingId) public {
-        Staking memory staking = _stakings[stakingId];
+    function stopRental(uint256 stakingId) public nonReentrant {
+        Staking storage staking = _stakings[stakingId];
         require(staking.status == StakeStatus.Quoted, "non-active staking");
         require(staking.taker == msg.sender, "not taker");
 
@@ -303,15 +301,16 @@ contract Marketplace is ReentrancyGuard {
             "premiums have not been paid"
         );
 
+        // change status
+        staking.status = StakeStatus.FinishedRentForNFT;
+
         // return nft
-        IERC721(staking.token).transferFrom(
+        IERC721(staking.token).safeTransferFrom(
             staking.taker,
             staking.maker,
             staking.tokenId
         );
         // return collateral
         payable(staking.taker).transfer(staking.collateral);
-        // change status
-        staking.status = StakeStatus.FinishedRentForNFT;
     }
 }
