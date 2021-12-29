@@ -83,6 +83,12 @@ contract Marketplace is ReentrancyGuard {
 
     uint256 constant premiumPeriod = 7 days;
 
+    address public immutable platform;
+
+    constructor(address _platform) { 
+        platform = _platform;
+    }
+
     function bid(
         address tokenContract,
         uint256 tokenId,
@@ -314,5 +320,10 @@ contract Marketplace is ReentrancyGuard {
         // return collateral
         payable(staking.taker).transfer(staking.collateral);
         delete _stakings[stakingId];
+    }
+
+
+    function _takeFee(uint256 _amount) internal { 
+        payable(platform).transfer(_amount);
     }
 }
