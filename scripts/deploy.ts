@@ -12,8 +12,10 @@ async function main() {
   const platformFactory = await ethers.getContractFactory("Platform");
   const platform = await (await platformFactory.deploy(token.address)).deployed();
 
+  const baseBidFee = ethers.utils.parseEther("0.0001");
+
   const marketplaceFactory = await ethers.getContractFactory("Marketplace");
-  const marketplace = await (await marketplaceFactory.deploy(platform.address)).deployed();
+  const marketplace = await (await marketplaceFactory.deploy(platform.address, baseBidFee)).deployed();
 
   console.log("\nPlatform deployed to: ", platform.address);
   console.log("OnlyOne token deployed to: ", token.address);
