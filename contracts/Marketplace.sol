@@ -83,6 +83,13 @@ contract Marketplace is ReentrancyGuard {
 
     uint256 constant premiumPeriod = 7 days;
 
+    address public immutable platform;
+
+    constructor(address _platform, uint256 baseBidFee) {
+        platform = _platform;
+        _bidFee = baseBidFee;
+    }
+
     function bid(
         address tokenContract,
         uint256 tokenId,
@@ -161,7 +168,7 @@ contract Marketplace is ReentrancyGuard {
     // 2. if so, do everything as in cancel() (remove the listing, replace last item with current)
     // 3. 50% of bidFee is sent to the account of person who called the function, 50% to our DAO
     // we send 50% of bidfee to the msg.sender to incentivize people to find and remove inactive listings
-    function cancel(uint256 listingId) nonReentrant public {
+    function cancel(uint256 listingId) public nonReentrant {
         Listing storage listing = _listings[listingId];
 
         require(msg.sender == listing.seller, "Only seller can cancel listing");
@@ -222,8 +229,7 @@ contract Marketplace is ReentrancyGuard {
         );
     }
 
-    function rentNFT(uint stakingId) public payable
-    {
+    function rentNFT(uint256 stakingId) public payable {
         Staking storage staking = _stakings[stakingId];
 
         require(
@@ -278,10 +284,8 @@ contract Marketplace is ReentrancyGuard {
         );
     }
 
-
     // require that premium was not paid, and if so, give the previous owner of NFT (maker) the collateral.
-    function claimCollateral(uint256 stakingId) public
-    {
+    function claimCollateral(uint256 stakingId) public {
         Staking storage staking = _stakings[stakingId];
         isCollateralClaimable(stakingId);
 
@@ -314,5 +318,9 @@ contract Marketplace is ReentrancyGuard {
         // return collateral
         payable(staking.taker).transfer(staking.collateral);
         delete _stakings[stakingId];
+    }
+
+    function _takeFee(uint256 _amount) internal {
+        payable(platform).transfer(_amount);
     }
 }
