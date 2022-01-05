@@ -96,13 +96,10 @@ contract Marketplace is ReentrancyGuard {
         uint256 priceWei
     ) external payable nonReentrant {
         require(
-            IERC721(tokenContract).isApprovedForAll(
-                address(msg.sender),
-                address(this)
-            ),
-            "allowance not set"
+            IERC721(tokenContract).getApproved(tokenId) == address(this),
+            "!allowance"
         );
-        require(msg.value >= _bidFee, "bidFee");
+        require(msg.value >= _bidFee, "!bidFee");
 
         _listings[_listingsLastIndex++] = Listing(
             ListingStatus.Active,
@@ -135,7 +132,7 @@ contract Marketplace is ReentrancyGuard {
 
         return
             token.ownerOf(listingId) == listing.seller &&
-            token.isApprovedForAll(listing.seller, address(this)) &&
+            token.getApproved(listing.tokenId) == address(this) &&
             listing.status == ListingStatus.Active;
     }
 
@@ -195,10 +192,7 @@ contract Marketplace is ReentrancyGuard {
         uint256 deadlineUTC
     ) public payable nonReentrant {
         require(
-            IERC721(tokenContract).isApprovedForAll(
-                address(msg.sender),
-                address(this)
-            ),
+            IERC721(tokenContract).getApproved(tokenId) == address(this),
             "allowance not set"
         );
         require(msg.value >= _bidFee, "bidFee");
@@ -233,10 +227,8 @@ contract Marketplace is ReentrancyGuard {
         Staking storage staking = _stakings[stakingId];
 
         require(
-            IERC721(staking.token).isApprovedForAll(
-                address(msg.sender),
-                address(this)
-            ),
+            IERC721(staking.token).getApproved(staking.tokenId) ==
+                address(this),
             "!allowance"
         );
         require(
