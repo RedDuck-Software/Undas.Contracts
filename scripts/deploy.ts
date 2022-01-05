@@ -4,21 +4,33 @@
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
 import { ethers } from 'hardhat'
+import { TestNFT } from '../typechain';
+
+const mintBunch = async (tokenContract: TestNFT, count: number, to: string) => {
+  for (let i = 0; i < count; i++)
+    await tokenContract.safeMint(to);
+}
 
 async function main() {
   const tokenFactory = await ethers.getContractFactory('OnlyOne')
   const token = await (await tokenFactory.deploy()).deployed()
 
-  // We get the contract to deploy
-  const Marketplace = await ethers.getContractFactory('Marketplace')
-  const marketplace = await Marketplace.deploy()
+  const platformFactory = await ethers.getContractFactory('Platform')
+  const platform = await (await platformFactory.deploy(token.address)).deployed()
 
-  const NFT = await ethers.getContractFactory('MyToken')
-  const nft = await NFT.deploy()
+  const marketplaceFactory = await ethers.getContractFactory('Marketplace')
+  const baseFee = ethers.utils.parseEther("0.0001");
+  const marketplace = await marketplaceFactory.deploy(platform.address, baseFee);
 
-  await marketplace.deployed()
-  await nft.deployed()
+  const nftFactory = await ethers.getContractFactory('TestNFT')
+  const nft = await (await nftFactory.deploy()).deployed();
 
+  const [owner] = await ethers.getSigners();
+
+  const initNftMintAmount = 10;
+  await mintBunch(nft, initNftMintAmount, owner.address);
+
+  console.log('Platform deployed to:', platform.address)
   console.log('Marketplace deployed to:', marketplace.address)
   console.log('NFT deployed to:', nft.address)
 }
