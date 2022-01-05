@@ -16,15 +16,20 @@ async function main() {
   // We get the contract to deploy
   const Marketplace = await ethers.getContractFactory("Marketplace");
   const marketplace = await Marketplace.deploy();
+  
+  const NFT = await ethers.getContractFactory("MyToken");
+  const nft = await NFT.deploy();
 
   await marketplace.deployed();
+  await nft.deployed();
 
   console.log("Marketplace deployed to:", marketplace.address);
+  console.log("NFT deployed to:", nft.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
 main().catch((error) => {
-  console.error(error);
+  console.error(error);	
   process.exitCode = 1;
 });
