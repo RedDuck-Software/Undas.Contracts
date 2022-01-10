@@ -73,21 +73,21 @@ contract Marketplace is ReentrancyGuard {
     event FinishRentalForNFT(uint256 rentalId);
     event FinishRentalForCollateral(uint256 rentalId);
 
-    uint256 _bidFee;
+    uint256 public minBidFee;
 
-    uint256 _listingsLastIndex;
-    mapping(uint256 => Listing) _listings;
+    uint256 public _listingsLastIndex;
+    mapping(uint256 => Listing) public _listings;
 
-    uint256 _stakingsLastIndex;
-    mapping(uint256 => Staking) _stakings;
+    uint256 public _stakingsLastIndex;
+    mapping(uint256 => Staking) public  _stakings;
 
     uint256 constant premiumPeriod = 7 days;
 
     address public immutable platform;
 
-    constructor(address _platform, uint256 baseBidFee) {
+    constructor(address _platform, uint256 _minBidFee) {
         platform = _platform;
-        _bidFee = baseBidFee;
+        minBidFee = _minBidFee;
     }
 
     function bid(
@@ -100,9 +100,12 @@ contract Marketplace is ReentrancyGuard {
                 address(msg.sender),
                 address(this)
             ),
-            "allowance not set"
+            "!allowance"
         );
-        require(msg.value >= _bidFee, "bidFee");
+
+        uint256 bidFee = calculateFee(priceWei);
+
+        require(msg.value >= bidFee, "!bidFee");
 
         _listings[_listingsLastIndex++] = Listing(
             ListingStatus.Active,
@@ -180,7 +183,9 @@ contract Marketplace is ReentrancyGuard {
         listing.status = ListingStatus.Cancelled;
 
         // lets not return the whole fee, but return less. to incentivize people not to cancel.
-        payable(listing.seller).transfer(_bidFee / 2);
+        uint256 bidFee = calculateFee(listing.price);
+
+        payable(listing.seller).transfer(bidFee / 2);
 
         emit CancelBid(listingId, listing.seller);
     }
@@ -201,7 +206,10 @@ contract Marketplace is ReentrancyGuard {
             ),
             "allowance not set"
         );
-        require(msg.value >= _bidFee, "bidFee");
+
+        uint256 bidFee = calculateFee(collateralWei);
+
+        require(msg.value >= bidFee, "bidFee");
 
         Staking memory stakingQuote = _stakings[_stakingsLastIndex++] = Staking(
             StakeStatus.Quoted,
@@ -318,6 +326,17 @@ contract Marketplace is ReentrancyGuard {
         // return collateral
         payable(staking.taker).transfer(staking.collateral);
         delete _stakings[stakingId];
+    }
+
+    function calculateFee(uint256 price) public view returns (uint256) { 
+        // fee - 10% of price
+        // OR fee = minBidFee if fee < minBidFee
+        uint256 calculatedBidFee = price / 10;
+        uint256 requiredBidFee = 
+            calculatedBidFee < minBidFee ?  
+                minBidFee : calculatedBidFee;
+        
+        return requiredBidFee;
     }
 
     function _takeFee(uint256 _amount) internal {
