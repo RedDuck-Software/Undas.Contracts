@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "hardhat/console.sol";
 
 contract Marketplace is ReentrancyGuard {
     enum ListingStatus {
@@ -104,6 +105,8 @@ contract Marketplace is ReentrancyGuard {
         );
 
         uint256 bidFee = calculateFee(priceWei);
+
+        console.log("bid fee: %s, value: %s", bidFee, msg.value);
 
         require(msg.value >= bidFee, "!bidFee");
 
@@ -209,7 +212,9 @@ contract Marketplace is ReentrancyGuard {
 
         uint256 bidFee = calculateFee(collateralWei);
 
-        require(msg.value >= bidFee, "bidFee");
+        console.log("bid fee: %s, value: %s", bidFee, msg.value);
+
+        require(msg.value >= bidFee, "!bidFee");
 
         Staking memory stakingQuote = _stakings[_stakingsLastIndex++] = Staking(
             StakeStatus.Quoted,
