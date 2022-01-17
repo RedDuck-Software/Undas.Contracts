@@ -140,7 +140,7 @@ contract Marketplace is ReentrancyGuard {
         IERC721 token = IERC721(listing.token);
 
         return
-            token.ownerOf(listingId) == listing.seller &&
+            token.ownerOf(listing.tokenId) == listing.seller &&
             token.isApprovedForAll(listing.seller, address(this)) &&
             listing.status == ListingStatus.Active;
     }
@@ -253,7 +253,7 @@ contract Marketplace is ReentrancyGuard {
             "!allowance"
         );
         require(
-            msg.value >= staking.collateral + staking.premium,
+            msg.value == staking.collateral + staking.premium,
             "!collateral"
         );
 
@@ -284,7 +284,7 @@ contract Marketplace is ReentrancyGuard {
 
     function isCollateralClaimable(uint256 stakingId) public view {
         Staking memory staking = _stakings[stakingId];
-        require(staking.status == StakeStatus.Quoted, "non-active staking");
+        require(staking.status == StakeStatus.Staking, "status != staking");
         require(staking.maker == msg.sender, "not maker");
 
         uint256 requiredPayments = (block.timestamp - staking.startRentalUTC) /
