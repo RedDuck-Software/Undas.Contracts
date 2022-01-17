@@ -19,8 +19,7 @@ async function main() {
   const platform = await (await platformFactory.deploy(token.address)).deployed()
 
   const marketplaceFactory = await ethers.getContractFactory('Marketplace')
-  const baseFee = ethers.utils.parseEther("0.001");
-  const marketplace = await marketplaceFactory.deploy(platform.address, baseFee);
+  const marketplace = await marketplaceFactory.deploy(platform.address);
 
   const nftFactory = await ethers.getContractFactory('TestNFT')
   const nft = await (await nftFactory.deploy()).deployed();
