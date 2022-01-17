@@ -74,8 +74,6 @@ contract Marketplace is ReentrancyGuard {
     event FinishRentalForNFT(uint256 rentalId);
     event FinishRentalForCollateral(uint256 rentalId);
 
-    uint256 public minBidFee;
-
     uint256 public _listingsLastIndex;
     mapping(uint256 => Listing) public _listings;
 
@@ -83,12 +81,13 @@ contract Marketplace is ReentrancyGuard {
     mapping(uint256 => Staking) public  _stakings;
 
     uint256 constant premiumPeriod = 7 days;
+    uint256 constant premiumFeePercentage = 20;
+    uint256 constant bidFee = 0.1 ether;
 
     address public immutable platform;
 
-    constructor(address _platform, uint256 _minBidFee) {
+    constructor(address _platform) {
         platform = _platform;
-        minBidFee = _minBidFee;
     }
 
     function bid(
@@ -104,11 +103,8 @@ contract Marketplace is ReentrancyGuard {
             "!allowance"
         );
 
-        uint256 bidFee = calculateFee(priceWei);
-
-        console.log("bid fee: %s, value: %s", bidFee, msg.value);
-
-        require(msg.value >= bidFee, "!bidFee");
+        require(msg.value == bidFee, "!bidFee");
+        _takeFee(bidFee);
 
         _listings[_listingsLastIndex++] = Listing(
             ListingStatus.Active,
@@ -153,8 +149,6 @@ contract Marketplace is ReentrancyGuard {
         require(msg.value >= listing.price, "Insufficient payment");
         require(isBuyable(listingId), "not buyable");
 
-        // todo: move the fee (bidFee) to our DAO account
-
         listing.status = ListingStatus.Sold;
 
         token.safeTransferFrom(listing.seller, msg.sender, listing.tokenId);
@@ -169,11 +163,6 @@ contract Marketplace is ReentrancyGuard {
         );
     }
 
-    // todo: add a public function without "only seller" restriction that will
-    // 1. check if NFT is not on the owners acconut
-    // 2. if so, do everything as in cancel() (remove the listing, replace last item with current)
-    // 3. 50% of bidFee is sent to the account of person who called the function, 50% to our DAO
-    // we send 50% of bidfee to the msg.sender to incentivize people to find and remove inactive listings
     function cancel(uint256 listingId) public nonReentrant {
         Listing storage listing = _listings[listingId];
 
@@ -185,15 +174,10 @@ contract Marketplace is ReentrancyGuard {
 
         listing.status = ListingStatus.Cancelled;
 
-        // lets not return the whole fee, but return less. to incentivize people not to cancel.
-        uint256 bidFee = calculateFee(listing.price);
-
-        payable(listing.seller).transfer(bidFee / 2);
-
         emit CancelBid(listingId, listing.seller);
     }
 
-    // innovation from Only1NFT - renting & staking
+    // innovation from Only1NFT team - renting & staking
     // is coded below
     function quoteForStaking(
         address tokenContract,
@@ -210,11 +194,7 @@ contract Marketplace is ReentrancyGuard {
             "allowance not set"
         );
 
-        uint256 bidFee = calculateFee(collateralWei);
-
-        console.log("bid fee: %s, value: %s", bidFee, msg.value);
-
-        require(msg.value >= bidFee, "!bidFee");
+        require(msg.value == bidFee, "!bidFee");
 
         Staking memory stakingQuote = _stakings[_stakingsLastIndex++] = Staking(
             StakeStatus.Quoted,
@@ -262,22 +242,33 @@ contract Marketplace is ReentrancyGuard {
         staking.status = StakeStatus.Staking;
         staking.paymentsAmount = 1;
 
-        // todo immediatelly send premium and fees to corresponding accounts
-        // todo think: what if it doesn't have a revert in case of no allowance and does nothing?
         IERC721(staking.token).safeTransferFrom(
             staking.maker,
             staking.taker,
             staking.tokenId
         );
+
+        payable(staking.maker).transfer(bidFee); // return bidFee
+
+        // distribute the premium
+        uint fee = staking.premium / 100 * premiumFeePercentage;
+        uint makerCut = staking.premium - fee;
+        _takeFee(fee);
+        payable(staking.maker).transfer(makerCut);
     }
 
-    // todo - distribute the premium among everyone
     function payPremium(uint256 stakingId) public payable {
         Staking storage staking = _stakings[stakingId];
 
         require(staking.status == StakeStatus.Staking, "status != staking");
         require(msg.value == staking.premium, "premium");
         require(block.timestamp < staking.deadline, "deadline reached");
+
+        // distribute the premium
+        uint fee = msg.value / 100 * premiumFeePercentage;
+        uint makerCut = msg.value - fee;
+        _takeFee(fee);
+        payable(staking.maker).transfer(makerCut);
 
         staking.paymentsAmount++;
     }
@@ -331,17 +322,6 @@ contract Marketplace is ReentrancyGuard {
         // return collateral
         payable(staking.taker).transfer(staking.collateral);
         delete _stakings[stakingId];
-    }
-
-    function calculateFee(uint256 price) public view returns (uint256) { 
-        // fee - 10% of price
-        // OR fee = minBidFee if fee < minBidFee
-        uint256 calculatedBidFee = price / 10;
-        uint256 requiredBidFee = 
-            calculatedBidFee < minBidFee ?  
-                minBidFee : calculatedBidFee;
-        
-        return requiredBidFee;
     }
 
     function _takeFee(uint256 _amount) internal {
