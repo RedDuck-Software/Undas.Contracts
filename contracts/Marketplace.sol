@@ -17,7 +17,8 @@ contract Marketplace is ReentrancyGuard {
         Quoted,
         Staking,
         FinishedRentForNFT,
-        FinishedRentForCollateral
+        FinishedRentForCollateral,
+        Cancelled
     }
 
     struct Listing {
@@ -194,6 +195,10 @@ contract Marketplace is ReentrancyGuard {
             "allowance not set"
         );
 
+        require(
+            IERC721(tokenContract).ownerOf(tokenId) == msg.sender, 
+            "token ownership");
+
         require(msg.value == bidFee, "!bidFee");
 
         Staking memory stakingQuote = _stakings[_stakingsLastIndex++] = Staking(
@@ -222,12 +227,38 @@ contract Marketplace is ReentrancyGuard {
         );
     }
 
+    function stopStaking(uint stakingIndex) public nonReentrant {
+        require(
+            IERC721(_stakings[stakingIndex].token).isApprovedForAll(
+                address(msg.sender),
+                address(this)
+            ),
+            "allowance not set"
+        );
+
+        require(
+            IERC721(_stakings[stakingIndex].token).ownerOf(_stakings[stakingIndex].tokenId) == msg.sender, 
+            "token ownership");
+
+        _stakings[stakingIndex].status = StakeStatus.Cancelled;
+        _takeFee(bidFee);
+    }
+
+    function canRentNFT(uint256 stakingId) public view returns (bool) {
+        Staking storage staking = _stakings[stakingId];
+
+        return IERC721(staking.token).isApprovedForAll(
+                address(staking.maker),
+                address(this)
+            ) && IERC721(_stakings[stakingId].token).ownerOf(_stakings[stakingId].tokenId) == _stakings[stakingId].maker;
+    }
+
     function rentNFT(uint256 stakingId) public payable {
         Staking storage staking = _stakings[stakingId];
 
         require(
             IERC721(staking.token).isApprovedForAll(
-                address(msg.sender),
+                address(staking.maker),
                 address(this)
             ),
             "!allowance"
