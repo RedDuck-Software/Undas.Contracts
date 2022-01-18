@@ -201,7 +201,7 @@ contract Marketplace is ReentrancyGuard {
 
         require(msg.value == bidFee, "!bidFee");
 
-        Staking memory stakingQuote = _stakings[_stakingsLastIndex++] = Staking(
+        Staking memory stakingQuote = Staking(
             StakeStatus.Quoted,
             msg.sender,
             address(0),

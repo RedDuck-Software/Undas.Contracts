@@ -41,6 +41,10 @@ contract Staking is Context, ReentrancyGuard {
         token = _token;
     }
 
+    receive () payable external {
+        // accept eth
+    }
+
     /// @notice returns array of staking periods in months
     function getStakePeriods() public pure returns (uint8[3] memory) {
         return [2, 3, 4];
