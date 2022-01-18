@@ -107,7 +107,8 @@ contract Marketplace is ReentrancyGuard {
         require(msg.value == bidFee, "!bidFee");
         _takeFee(bidFee);
 
-        _listings[_listingsLastIndex++] = Listing(
+
+        _listings[_listingsLastIndex] = Listing(
             ListingStatus.Active,
             msg.sender,
             priceWei,
@@ -116,12 +117,14 @@ contract Marketplace is ReentrancyGuard {
         );
 
         emit Listed(
-            _listingsLastIndex - 1,
+            _listingsLastIndex,
             msg.sender,
             tokenContract,
             tokenId,
             priceWei
         );
+
+        _listingsLastIndex += 1;
     }
 
     function getListing(uint256 listingId)
@@ -214,10 +217,10 @@ contract Marketplace is ReentrancyGuard {
             tokenId
         );
 
-        _stakings[_stakingsLastIndex++] = stakingQuote;
+        _stakings[_stakingsLastIndex] = stakingQuote;
 
         emit QuotedForStaking(
-            _stakingsLastIndex - 1,
+            _stakingsLastIndex,
             msg.sender,
             tokenContract,
             tokenId,
@@ -225,6 +228,8 @@ contract Marketplace is ReentrancyGuard {
             premiumWei,
             deadlineUTC
         );
+
+        _stakingsLastIndex += 1;
     }
 
     function stopStaking(uint stakingIndex) public nonReentrant {
