@@ -231,6 +231,14 @@ contract Marketplace is ReentrancyGuard {
 
         _stakingsLastIndex += 1;
     }
+	
+	function getStaking(uint256 stakingId)
+        public
+        view
+        returns (Staking memory)
+    {
+        return _stakings[stakingId];
+    }
 
     function stopStaking(uint stakingIndex) public nonReentrant {
         require(
