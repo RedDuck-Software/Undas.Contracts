@@ -277,7 +277,7 @@ contract Marketplace is ReentrancyGuard {
             "!allowance"
         );
         require(
-            msg.value == staking.collateral + staking.premium,
+            msg.value >= staking.collateral + staking.premium,
             "!collateral"
         );
 
