@@ -268,7 +268,7 @@ contract Marketplace is ReentrancyGuard {
             ) && IERC721(_stakings[stakingId].token).ownerOf(_stakings[stakingId].tokenId) == _stakings[stakingId].maker;
     }
 
-    function rentNFT(uint256 stakingId) public payable {
+    function rentNFT(uint256 stakingId) public payable nonReentrant {
         Staking storage staking = _stakings[stakingId];
 
         require(
@@ -324,19 +324,22 @@ contract Marketplace is ReentrancyGuard {
 
     function isCollateralClaimable(uint256 stakingId) public view returns(bool status){
         Staking memory staking = _stakings[stakingId];
-        require(staking.status == StakeStatus.Staking, "status != staking");
-        require(staking.maker == msg.sender, "not maker");
 
-        uint256 requiredPayments = (block.timestamp - staking.startRentalUTC) /
+        uint256 timestampLimitedToDeadline = block.timestamp < staking.deadline ? block.timestamp : staking.deadline;
+
+        uint256 requiredPayments = (timestampLimitedToDeadline - staking.startRentalUTC) /
             premiumPeriod;
 
+        // collateral is claimable if payments have not been made in time or if the renting is over already; 
         return staking.paymentsAmount < requiredPayments || staking.deadline > block.timestamp;
     }
 
     // require that premium was not paid, and if so, give the previous owner of NFT (maker) the collateral.
-    function claimCollateral(uint256 stakingId) public {
+    function claimCollateral(uint256 stakingId) public nonReentrant {
         Staking storage staking = _stakings[stakingId];
 
+        require(staking.status == StakeStatus.Staking, "status != staking");
+        require(staking.maker == msg.sender, "not maker");
         require (isCollateralClaimable(stakingId), "premiums have been paid and deadline is yet to be reached");
 
         staking.status = StakeStatus.FinishedRentForCollateral;
