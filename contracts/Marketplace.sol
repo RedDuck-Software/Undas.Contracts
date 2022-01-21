@@ -310,6 +310,9 @@ contract Marketplace is ReentrancyGuard {
         require(msg.value == staking.premium, "premium");
         require(block.timestamp < staking.deadline, "deadline reached");
 
+        uint256 maxPayments = (staking.deadline - staking.startRentalUTC) / premiumPeriod;
+        require (staking.paymentsAmount + 1 <= maxPayments, "too many payments");
+
         // distribute the premium
         uint fee = msg.value / 100 * premiumFeePercentage;
         uint makerCut = msg.value - fee;
