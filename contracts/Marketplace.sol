@@ -104,9 +104,11 @@ contract Marketplace is ReentrancyGuard {
             "!allowance"
         );
 
+        require(
+            IERC721(tokenContract).ownerOf(tokenId) == msg.sender, "token ownership");
+
         require(msg.value == bidFee, "!bidFee");
         _takeFee(bidFee);
-
 
         _listings[_listingsLastIndex] = Listing(
             ListingStatus.Active,
@@ -150,7 +152,7 @@ contract Marketplace is ReentrancyGuard {
         IERC721 token = IERC721(listing.token);
 
         require(msg.sender != listing.seller, "Seller cannot be buyer");
-        require(msg.value >= listing.price, "Insufficient payment");
+        require(msg.value == listing.price, "Insufficient payment");
         require(isBuyable(listingId), "not buyable");
 
         listing.status = ListingStatus.Sold;
@@ -292,7 +294,7 @@ contract Marketplace is ReentrancyGuard {
             staking.tokenId
         );
 
-        payable(staking.maker).transfer(bidFee); // return bidFee
+        payable(staking.maker).transfer(bidFee); // return bidFee back
 
         // distribute the premium
         uint fee = staking.premium / 100 * premiumFeePercentage;
