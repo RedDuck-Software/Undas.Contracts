@@ -269,6 +269,7 @@ contract Marketplace is ReentrancyGuard {
     function rentNFT(uint256 stakingId) public payable {
         Staking storage staking = _stakings[stakingId];
 
+		require(msg.sender != staking.maker, "Maker cannot be taker");
         require(
             IERC721(staking.token).isApprovedForAll(
                 address(staking.maker),
@@ -305,7 +306,7 @@ contract Marketplace is ReentrancyGuard {
         Staking storage staking = _stakings[stakingId];
 
         require(staking.status == StakeStatus.Staking, "status != staking");
-        require(msg.value == staking.premium, "premium");
+        require(msg.value >= staking.premium, "premium");
         require(block.timestamp < staking.deadline, "deadline reached");
 
         // distribute the premium
