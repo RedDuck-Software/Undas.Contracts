@@ -322,6 +322,24 @@ contract Marketplace is ReentrancyGuard {
         staking.paymentsAmount++;
     }
 
+    function paymentsDue(uint256 stakingId) public view returns (int256 amountDue) {
+        Staking memory staking = _stakings[stakingId];
+
+        uint256 timestampLimitedToDeadline = block.timestamp < staking.deadline ? block.timestamp : staking.deadline;
+
+        uint256 requiredPayments = (timestampLimitedToDeadline - staking.startRentalUTC) /
+            premiumPeriod;
+
+        // negative output means that payments in advance have been made
+        return int256(requiredPayments) - int256(staking.paymentsAmount);
+    }
+
+    function dateOfNextPayment(uint256 stakingId) public view returns (uint256 date) {
+        Staking memory staking = _stakings[stakingId];
+
+        return staking.startRentalUTC + (premiumPeriod * (staking.paymentsAmount + 1));
+    }
+
     function isCollateralClaimable(uint256 stakingId) public view returns(bool status){
         Staking memory staking = _stakings[stakingId];
 
