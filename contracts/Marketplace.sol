@@ -318,7 +318,7 @@ contract Marketplace is ReentrancyGuard {
         staking.paymentsAmount++;
     }
 
-    function isCollateralClaimable(uint256 stakingId) public view {
+    function isCollateralClaimable(uint256 stakingId) public view returns(bool status){
         Staking memory staking = _stakings[stakingId];
         require(staking.status == StakeStatus.Staking, "status != staking");
         require(staking.maker == msg.sender, "not maker");
@@ -326,17 +326,14 @@ contract Marketplace is ReentrancyGuard {
         uint256 requiredPayments = (block.timestamp - staking.startRentalUTC) /
             premiumPeriod;
 
-        require(
-            staking.paymentsAmount < requiredPayments ||
-                staking.deadline > block.timestamp,
-            "premiums have been paid and deadline is yet to be reached"
-        );
+        return staking.paymentsAmount < requiredPayments || staking.deadline > block.timestamp;
     }
 
     // require that premium was not paid, and if so, give the previous owner of NFT (maker) the collateral.
     function claimCollateral(uint256 stakingId) public {
         Staking storage staking = _stakings[stakingId];
-        isCollateralClaimable(stakingId);
+
+        require (isCollateralClaimable(stakingId), "premiums have been paid and deadline is yet to be reached");
 
         staking.status = StakeStatus.FinishedRentForCollateral;
         payable(staking.maker).transfer(staking.collateral);
