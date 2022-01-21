@@ -280,7 +280,7 @@ contract Marketplace is ReentrancyGuard {
             "!allowance"
         );
         require(
-            msg.value >= staking.collateral + staking.premium,
+            msg.value == staking.collateral + staking.premium,
             "!collateral"
         );
 
@@ -308,7 +308,7 @@ contract Marketplace is ReentrancyGuard {
         Staking storage staking = _stakings[stakingId];
 
         require(staking.status == StakeStatus.Staking, "status != staking");
-        require(msg.value >= staking.premium, "premium");
+        require(msg.value == staking.premium, "premium");
         require(block.timestamp < staking.deadline, "deadline reached");
 
         uint256 maxPayments = (staking.deadline - staking.startRentalUTC) / premiumPeriod;
