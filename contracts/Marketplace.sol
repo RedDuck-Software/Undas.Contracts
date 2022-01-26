@@ -81,6 +81,12 @@ contract Marketplace is ReentrancyGuard {
     uint256 public _stakingsLastIndex;
     mapping(uint256 => Staking) public  _stakings;
 
+    // NFT address => NFT id => listing Id 
+    mapping (address => mapping (uint => uint)) nftListingIds;
+
+    // NFT address => NFT id => staking Id 
+    mapping (address => mapping (uint => uint)) nftStakingIds;
+
     uint256 constant premiumPeriod = 7 days;
     uint256 constant premiumFeePercentage = 20;
     uint256 constant bidFee = 0.1 ether;
@@ -125,6 +131,8 @@ contract Marketplace is ReentrancyGuard {
             tokenId,
             priceWei
         );
+
+        nftListingIds[tokenContract][tokenId] = _listingsLastIndex;
 
         _listingsLastIndex += 1;
     }
@@ -192,7 +200,6 @@ contract Marketplace is ReentrancyGuard {
         uint256 premiumWei,
         uint256 deadlineUTC
     ) public payable nonReentrant {
-
         bool isRounded = (deadlineUTC - block.timestamp) % premiumPeriod == 0;
         deadlineUTC = isRounded ? deadlineUTC : block.timestamp + (((deadlineUTC - block.timestamp) / premiumPeriod + 1) * premiumPeriod);
 
@@ -234,6 +241,8 @@ contract Marketplace is ReentrancyGuard {
             premiumWei,
             deadlineUTC
         );
+
+        nftListingIds[tokenContract][tokenId] = _stakingsLastIndex;
 
         _stakingsLastIndex += 1;
     }
