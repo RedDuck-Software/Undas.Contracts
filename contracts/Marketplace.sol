@@ -192,6 +192,10 @@ contract Marketplace is ReentrancyGuard {
         uint256 premiumWei,
         uint256 deadlineUTC
     ) public payable nonReentrant {
+
+        bool isRounded = (deadlineUTC - block.timestamp) % premiumPeriod == 0;
+        deadlineUTC = isRounded ? deadlineUTC : block.timestamp + (((deadlineUTC - block.timestamp) / premiumPeriod + 1) * premiumPeriod);
+
         require(
             IERC721(tokenContract).isApprovedForAll(
                 address(msg.sender),
