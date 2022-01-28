@@ -343,8 +343,13 @@ contract Marketplace is ReentrancyGuard {
 
         uint256 timestampLimitedToDeadline = block.timestamp < staking.deadline ? block.timestamp : staking.deadline;
 
+        uint256 requiredPaymentsMod = (timestampLimitedToDeadline - staking.startRentalUTC) %
+            premiumPeriod;
         uint256 requiredPayments = (timestampLimitedToDeadline - staking.startRentalUTC) /
             premiumPeriod;
+
+            if (requiredPaymentsMod > 0)
+                requiredPayments += 1;
 
         // negative output means that payments in advance have been made
         return int256(requiredPayments) - int256(staking.paymentsAmount);
