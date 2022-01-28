@@ -242,7 +242,7 @@ contract Marketplace is ReentrancyGuard {
             deadlineUTC
         );
 
-        nftListingIds[tokenContract][tokenId] = _stakingsLastIndex;
+        nftStakingIds[tokenContract][tokenId] = _stakingsLastIndex;
 
         _stakingsLastIndex += 1;
     }
@@ -263,6 +263,8 @@ contract Marketplace is ReentrancyGuard {
             ),
             "allowance not set"
         );
+
+        require(_stakings[stakingIndex].status == StakeStatus.Quoted, "should be status quoted");
 
         require(
             IERC721(_stakings[stakingIndex].token).ownerOf(_stakings[stakingIndex].tokenId) == msg.sender, 
