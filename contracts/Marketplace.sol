@@ -85,10 +85,10 @@ contract Marketplace is ReentrancyGuard {
     mapping(uint256 => Staking) public  _stakings;
 
     // NFT address => NFT id => listing Id 
-    mapping (address => mapping (uint => uint)) nftListingIds;
+    mapping (address => mapping (uint => uint)) public nftListingIds;
 
     // NFT address => NFT id => staking Id 
-    mapping (address => mapping (uint => uint)) nftStakingIds;
+    mapping (address => mapping (uint => uint)) public nftStakingIds;
 
     uint256 constant premiumPeriod = 7 days;
     uint256 constant premiumFeePercentage = 20;
