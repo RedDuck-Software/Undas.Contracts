@@ -12,6 +12,8 @@ const mintBunch = async (tokenContract: TestNFT, count: number, to: string) => {
 }
 
 async function main() {
+  const [owner] = await ethers.getSigners();
+
   const tokenFactory = await ethers.getContractFactory('OnlyOne')
   const token = await (await tokenFactory.deploy()).deployed()
 
@@ -19,12 +21,11 @@ async function main() {
   const platform = await (await platformFactory.deploy(token.address)).deployed()
 
   const marketplaceFactory = await ethers.getContractFactory('Marketplace')
-  const marketplace = await marketplaceFactory.deploy(platform.address);
+  const marketplace = await marketplaceFactory.deploy(platform.address, token.address, owner.address, 10000, 10000);
 
   const nftFactory = await ethers.getContractFactory('TestNFT')
   const nft = await (await nftFactory.deploy()).deployed();
 
-  const [owner] = await ethers.getSigners();
 
   const initNftMintAmount = 10;
   await mintBunch(nft, initNftMintAmount, owner.address);

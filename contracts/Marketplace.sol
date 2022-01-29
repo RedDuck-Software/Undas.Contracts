@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "hardhat/console.sol";
 
@@ -36,7 +37,9 @@ contract Marketplace is ReentrancyGuard {
         uint256 collateral;
         uint256 premium;
         uint256 startRentalUTC;
+        uint256 startStakingUTC;
         uint256 paymentsAmount;
+        uint256 tokenPaymentsAmount;
         uint256 deadline;
         address token;
         uint256 tokenId;
@@ -91,10 +94,31 @@ contract Marketplace is ReentrancyGuard {
     uint256 constant premiumFeePercentage = 20;
     uint256 constant bidFee = 0.1 ether;
 
-    address public immutable platform;
+    uint256 constant tokensDistributionDuration = 5*6 weeks; // 6 months with some extra time;
+    uint256 constant tokensDistributionFrequency = 1 weeks;
 
-    constructor(address _platform) {
+    address public immutable platform;
+    address public immutable undasToken;
+
+    uint256 public immutable tokensDistributionAmount;
+    uint256 public immutable maxCollateralEligibleForTokens;
+    uint256 public immutable tokensDistributionEnd;
+    mapping (address => bool) public NFTsEligibleForTokenDistribution; // protection against DOS
+    address public immutable NFTTokenDistributionWhiteLister; // whitelisting smart contract
+
+    constructor(address _platform, address _token, address _NFTTokenDistributionWhiteLister, uint256 _tokensDistributionAmount, uint256 _maxCollateralEligibleForTokens) {
         platform = _platform;
+        undasToken = _token;
+        NFTTokenDistributionWhiteLister = _NFTTokenDistributionWhiteLister;
+        tokensDistributionAmount = _tokensDistributionAmount;
+        maxCollateralEligibleForTokens = _maxCollateralEligibleForTokens;
+        tokensDistributionEnd = block.timestamp + tokensDistributionDuration;
+    }
+
+    function whiteListNFTToggle(address nft, bool whitelist) external {
+        require(msg.sender == NFTTokenDistributionWhiteLister, "fuck off .|.");
+
+        NFTsEligibleForTokenDistribution[nft] = whitelist;
     }
 
     function bid(
@@ -224,6 +248,8 @@ contract Marketplace is ReentrancyGuard {
             collateralWei,
             premiumWei,
             0,
+            block.timestamp, // stakingTimestamp
+            0,
             0,
             deadlineUTC,
             tokenContract,
@@ -348,7 +374,7 @@ contract Marketplace is ReentrancyGuard {
         uint256 requiredPayments = (timestampLimitedToDeadline - staking.startRentalUTC) /
             premiumPeriod;
 
-            if (requiredPaymentsMod > 0)
+            if (requiredPaymentsMod != 0)
                 requiredPayments += 1;
 
         // negative output means that payments in advance have been made
@@ -375,8 +401,8 @@ contract Marketplace is ReentrancyGuard {
 
     // require that premium was not paid, and if so, give the previous owner of NFT (maker) the collateral.
     function claimCollateral(uint256 stakingId) public nonReentrant {
-        Staking storage staking = _stakings[stakingId];
 
+        Staking storage staking = _stakings[stakingId];
         require(staking.status == StakeStatus.Staking, "status != staking");
         require(staking.maker == msg.sender, "not maker");
         require (isCollateralClaimable(stakingId), "premiums have been paid and deadline is yet to be reached");
@@ -384,6 +410,21 @@ contract Marketplace is ReentrancyGuard {
         staking.status = StakeStatus.FinishedRentForCollateral;
         payable(staking.maker).transfer(staking.collateral);
         delete _stakings[stakingId];
+    }
+
+    function claimTokens(uint256 stakingId) public nonReentrant {
+        require(block.timestamp < tokensDistributionEnd, "ended");
+
+        Staking storage staking = _stakings[stakingId];
+
+        require (NFTsEligibleForTokenDistribution[staking.token], "bad NFT");
+
+        uint256 eligibleClaims = (block.timestamp - staking.startStakingUTC) / tokensDistributionFrequency - staking.tokenPaymentsAmount;
+        uint256 tokensToIssue = tokensDistributionAmount * eligibleClaims;
+
+        staking.tokenPaymentsAmount += eligibleClaims;
+
+        IERC20(undasToken).transfer(staking.maker, tokensToIssue); // it is assumed that tokens have been allocated for this contract earlier.
     }
 
     function stopRental(uint256 stakingId) public nonReentrant {
