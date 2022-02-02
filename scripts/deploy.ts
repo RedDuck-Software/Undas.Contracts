@@ -23,7 +23,7 @@ async function main() {
   const marketplaceFactory = await ethers.getContractFactory('Marketplace')
   const marketplace = await marketplaceFactory.deploy(platform.address, token.address, owner.address, 10000, 10000);
 
-  const nftFactory = await ethers.getContractFactory('TestNFT')
+  const nftFactory = await ethers.getContractFactory('UndasGeneralNFT')
   const nft = await (await nftFactory.deploy()).deployed();
 
 
