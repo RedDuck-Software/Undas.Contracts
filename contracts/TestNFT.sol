@@ -33,9 +33,8 @@ contract UndasGeneralNFT is ERC721, ERC721Enumerable, Ownable {
         require(!_exists(tokenId), "ERC721: token already minted");
 
         _beforeTokenTransfer(address(0), to, tokenId);
+        _mint(to, tokenId);
 
-        incrementBalance(to);
-        changeOwner(tokenId, to);
         tokenMetadata[tokenId] = Metadata(description, name, url);
 
         emit Transfer(address(0), to, tokenId);
