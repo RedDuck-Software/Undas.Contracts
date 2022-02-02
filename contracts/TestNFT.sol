@@ -6,17 +6,39 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract TestNFT is ERC721, ERC721Enumerable, Ownable {
+contract UndasGeneralNFT is ERC721, ERC721Enumerable, Ownable {
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIdCounter;
 
-    constructor() ERC721("MyToken", "MTK") {}
+    struct Metadata
+    {
+        string description;
+        string name;
+        string url;
+    }
 
-    function safeMint(address to) public onlyOwner {
+    mapping (uint256 => Metadata) public tokenMetadata;
+
+    constructor() ERC721("UndasGeneral", "UndasGeneral") {}
+
+    function safeMintGeneral(address to, string calldata description, string calldata name, string calldata url) public {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
-        _safeMint(to, tokenId);
+        mintGeneral(to, tokenId, description, name, url);
+    }
+
+    function mintGeneral(address to, uint256 tokenId, string calldata description, string calldata name, string calldata url) internal virtual {
+        require(to != address(0), "ERC721: mint to the zero address");
+        require(!_exists(tokenId), "ERC721: token already minted");
+
+        _beforeTokenTransfer(address(0), to, tokenId);
+
+        incrementBalance(to);
+        changeOwner(tokenId, to);
+        tokenMetadata[tokenId] = Metadata(description, name, url);
+
+        emit Transfer(address(0), to, tokenId);
     }
 
     function _beforeTokenTransfer(
