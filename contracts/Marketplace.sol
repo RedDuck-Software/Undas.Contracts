@@ -306,7 +306,8 @@ contract Marketplace is ReentrancyGuard {
         return IERC721(staking.token).isApprovedForAll(
                 address(staking.maker),
                 address(this)
-            ) && IERC721(_stakings[stakingId].token).ownerOf(_stakings[stakingId].tokenId) == _stakings[stakingId].maker;
+            ) && IERC721(_stakings[stakingId].token).ownerOf(_stakings[stakingId].tokenId) == _stakings[stakingId].maker 
+            && staking.status == StakeStatus.Quoted;
     }
 
     function rentNFT(uint256 stakingId) public payable nonReentrant {
@@ -324,6 +325,8 @@ contract Marketplace is ReentrancyGuard {
             msg.value == staking.collateral + staking.premium,
             "!collateral"
         );
+
+        require(staking.status == StakeStatus.Quoted, "status");
 
         staking.startRentalUTC = block.timestamp;
         staking.taker = msg.sender;
@@ -367,15 +370,12 @@ contract Marketplace is ReentrancyGuard {
     function paymentsDue(uint256 stakingId) public view returns (int256 amountDue) {
         Staking memory staking = _stakings[stakingId];
 
+        require(staking.status == StakeStatus.Staking, "status");
+
         uint256 timestampLimitedToDeadline = block.timestamp < staking.deadline ? block.timestamp : staking.deadline;
 
-        uint256 requiredPaymentsMod = (timestampLimitedToDeadline - staking.startRentalUTC) %
-            premiumPeriod;
         uint256 requiredPayments = (timestampLimitedToDeadline - staking.startRentalUTC) /
             premiumPeriod;
-
-            if (requiredPaymentsMod != 0)
-                requiredPayments += 1;
 
         // negative output means that payments in advance have been made
         return int256(requiredPayments) - int256(staking.paymentsAmount);
@@ -384,10 +384,10 @@ contract Marketplace is ReentrancyGuard {
     function dateOfNextPayment(uint256 stakingId) public view returns (uint256 date) {
         Staking memory staking = _stakings[stakingId];
 
-        return staking.startRentalUTC + (premiumPeriod * (staking.paymentsAmount + 1));
+        return staking.startRentalUTC + (premiumPeriod * staking.paymentsAmount);
     }
 
-    function isCollateralClaimable(uint256 stakingId) public view returns(bool status){
+    function isCollateralClaimable(uint256 stakingId) public view returns(bool status) {
         Staking memory staking = _stakings[stakingId];
 
         uint256 timestampLimitedToDeadline = block.timestamp < staking.deadline ? block.timestamp : staking.deadline;
@@ -395,7 +395,7 @@ contract Marketplace is ReentrancyGuard {
         uint256 requiredPayments = (timestampLimitedToDeadline - staking.startRentalUTC) /
             premiumPeriod;
 
-        // collateral is claimable if payments have not been made in time or if the renting is over already; 
+        // collateral is claimable if payments have not been made in time or if the renting is over already;
         return staking.paymentsAmount < requiredPayments || staking.deadline > block.timestamp;
     }
 
@@ -429,7 +429,7 @@ contract Marketplace is ReentrancyGuard {
 
     function stopRental(uint256 stakingId) public nonReentrant {
         Staking storage staking = _stakings[stakingId];
-        require(staking.status == StakeStatus.Quoted, "non-active staking");
+        require(staking.status == StakeStatus.Staking, "non-active staking");
         require(staking.taker == msg.sender, "not taker");
 
         uint256 requiredPayments = (block.timestamp - staking.startRentalUTC) /
