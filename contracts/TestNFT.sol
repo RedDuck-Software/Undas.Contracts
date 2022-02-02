@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract UndasGeneralNFT is ERC721, ERC721Enumerable, Ownable {
     using Counters for Counters.Counter;
+    using Strings for uint256;
 
     Counters.Counter private _tokenIdCounter;
 
@@ -55,5 +56,19 @@ contract UndasGeneralNFT is ERC721, ERC721Enumerable, Ownable {
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
+    }
+
+    function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
+        require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
+
+        if (bytes(tokenMetadata[tokenId].url).length == 0)
+        {
+            string memory baseURI = _baseURI();
+            return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString())) : "";
+        }
+        else
+        {
+            return tokenMetadata[tokenId].url;
+        }
     }
 }
