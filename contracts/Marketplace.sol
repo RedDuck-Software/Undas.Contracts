@@ -224,8 +224,8 @@ contract Marketplace is ReentrancyGuard {
         uint256 premiumWei,
         uint256 deadlineUTC
     ) public payable nonReentrant {
-        bool isRounded = (deadlineUTC - block.timestamp) % premiumPeriod == 0;
-        deadlineUTC = isRounded ? deadlineUTC : block.timestamp + (((deadlineUTC - block.timestamp) / premiumPeriod + 1) * premiumPeriod);
+        //bool isRounded = (deadlineUTC - block.timestamp) % premiumPeriod == 0;
+        //deadlineUTC = isRounded ? deadlineUTC : block.timestamp + (((deadlineUTC - block.timestamp) / premiumPeriod + 1) * premiumPeriod);
 
         require(
             IERC721(tokenContract).isApprovedForAll(
@@ -281,6 +281,8 @@ contract Marketplace is ReentrancyGuard {
         return _stakings[stakingId];
     }
 
+// 1-------2-------3-------4-------5
+// startRentalUTC: 1643862701; startStakingUTC: 1643862162;; paymentsAmount 1; 604800 premiumPeriod; deadline 1646281362;
     function stopStaking(uint stakingIndex) public nonReentrant {
         require(
             IERC721(_stakings[stakingIndex].token).isApprovedForAll(
@@ -309,7 +311,7 @@ contract Marketplace is ReentrancyGuard {
             ) && IERC721(_stakings[stakingId].token).ownerOf(_stakings[stakingId].tokenId) == _stakings[stakingId].maker 
             && staking.status == StakeStatus.Quoted;
     }
-
+    // 0-------1-------2-------3-------4
     function rentNFT(uint256 stakingId) public payable nonReentrant {
         Staking storage staking = _stakings[stakingId];
 
@@ -354,8 +356,14 @@ contract Marketplace is ReentrancyGuard {
         require(staking.status == StakeStatus.Staking, "status != staking");
         require(msg.value == staking.premium, "premium");
         require(block.timestamp < staking.deadline, "deadline reached");
+        // 90 - 30 = 60 / 30 = 2; 30-60;60-90;
+        // 150 - 30 = 120 / 30 = 4; 3 + 1 <= 4 -> true
 
         uint256 maxPayments = (staking.deadline - staking.startRentalUTC) / premiumPeriod;
+        if ((staking.deadline - staking.startRentalUTC) % premiumPeriod > 0) // if a piece remains
+        {
+            maxPayments++;
+        }
         require (staking.paymentsAmount + 1 <= maxPayments, "too many payments");
 
         // distribute the premium
@@ -374,8 +382,12 @@ contract Marketplace is ReentrancyGuard {
 
         uint256 timestampLimitedToDeadline = block.timestamp < staking.deadline ? block.timestamp : staking.deadline;
 
-        uint256 requiredPayments = (timestampLimitedToDeadline - staking.startRentalUTC) /
-            premiumPeriod;
+        uint256 requiredPayments = (timestampLimitedToDeadline - staking.startRentalUTC) / premiumPeriod;
+
+        if ((timestampLimitedToDeadline - staking.startRentalUTC) % premiumPeriod > 0)
+        {
+            requiredPayments++;
+        }
 
         // negative output means that payments in advance have been made
         return int256(requiredPayments) - int256(staking.paymentsAmount);
@@ -390,13 +402,10 @@ contract Marketplace is ReentrancyGuard {
     function isCollateralClaimable(uint256 stakingId) public view returns(bool status) {
         Staking memory staking = _stakings[stakingId];
 
-        uint256 timestampLimitedToDeadline = block.timestamp < staking.deadline ? block.timestamp : staking.deadline;
-
-        uint256 requiredPayments = (timestampLimitedToDeadline - staking.startRentalUTC) /
-            premiumPeriod;
+        int256 _paymentsDue = paymentsDue(stakingId);
 
         // collateral is claimable if payments have not been made in time or if the renting is over already;
-        return staking.paymentsAmount < requiredPayments || staking.deadline > block.timestamp;
+        return _paymentsDue > 0 || staking.deadline <= block.timestamp;
     }
 
     // require that premium was not paid, and if so, give the previous owner of NFT (maker) the collateral.
