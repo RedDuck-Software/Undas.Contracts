@@ -45,6 +45,11 @@ contract Marketplace is ReentrancyGuard {
         uint256 tokenId;
     }
 
+    struct OptionalUint {
+        bool valueExists;
+        uint value;
+    }
+
     event Listed(
         uint256 listingId,
         address seller,
@@ -85,10 +90,10 @@ contract Marketplace is ReentrancyGuard {
     mapping(uint256 => Staking) public  _stakings;
 
     // NFT address => NFT id => listing Id 
-    mapping (address => mapping (uint => uint)) public nftListingIds;
+    mapping (address => mapping (uint => OptionalUint)) public nftListingIds;
 
     // NFT address => NFT id => staking Id 
-    mapping (address => mapping (uint => uint)) public nftStakingIds;
+    mapping (address => mapping (uint => OptionalUint)) public nftStakingIds;
 
     uint256 constant premiumPeriod = 7 days;
     uint256 constant premiumFeePercentage = 20;
@@ -138,6 +143,8 @@ contract Marketplace is ReentrancyGuard {
             IERC721(tokenContract).ownerOf(tokenId) == msg.sender, "token ownership");
 
         require(msg.value == bidFee, "!bidFee");
+        require(!nftListingIds[tokenContract][tokenId].valueExists, "already exists listing");
+
         _takeFee(bidFee);
 
         _listings[_listingsLastIndex] = Listing(
@@ -156,7 +163,7 @@ contract Marketplace is ReentrancyGuard {
             priceWei
         );
 
-        nftListingIds[tokenContract][tokenId] = _listingsLastIndex;
+        nftListingIds[tokenContract][tokenId] = OptionalUint(true, _listingsLastIndex);
 
         _listingsLastIndex += 1;
     }
@@ -241,6 +248,8 @@ contract Marketplace is ReentrancyGuard {
 
         require(msg.value == bidFee, "!bidFee");
 
+        require(!nftStakingIds[tokenContract][tokenId].valueExists, "already staked");
+
         Staking memory stakingQuote = Staking(
             StakeStatus.Quoted,
             msg.sender,
@@ -268,7 +277,7 @@ contract Marketplace is ReentrancyGuard {
             deadlineUTC
         );
 
-        nftStakingIds[tokenContract][tokenId] = _stakingsLastIndex;
+        nftStakingIds[tokenContract][tokenId] = OptionalUint(true, _stakingsLastIndex);
 
         _stakingsLastIndex += 1;
     }
