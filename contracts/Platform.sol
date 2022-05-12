@@ -17,12 +17,19 @@ contract Staking is Context, ReentrancyGuard {
         uint256 stakedAt;
     }
 
-    mapping(address => StakingInfo[]) public userStaking;
+    mapping (address => StakingInfo[]) public userStaking;
+    mapping (address => uint256) public etherCashback;
+    mapping (address => uint256) public tokenCashback;
+
+    uint256 public lockedEtherCashBack;
+    uint256 public lockedTokenCashback;
 
     uint256 public totalStaked;
     uint256 public totalReserved;
 
     address public immutable token;
+    address public immutable owner;
+    address public marketplace;
 
     event Staked(
         address indexed staker,
@@ -37,27 +44,34 @@ contract Staking is Context, ReentrancyGuard {
         uint256 timestamp
     );
 
-    constructor(address _token) {
+    constructor(address _owner, address _token) {
         token = _token;
+        owner = _owner;
     }
 
-    receive () payable external {
-        // accept eth
+    function setMarketplaceAddress(address _marketplace) public only(owner) {
+        marketplace = _marketplace;
     }
 
-    /// @notice returns array of staking periods in months
-    function getStakePeriods() public pure returns (uint8[3] memory) {
-        return [2, 3, 4];
+    function receiveWithLockedCashback(uint256 percentCashback) external payable only(marketplace) {
+        lockedEtherCashBack += msg.value * percentCashback / 100;
     }
 
-    /// @notice returns array of staking periods in months with precition
-    function getStakePeriodsMultipliers()
-        public
-        pure
-        returns (uint8[3] memory)
-    {
-        // x1.20
-        return [120, 130, 140];
+    function lockTokenCashback(uint256 amount) external only(marketplace) {
+        lockedTokenCashback += amount;
+    }
+
+    function addCashback(address cashbackee1, address cashbackee2, uint256 amount, bool isTokenFee) external only(marketplace) {
+        if (isTokenFee)
+        {
+            tokenCashback[cashbackee1] += amount;
+            tokenCashback[cashbackee2] += amount;
+        }
+        else
+        {
+            etherCashback[cashbackee1] += amount;
+            etherCashback[cashbackee2] += amount;
+        }
     }
 
     function calculateUserRewards(uint256 stakeAmount, uint256 stakePeriod)
@@ -65,13 +79,11 @@ contract Staking is Context, ReentrancyGuard {
         view
         returns (uint256)
     {
-        uint256 multiplier = getStakePeriodsMultipliers()[stakePeriod];
-
         uint256 rewardsWithoutMultiplier = (((address(this).balance -
             totalReserved) *
             ((totalStaked * 100) / (stakeAmount + totalStaked))) / 100);
 
-        return rewardsWithoutMultiplier * multiplier;
+        return rewardsWithoutMultiplier;
     }
 
     function stakeWithPermit(
@@ -150,8 +162,13 @@ contract Staking is Context, ReentrancyGuard {
         payable(staker).transfer(staking.reservedRewards);
         emit Claimed(staker, staking.reservedRewards, block.timestamp);
     }
+
+    modifier only(address who) {
+        require(msg.sender == who, "only address fail");
+        _;
+    }
 }
 
 contract Platform is Staking {
-    constructor(address token) Staking(token) {}
+    constructor(address owner, address token) Staking(owner, token) {}
 }

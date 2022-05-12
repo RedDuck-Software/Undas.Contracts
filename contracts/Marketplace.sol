@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./UniswapV2Library.sol";
+import "./Platform.sol";
 import "hardhat/console.sol";
 
 contract Marketplace is ReentrancyGuard {
@@ -31,6 +32,8 @@ contract Marketplace is ReentrancyGuard {
         uint256 tokenId;
         uint256 startListingUTC;
         uint256 tokenPaymentsAmount;
+        uint256 cashback;
+        bool isTokenFee;
     }
 
     struct Staking {
@@ -46,6 +49,8 @@ contract Marketplace is ReentrancyGuard {
         uint256 deadline;
         address token;
         uint256 tokenId;
+        uint256 cashback;
+        bool isTokenFee;
     }
 
     struct OptionalUint {
@@ -137,6 +142,8 @@ contract Marketplace is ReentrancyGuard {
     uint256 constant tokensDistributionDuration = 5*6 weeks; // 6 months with some extra time;
     uint256 constant tokensDistributionFrequency = 1 weeks;
 
+    uint256 constant cashbackPercent = 30;
+
     address public immutable platform;
     address public immutable undasToken;
 
@@ -182,7 +189,7 @@ contract Marketplace is ReentrancyGuard {
         );
 
         require(IERC721(tokenContract).ownerOf(tokenId) == msg.sender, "token ownership");
-        require(msg.value == priceWei * bidFeePercent / 100, "!bidFee");
+        require(isTokenFee || msg.value == priceWei * bidFeePercent / 100, "!bidFee");
         require(!nftListingIds[tokenContract][tokenId].valueExists, "already exists listing");
 
         _listings[_listingsLastIndex] = Listing(
@@ -192,7 +199,9 @@ contract Marketplace is ReentrancyGuard {
             tokenContract,
             tokenId,
             block.timestamp,
-            0
+            0, 
+            0,
+            isTokenFee
         );
 
         emit Listed(
@@ -205,23 +214,11 @@ contract Marketplace is ReentrancyGuard {
 
         nftListingIds[tokenContract][tokenId] = OptionalUint(true, _listingsLastIndex);
 
+        (uint256 a, uint256 cashback) = _takeFee(100, isTokenFee);
+        _listings[_listingsLastIndex].cashback = cashback;
+        _listings[_listingsLastIndex].isTokenFee = isTokenFee;
+
         _listingsLastIndex += 1;
-
-        uint256 bidFeePercentToTake;
-        if (IERC20(undasToken).balanceOf(msg.sender) > minUndasBalanceForCashback) {
-            bidFeePercentToTake = 70;
-        
-            if (!isTokenFee) // if ether, return it
-            {
-                uint256 bidFeeReturn = msg.value * 30 / 100; // 30% discount for token holders
-                payable(msg.sender).transfer(bidFeeReturn);
-            }
-        }
-        else {
-            bidFeePercentToTake = 100;
-        }
-
-        _takeFee(bidFeePercentToTake, isTokenFee);
     }
 
     function listingOffer(uint256 listingId) external payable nonReentrant { 
@@ -251,6 +248,8 @@ contract Marketplace is ReentrancyGuard {
 
         token.safeTransferFrom(listing.seller, buyer, listing.tokenId);
         payable(listing.seller).transfer(price);
+
+        Platform(platform).addCashback(listing.seller, buyer, listing.cashback, listing.isTokenFee);
 
         emit Sale(
             listingId,
@@ -351,7 +350,9 @@ contract Marketplace is ReentrancyGuard {
             0, block.timestamp, 0, 0,
             deadlineUTC,
             tokenContract,
-            tokenId
+            tokenId,
+            0, 
+            isTokenFee
         );
 
         _stakings[_stakingsLastIndex] = stakingQuote;
@@ -368,23 +369,11 @@ contract Marketplace is ReentrancyGuard {
 
         nftStakingIds[tokenContract][tokenId] = OptionalUint(true, _stakingsLastIndex);
 
+        (uint256 a, uint256 cashback) = _takeFee(100, isTokenFee);
+        _stakings[_stakingsLastIndex].cashback = cashback;
+        _listings[_listingsLastIndex].isTokenFee = isTokenFee;
+
         _stakingsLastIndex += 1;
-
-        uint256 bidFeePercentToTake;
-        if (IERC20(undasToken).balanceOf(msg.sender) > minUndasBalanceForCashback) {
-            bidFeePercentToTake = 70;
-        
-            if (!isTokenFee) // if ether, return it
-            {
-                uint256 bidFeeReturn = msg.value * 30 / 100; // 30% discount for token holders
-                payable(msg.sender).transfer(bidFeeReturn);
-            }
-        }
-        else {
-            bidFeePercentToTake = 100;
-        }
-
-        _takeFee(bidFeePercentToTake, isTokenFee);
     }
 
     function stakingOffer(uint256 stakingId, uint256 _collateral, uint256 _premium) public payable nonReentrant {
@@ -497,19 +486,18 @@ contract Marketplace is ReentrancyGuard {
             staking.tokenId
         );
 
+        // give the cashback for creating the staking
+        Platform(platform).addCashback(staking.maker, staking.taker, staking.cashback, staking.isTokenFee);
+
         // distribute the premium
+        (uint256 etherFeeTaken, uint256 cashback) = _takeFeeValue(premiumFeePercentage, isTokenFee, premium); // premium - override value to not send collateral
+        payable(staking.maker).transfer(premium - etherFeeTaken);
 
-        uint256 makerCut;
-        if (isTokenFee)
-            makerCut = premium - (premium / 100 * premiumFeePercentage);
-        else
-            makerCut = premium;
-
-        _takeFee(premiumFeePercentage, isTokenFee);
-        payable(staking.maker).transfer(makerCut);
+        // give the cashback from the premium
+        Platform(platform).addCashback(staking.maker, staking.taker, cashback, isTokenFee);
     }
 
-    function payPremium(uint256 stakingId, bool isToken) public payable {
+    function payPremium(uint256 stakingId, bool isToken) public payable nonReentrant {
         Staking storage staking = _stakings[stakingId];
 
         require(staking.status == StakeStatus.Staking, "status != staking");
@@ -526,20 +514,12 @@ contract Marketplace is ReentrancyGuard {
         staking.paymentsAmount++;
 
         // distribute the premium
-        uint256 percentageToTakeAfterCashback;
-        if (IERC20(undasToken).balanceOf(msg.sender) > minUndasBalanceForCashback) {
-            uint256 percentageToCashback = premiumFeePercentage * 30 / 100;
-            percentageToTakeAfterCashback = premiumFeePercentage - percentageToCashback;
 
-            if (!isToken)
-                payable(msg.sender).transfer(percentageToCashback);
-        }
-        else {
-            percentageToTakeAfterCashback = premiumFeePercentage;
-        }
-
-        uint256 etherFeeTaken = _takeFee(percentageToTakeAfterCashback, isToken);
+        (uint256 etherFeeTaken, uint256 cashback) = _takeFee(premiumFeePercentage, isToken);
         payable(staking.maker).transfer(msg.value - etherFeeTaken);
+
+        // give the cashback from the premium
+        Platform(platform).addCashback(staking.maker, staking.taker, cashback, isToken);
     }
 
     function paymentsDue(uint256 stakingId) public view returns (int256 amountDue) {
@@ -669,23 +649,37 @@ contract Marketplace is ReentrancyGuard {
         quoteForStaking(tokenContract, tokenId, collateralWei, premiumWei, deadlineUTC, isTokenFee);
     }
 
-    // returns how much ether was taken
-    function _takeFee(uint256 percent, bool isToken) internal returns (uint256) {
-        uint256 value = msg.value * percent / 100;
+    function _takeFee(uint256 percent, bool isToken) internal returns (uint256, uint256)
+    {
+        return _takeFeeValue(percent, isToken, msg.value * percent / 100);
+    }
+
+    // returns how much ether and cashback was taken (ether, cashback)
+    function _takeFeeValue(uint256 percent, bool isToken, uint256 value) internal returns (uint256, uint256) {
+        uint256 _cashbackPercent = cashbackPercent;
+        
+        if (IERC20(undasToken).balanceOf(msg.sender) < minUndasBalanceForCashback)
+        {
+            _cashbackPercent = 0;
+        }
+
         if (isToken) {
             address[] memory path = new address[](2);
-
             path[0] = wETH;
             path[1] = undasToken;
 
             uint256 tokenFee = UniswapV2Library.getAmountsOut(factory, value, path)[1] / 2; // 50% saving
+            uint256 cashbackAmount = tokenFee * _cashbackPercent / 100;
+
             IERC20(undasToken).transferFrom(msg.sender, platform, tokenFee);
+            // multiply by two because we want to lock two cashbacks: for taker and for maker
+            Platform(payable(platform)).lockTokenCashback(cashbackAmount * 2);
             
-            return 0;
+            return (0, cashbackAmount);
         }
         else {
-            payable(platform).transfer(value);
-            return value;
+            Platform(payable(platform)).receiveWithLockedCashback{value:value}(_cashbackPercent * 2);
+            return (value, value * _cashbackPercent / 100);
         }
     }
 }
