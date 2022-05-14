@@ -86,60 +86,60 @@ contract Staking is Context, ReentrancyGuard {
         return rewardsWithoutMultiplier;
     }
 
-    function stakeWithPermit(
-        uint256 amount,
-        uint8 stakePeriod,
-        uint256 deadline,
-        uint8 v,
-        bytes32 r,
-        bytes32 s
-    ) external nonReentrant {
-        IERC20Permit(token).permit(
-            _msgSender(),
-            address(this),
-            amount,
-            deadline,
-            v,
-            r,
-            s
-        );
-        _stake(amount, stakePeriod);
-    }
+    // function stakeWithPermit(
+    //     uint256 amount,
+    //     uint8 stakePeriod,
+    //     uint256 deadline,
+    //     uint8 v,
+    //     bytes32 r,
+    //     bytes32 s
+    // ) external nonReentrant {
+    //     IERC20Permit(token).permit(
+    //         _msgSender(),
+    //         address(this),
+    //         amount,
+    //         deadline,
+    //         v,
+    //         r,
+    //         s
+    //     );
+    //     _stake(amount, stakePeriod);
+    // }
 
-    function stake(uint256 amount, uint8 stakePeriod) external nonReentrant {
-        _stake(amount, stakePeriod);
-    }
+    // function stake(uint256 amount, uint8 stakePeriod) external nonReentrant {
+    //     _stake(amount, stakePeriod);
+    // }
 
-    function _stake(uint256 amount, uint8 stakePeriod) internal {
-        require(stakePeriod < getStakePeriods().length, "!stakePeriod");
-        require(amount != 0, "!amount");
+    // function _stake(uint256 amount, uint8 stakePeriod) internal {
+    //     require(stakePeriod < getStakePeriods().length, "!stakePeriod");
+    //     require(amount != 0, "!amount");
 
-        IERC20(token).safeTransferFrom(_msgSender(), address(this), amount);
+    //     IERC20(token).safeTransferFrom(_msgSender(), address(this), amount);
 
-        uint256 rewards = calculateUserRewards(amount, stakePeriod);
+    //     uint256 rewards = calculateUserRewards(amount, stakePeriod);
 
-        require(rewards == 0, "!rewards");
-        require(rewards <= address(this).balance, "!balance");
+    //     require(rewards == 0, "!rewards");
+    //     require(rewards <= address(this).balance, "!balance");
 
-        userStaking[_msgSender()].push(
-            StakingInfo({
-                staked: amount,
-                reservedRewards: rewards,
-                stakePeriod: uint256(getStakePeriods()[stakePeriod]) * 1 days,
-                stakedAt: block.timestamp
-            })
-        );
+    //     userStaking[_msgSender()].push(
+    //         StakingInfo({
+    //             staked: amount,
+    //             reservedRewards: rewards,
+    //             stakePeriod: uint256(getStakePeriods()[stakePeriod]) * 1 days,
+    //             stakedAt: block.timestamp
+    //         })
+    //     );
 
-        totalStaked += amount;
-        totalReserved += rewards;
+    //     totalStaked += amount;
+    //     totalReserved += rewards;
 
-        emit Staked(
-            _msgSender(),
-            amount,
-            userStaking[_msgSender()].length - 1,
-            block.timestamp
-        );
-    }
+    //     emit Staked(
+    //         _msgSender(),
+    //         amount,
+    //         userStaking[_msgSender()].length - 1,
+    //         block.timestamp
+    //     );
+    // }
 
     function claimFor(address staker, uint8 stakeIndex) external nonReentrant {
         require(stakeIndex < userStaking[staker].length, "!stakeIndex");

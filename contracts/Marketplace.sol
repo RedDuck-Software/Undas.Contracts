@@ -49,10 +49,12 @@ contract Marketplace is ReentrancyGuard {
         uint256 deadline;
         address token;
         uint256 tokenId;
+        
+    }
+    struct StakingExtension {
         uint256 cashback;
         bool isTokenFee;
     }
-
     struct OptionalUint {
         bool valueExists;
         uint value;
@@ -123,7 +125,9 @@ contract Marketplace is ReentrancyGuard {
     mapping(uint256 => Listing) public _listings;
 
     uint256 public _stakingsLastIndex;
+
     mapping(uint256 => Staking) public  _stakings;
+    mapping(uint256 => StakingExtension) public _stakingsExtension;
 
     mapping (uint256 => mapping (address => uint256)) _listingOffers;
     mapping (uint256 => mapping (address => StakingOffer)) _stakingOffers;
@@ -249,7 +253,7 @@ contract Marketplace is ReentrancyGuard {
         token.safeTransferFrom(listing.seller, buyer, listing.tokenId);
         payable(listing.seller).transfer(price);
 
-        Platform(platform).addCashback(listing.seller, buyer, listing.cashback, listing.isTokenFee);
+        // Platform(platform).addCashback(listing.seller, buyer, listing.cashback, listing.isTokenFee);
 
         emit Sale(
             listingId,
@@ -350,12 +354,16 @@ contract Marketplace is ReentrancyGuard {
             0, block.timestamp, 0, 0,
             deadlineUTC,
             tokenContract,
-            tokenId,
+            tokenId
+        );
+
+        StakingExtension memory stakingQuoteExtension = StakingExtension (
             0, 
             isTokenFee
         );
 
         _stakings[_stakingsLastIndex] = stakingQuote;
+        _stakingsExtension[_stakingsLastIndex] = stakingQuoteExtension;
 
         emit QuotedForStaking(
             _stakingsLastIndex,
@@ -370,7 +378,7 @@ contract Marketplace is ReentrancyGuard {
         nftStakingIds[tokenContract][tokenId] = OptionalUint(true, _stakingsLastIndex);
 
         (uint256 a, uint256 cashback) = _takeFee(100, isTokenFee);
-        _stakings[_stakingsLastIndex].cashback = cashback;
+        _stakingsExtension[_stakingsLastIndex].cashback = cashback;
         _listings[_listingsLastIndex].isTokenFee = isTokenFee;
 
         _stakingsLastIndex += 1;
@@ -459,7 +467,7 @@ contract Marketplace is ReentrancyGuard {
 
     function rentNFTInternal(uint256 stakingId, uint256 collateral, uint256 premium, address taker, bool isTokenFee) private nonReentrant {
         Staking memory staking = _stakings[stakingId];
-
+        StakingExtension memory statindExt = _stakingsExtension[stakingId];
 		require(taker != staking.maker, "Maker cannot be taker");
         require(
             IERC721(staking.token).isApprovedForAll(
@@ -487,14 +495,15 @@ contract Marketplace is ReentrancyGuard {
         );
 
         // give the cashback for creating the staking
-        Platform(platform).addCashback(staking.maker, staking.taker, staking.cashback, staking.isTokenFee);
+        // Platform(platform).addCashback(staking.maker, staking.taker,
+        //  statindExt.cashback, statindExt.isTokenFee);
 
         // distribute the premium
         (uint256 etherFeeTaken, uint256 cashback) = _takeFeeValue(premiumFeePercentage, isTokenFee, premium); // premium - override value to not send collateral
         payable(staking.maker).transfer(premium - etherFeeTaken);
 
         // give the cashback from the premium
-        Platform(platform).addCashback(staking.maker, staking.taker, cashback, isTokenFee);
+        // Platform(platform).addCashback(staking.maker, staking.taker, cashback, isTokenFee);
     }
 
     function payPremium(uint256 stakingId, bool isToken) public payable nonReentrant {
@@ -519,7 +528,7 @@ contract Marketplace is ReentrancyGuard {
         payable(staking.maker).transfer(msg.value - etherFeeTaken);
 
         // give the cashback from the premium
-        Platform(platform).addCashback(staking.maker, staking.taker, cashback, isToken);
+        // Platform(platform).addCashback(staking.maker, staking.taker, cashback, isToken);
     }
 
     function paymentsDue(uint256 stakingId) public view returns (int256 amountDue) {
@@ -662,7 +671,7 @@ contract Marketplace is ReentrancyGuard {
         {
             _cashbackPercent = 0;
         }
-
+        
         if (isToken) {
             address[] memory path = new address[](2);
             path[0] = wETH;
@@ -673,7 +682,7 @@ contract Marketplace is ReentrancyGuard {
 
             IERC20(undasToken).transferFrom(msg.sender, platform, tokenFee);
             // multiply by two because we want to lock two cashbacks: for taker and for maker
-            Platform(payable(platform)).lockTokenCashback(cashbackAmount * 2);
+            // Platform(payable(platform)).lockTokenCashback(cashbackAmount * 2);
             
             return (0, cashbackAmount);
         }

@@ -32,7 +32,7 @@ describe("NftMarketplaceTest", function () {
     WEth = await wrappedEth.deployed();
 
     const platform = await ethers.getContractFactory("Staking");
-    Platform = await platform.deploy(OnlyOneToken.address);
+    Platform = await platform.deploy(user.address,OnlyOneToken.address);
     await Platform.deployed();
 
     const nft = await ethers.getContractFactory("UndasGeneralNFT",owner);
@@ -128,99 +128,97 @@ describe("NftMarketplaceTest", function () {
     )).to.emit(NftMarketplace,'Listed')
   });
   
-  // it("it should allow to buy", async function () {
+  it("it should allow to buy", async function () {
 
-  //    expect(await NftMarketplace.connect(buyer).buyToken(
-  //       0,    
-  //       {
-  //         value: ethers.utils.parseUnits("2.0","ether"),
-  //       }
-  //   )).to.emit(NftMarketplace,"Sale")
+     expect(await NftMarketplace.connect(buyer).buyToken(
+        0,    
+        {
+          value: ethers.utils.parseUnits("2.0","ether"),
+        }
+    )).to.emit(NftMarketplace,"Sale")
   
-  // });
+  });
 
-//   it("it should allow owner to cancel nft bid", async function () {
+  it("it should allow owner to cancel nft bid", async function () {
 
-//     await expect(NftMarketplace.connect(buyer).cancel(0)).to.be.revertedWith('Only seller can cancel listing')
-//     expect(await NftMarketplace.connect(user).cancel(0)).to.emit(NftMarketplace,'CancelBid')
-//     expect(await NftMarketplace.isBuyable(0)).to.be.eq(false)
+    await expect(NftMarketplace.connect(buyer).cancel(0)).to.be.revertedWith('Only seller can cancel listing')
+    expect(await NftMarketplace.connect(user).cancel(0)).to.emit(NftMarketplace,'CancelBid')
+    expect(await NftMarketplace.isBuyable(0)).to.be.eq(false)
 
-//   });
+  });
 
-//   it("it should allow buyer to make lising offer to buy nft and seller to accept it", async function () {
+  it("it should allow buyer to make lising offer to buy nft and seller to accept it", async function () {
 
-//     //buyer making listing offer and sending 1 eth on marketplace acc
-//     expect(await NftMarketplace.connect(buyer).listingOffer(
-//        0,    
-//        {
-//          value: ethers.utils.parseUnits("1","ether"),
-//        }
-//       )).to.emit(NftMarketplace,"ListingOffer").to.changeEtherBalance(
-//         buyer,ethers.utils.parseUnits("-1","ether"));
+    //buyer making listing offer and sending 1 eth on marketplace acc
+    expect(await NftMarketplace.connect(buyer).listingOffer(
+       0,    
+       {
+         value: ethers.utils.parseUnits("1","ether"),
+       }
+      )).to.emit(NftMarketplace,"ListingOffer").to.changeEtherBalance(
+        buyer,ethers.utils.parseUnits("-1","ether"));
     
-//     expect(await NftMarketplace.isBuyable(0)).to.be.eq(true)
+    expect(await NftMarketplace.isBuyable(0)).to.be.eq(true)
 
-//     //seller accepting buyer's offer
-//     expect(await NftMarketplace.connect(user).acceptListingOffer(
-//        0,    
-//        buyer.address
-//       )).
-//       to.emit(NftMarketplace,'ListingOfferCompleted').
-//       to.changeEtherBalance(user,ethers.utils.parseUnits("1","ether"))
+    //seller accepting buyer's offer
+    expect(await NftMarketplace.connect(user).acceptListingOffer(
+       0,    
+       buyer.address
+      )).
+      to.emit(NftMarketplace,'ListingOfferCompleted').
+      to.changeEtherBalance(user,ethers.utils.parseUnits("1","ether"))
 
-//     expect(await NftMarketplace.isBuyable(0)).to.be.eq(false)
+    expect(await NftMarketplace.isBuyable(0)).to.be.eq(false)
 
-// // console.log(ethers.utils.formatUnits(await buyer.getBalance()) + ' / ' + ethers.utils.formatUnits(await user.getBalance()))
-// });
+// console.log(ethers.utils.formatUnits(await buyer.getBalance()) + ' / ' + ethers.utils.formatUnits(await user.getBalance()))
+});
 
 
-// it("listing offer makers should be able to take their eth back,if seller accepted other offer",async function (){
+it("it allows listing offer maker to take their eth back,if seller accepted other offer",async function (){
   
-//     //buyer  making offer
-//     expect(await NftMarketplace.connect(buyer).listingOffer(
-//       0,    
-//       {
-//         value: ethers.utils.parseUnits("1","ether"),
-//       }
-//       )).to.emit(NftMarketplace,"ListingOffer").to.changeEtherBalance(
-//       buyer,ethers.utils.parseUnits("-1","ether"));
+    //buyer  making offer
+    expect(await NftMarketplace.connect(buyer).listingOffer(
+      0,    
+      {
+        value: ethers.utils.parseUnits("1","ether"),
+      }
+      )).to.emit(NftMarketplace,"ListingOffer").to.changeEtherBalance(
+      buyer,ethers.utils.parseUnits("-1","ether"));
 
-//     //buyer2 making offer as well
-//     expect(await NftMarketplace.connect(buyer2).listingOffer(
-//         0,    
-//         {
-//           value: ethers.utils.parseUnits("1.5","ether"),
-//         }
-//         )).to.emit(NftMarketplace,"ListingOffer").to.changeEtherBalance(
-//           buyer2,ethers.utils.parseUnits("-1.5","ether"));
+    //buyer2 making offer as well
+    expect(await NftMarketplace.connect(buyer2).listingOffer(
+        0,    
+        {
+          value: ethers.utils.parseUnits("1.5","ether"),
+        }
+        )).to.emit(NftMarketplace,"ListingOffer").to.changeEtherBalance(
+          buyer2,ethers.utils.parseUnits("-1.5","ether"));
 
-//     //seller accepting offer of buyer2
-//     expect(await NftMarketplace.connect(user).acceptListingOffer(
-//         0,    
-//         buyer2.address
-//        )).to.emit(NftMarketplace,"Sale")      
+    //seller accepting offer of buyer2
+    expect(await NftMarketplace.connect(user).acceptListingOffer(
+        0,    
+        buyer2.address
+       )).to.emit(NftMarketplace,"Sale")      
 
-//     //buyer should manualy take his eth back
-//     expect(await NftMarketplace.connect(buyer).cancelListingOffer(
-//         0
-//       )).to.changeEtherBalance(buyer,ethers.utils.parseUnits("1","ether"))   
+    //buyer should manualy take his eth back
+    expect(await NftMarketplace.connect(buyer).cancelListingOffer(
+        0
+      )).to.changeEtherBalance(buyer,ethers.utils.parseUnits("1","ether"))   
   
-// })
+})
 
-it("allows to rent rentable nft ",async function (){
-  
+it("it allows to rent rentable nft ",async function (){
   expect(await NftMarketplace.connect(buyer).rentNFT(
     0,
     1,
     {
     value:ethers.utils.parseUnits("2.1","ether")
     }
-  )).to.changeEtherBalances([user,buyer],[ethers.utils.parseUnits("0.08","ether"),
-  ethers.utils.parseUnits("-2.1","ether")])
+  ))
 })
 
-it("allows to make offer to rent nft",async function (){
-  
+it("it allows to make offer to rent nft and allows to accept it",async function (){
+  //buyer offers 1 eth as collar + 0,5 eth as premium
   expect(await NftMarketplace.connect(buyer).stakingOffer(
     0,
     ethers.utils.parseUnits("1","ether"),
@@ -228,12 +226,48 @@ it("allows to make offer to rent nft",async function (){
     {
       value:ethers.utils.parseUnits("1.5","ether")//collarate+premium
     }
-    )).to.emit(NftMarketplace,'StakingOffered');
-  
+    )).to.emit(NftMarketplace,'StakingOffered').to.changeEtherBalance(buyer,
+      ethers.utils.parseUnits("-1.5","ether"))
+
   expect(await NftMarketplace.connect(user).acceptStakingOffer(
-      0,
-      buyer.address,
-      1
-    )).to.emit(NftMarketplace,'StakingOfferAccepted')
-  })
+    0,
+    buyer.address,
+    1
+  )).to.emit(NftMarketplace,'StakingOfferAccepted').to.changeEtherBalance(user,
+      ethers.utils.parseUnits("0.5","ether"))
+
+})
+
+it("it allows to stop renting nft and give collateral back to buyer ",async function (){
+  expect(await NftMarketplace.connect(buyer).stakingOffer(
+    0,
+    ethers.utils.parseUnits("1","ether"),
+    ethers.utils.parseUnits("0.5","ether"),
+    {
+      value:ethers.utils.parseUnits("1.5","ether")//collarate+premium
+    }
+    )).to.emit(NftMarketplace,'StakingOffered').to.changeEtherBalance(buyer,
+      ethers.utils.parseUnits("-1.5","ether"))
+
+  expect(await NftMarketplace.connect(user).acceptStakingOffer(
+    0,
+    buyer.address,
+    1
+  )).to.emit(NftMarketplace,'StakingOfferAccepted').to.changeEtherBalance(user,
+    ethers.utils.parseUnits("0.5","ether"))
+    
+    //new temporary owner of nft should approve it at "undsaGeneralNft" contract
+    await Nft.connect(buyer).setApprovalForAll(
+      NftMarketplace.address,
+      true
+    )
+
+  expect(await NftMarketplace.connect(buyer).stopRental(
+    0,
+     )).to.changeEtherBalance(buyer,
+      ethers.utils.parseUnits("1","ether"))
+
+      // console.log('after stopping rental ' + ethers.utils.formatUnits(await buyer.getBalance()) + ' / ' + ethers.utils.formatUnits(await user.getBalance()))
+})
+
 });

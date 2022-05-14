@@ -48,9 +48,8 @@ library UniswapV2Library {
         uint256 amountIn,
         uint256 reserveIn,
         uint256 reserveOut
-    ) internal view returns (uint256 amountOut) {//return to pure
-    console.log("amount in");
-    console.log(amountIn);
+    ) internal pure returns (uint256 amountOut) {//return to pure
+
         require(amountIn > 0, "UniswapV2Library: INSUFFICIENT_INPUT_AMOUNT");
         require(
             reserveIn > 0 && reserveOut > 0,
@@ -73,8 +72,7 @@ library UniswapV2Library {
         require(path.length >= 2, "UniswapV2Library: INVALID_PATH");
         amounts = new uint256[](path.length);
         amounts[0] = amountIn;
-        console.log("s");
-        console.log(amountIn);
+        
         for (uint256 i; i < path.length - 1; i++) {
             (uint256 reserveIn, uint256 reserveOut) = getReserves(
                 factory,
