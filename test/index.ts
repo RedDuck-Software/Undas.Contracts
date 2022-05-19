@@ -4,6 +4,7 @@ import RouterFactory from "../node_modules/@uniswap/v2-periphery/build/UniswapV2
 import UniswapFactory from '../node_modules/@uniswap/v2-core/build/UniswapV2Factory.json'
 import { IERC20__factory} from "../typechain/factories/IERC20__factory";
 import IUniswapV2Pair from '../node_modules/@uniswap/v2-core/build/IUniswapV2Pair.json'
+import { platform } from "os";
 const hre = require("hardhat");
 
 describe("NftMarketplaceTest", function () {
@@ -31,8 +32,8 @@ describe("NftMarketplaceTest", function () {
     owner);
     WEth = await wrappedEth.deployed();
 
-    const platform = await ethers.getContractFactory("Staking");
-    Platform = await platform.deploy(user.address,OnlyOneToken.address);
+    const platform = await ethers.getContractFactory("Platform");
+    Platform = await platform.deploy(owner.address,OnlyOneToken.address);
     await Platform.deployed();
 
     const nft = await ethers.getContractFactory("UndasGeneralNFT",owner);
@@ -65,6 +66,8 @@ describe("NftMarketplaceTest", function () {
       WEth.address //wETH mainnet addr
     );
    await NftMarketplace.deployed();
+      
+  //  await Platform.connect(owner).setMarketplaceAddress(NftMarketplace.address);
 
    //approving undasToken for liqudiity pool
    await OnlyOneToken.connect(owner).approve(Router.address, ethers.utils.parseUnits("20", 18));
@@ -103,6 +106,7 @@ describe("NftMarketplaceTest", function () {
    );
     await Nft.connect(user).setApprovalForAll(NftMarketplace.address, true); 
     //creating nft
+
     expect(await NftMarketplace.connect(user).bidExternal(
       Nft.address,
       0,
@@ -268,6 +272,11 @@ it("it allows to stop renting nft and give collateral back to buyer ",async func
       ethers.utils.parseUnits("1","ether"))
 
       // console.log('after stopping rental ' + ethers.utils.formatUnits(await buyer.getBalance()) + ' / ' + ethers.utils.formatUnits(await user.getBalance()))
+
+      // console.log(ethers.utils.formatUnits(await Platform.connect(owner).tokenCashback(buyer.address)))
+      // console.log(ethers.utils.formatUnits(await Platform.connect(owner).tokenCashback(owner.address)))
+
+      // console.log(await Platform.connect(owner).tokenCashback(user))
 })
 
 });

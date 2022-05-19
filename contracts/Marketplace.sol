@@ -687,7 +687,7 @@ contract Marketplace is ReentrancyGuard {
             return (0, cashbackAmount);
         }
         else {
-            Platform(payable(platform)).receiveWithLockedCashback{value:value}(_cashbackPercent * 2);
+            // Platform(payable(platform)).receiveWithLockedCashback{value:value}(_cashbackPercent * 2);
             return (value, value * _cashbackPercent / 100);
         }
     }
