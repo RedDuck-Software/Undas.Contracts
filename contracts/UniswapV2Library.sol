@@ -21,8 +21,12 @@ library UniswapV2Library {
     }
 
     //error was here for some reason function pairFor of this library returned different pair address
-    function pairFor(address factory, address tokenA, address tokenB) internal view returns (address pair) {
-        pair = IUniswapV2Factory(factory).getPair(tokenA,tokenB);
+    function pairFor(
+        address factory,
+        address tokenA,
+        address tokenB
+    ) internal view returns (address pair) {
+        pair = IUniswapV2Factory(factory).getPair(tokenA, tokenB);
     }
 
     // fetches and sorts the reserves for a pair
@@ -31,13 +35,12 @@ library UniswapV2Library {
         address tokenA,
         address tokenB
     ) internal view returns (uint256 reserveA, uint256 reserveB) {
-        
         (address token0, ) = sortTokens(tokenA, tokenB);
-        
-        (uint256 reserve0, uint256 reserve1, ) = IUniswapV2Pair(//
+
+        (uint256 reserve0, uint256 reserve1, ) = IUniswapV2Pair( //
             pairFor(factory, tokenA, tokenB)
         ).getReserves();
-      
+
         (reserveA, reserveB) = tokenA == token0
             ? (reserve0, reserve1)
             : (reserve1, reserve0);
@@ -48,14 +51,15 @@ library UniswapV2Library {
         uint256 amountIn,
         uint256 reserveIn,
         uint256 reserveOut
-    ) internal pure returns (uint256 amountOut) {//return to pure
+    ) internal pure returns (uint256 amountOut) {
+        //return to pure
 
         require(amountIn > 0, "UniswapV2Library: INSUFFICIENT_INPUT_AMOUNT");
         require(
             reserveIn > 0 && reserveOut > 0,
             "UniswapV2Library: INSUFFICIENT_LIQUIDITY"
         );
-    
+
         uint256 amountInWithFee = amountIn * 997;
         uint256 numerator = amountInWithFee * reserveOut;
         uint256 denominator = reserveIn * 1000 + amountInWithFee;
@@ -68,21 +72,18 @@ library UniswapV2Library {
         uint256 amountIn,
         address[] memory path
     ) internal view returns (uint256[] memory amounts) {
-         
         require(path.length >= 2, "UniswapV2Library: INVALID_PATH");
         amounts = new uint256[](path.length);
         amounts[0] = amountIn;
-        
+
         for (uint256 i; i < path.length - 1; i++) {
             (uint256 reserveIn, uint256 reserveOut) = getReserves(
                 factory,
                 path[i],
                 path[i + 1]
             );
-            
+
             amounts[i + 1] = getAmountOut(amounts[i], reserveIn, reserveOut);
-            
         }
-         
     }
 }

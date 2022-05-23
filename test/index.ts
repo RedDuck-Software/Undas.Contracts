@@ -5,6 +5,7 @@ import UniswapFactory from '../node_modules/@uniswap/v2-core/build/UniswapV2Fact
 import { IERC20__factory} from "../typechain/factories/IERC20__factory";
 import IUniswapV2Pair from '../node_modules/@uniswap/v2-core/build/IUniswapV2Pair.json'
 import { platform } from "os";
+import { Marketplace } from "../typechain";
 const hre = require("hardhat");
 
 describe("NftMarketplaceTest", function () {
@@ -33,9 +34,9 @@ describe("NftMarketplaceTest", function () {
     WEth = await wrappedEth.deployed();
 
     const platform = await ethers.getContractFactory("Platform");
-    Platform = await platform.deploy(owner.address,OnlyOneToken.address);
+    Platform = await platform.deploy(owner.address,OnlyOneToken.address,60,70,20);
     await Platform.deployed();
-
+    
     const nft = await ethers.getContractFactory("UndasGeneralNFT",owner);
     Nft = await nft.deploy();
     await Nft.deployed();
@@ -66,7 +67,8 @@ describe("NftMarketplaceTest", function () {
       WEth.address //wETH mainnet addr
     );
    await NftMarketplace.deployed();
-      
+
+   await Platform.connect(owner).setMarketplaceAddress(NftMarketplace.address);
   //  await Platform.connect(owner).setMarketplaceAddress(NftMarketplace.address);
 
    //approving undasToken for liqudiity pool
@@ -76,8 +78,10 @@ describe("NftMarketplaceTest", function () {
    await OnlyOneToken.connect(owner).transfer(user.address,ethers.utils.parseUnits("20",18))
    await OnlyOneToken.connect(owner).transfer(buyer.address,ethers.utils.parseUnits("20",18))
    //approving tokens to the market
-   await OnlyOneToken.connect(user).approve(NftMarketplace.address,ethers.utils.parseUnits("20",18));
-   await OnlyOneToken.connect(buyer).approve(NftMarketplace.address,ethers.utils.parseUnits("20",18));
+   await OnlyOneToken.connect(user).approve(NftMarketplace.address,ethers.utils.parseUnits("10",18));
+   await OnlyOneToken.connect(buyer).approve(NftMarketplace.address,ethers.utils.parseUnits("10",18));
+   await OnlyOneToken.connect(user).approve(Platform.address,ethers.utils.parseUnits("10",18));
+   await OnlyOneToken.connect(buyer).approve(Platform.address,ethers.utils.parseUnits("10",18));
    //adding liqudity on pair undas/WEth
     await Router.connect(owner).addLiquidityETH( //1:1
         OnlyOneToken.address,
@@ -106,18 +110,18 @@ describe("NftMarketplaceTest", function () {
    );
     await Nft.connect(user).setApprovalForAll(NftMarketplace.address, true); 
     //creating nft
-
     expect(await NftMarketplace.connect(user).bidExternal(
       Nft.address,
       0,
       ethers.utils.parseUnits("2.0","ether"),
-      1,
+      0,
       {
-        value: ethers.utils.parseUnits("0.04","ether"),//fee 2000*2/100
+        value: ethers.utils.parseUnits("0.04","ether"),//fee 2*2/100
       }
-  )).to.emit(NftMarketplace,'Listed').to.changeEtherBalance(user,
-    ethers.utils.parseUnits("-0.04","ether"))
+  )).to.emit(NftMarketplace,'Listed')
+
     //rentable nft
+
     expect(await NftMarketplace.connect(user).bidAndStake(
       Nft.address,
       1,
@@ -125,22 +129,32 @@ describe("NftMarketplaceTest", function () {
       ethers.utils.parseUnits("0.1","ether"),
       Date.now() + 3600,//1 day;
       ethers.utils.parseUnits("2.0","ether"),//price
-      1,
+      0,
       {
         value: ethers.utils.parseUnits("0.04","ether"),//fee 2000*2/100
       }
     )).to.emit(NftMarketplace,'Listed')
+
   });
   
-  it("it should allow to buy", async function () {
+  it("it should allow to buy nft and to get cashback in eth", async function () {
 
-     expect(await NftMarketplace.connect(buyer).buyToken(
+    expect(await NftMarketplace.connect(buyer).buyToken(
         0,    
         {
           value: ethers.utils.parseUnits("2.0","ether"),
         }
     )).to.emit(NftMarketplace,"Sale")
-  
+    
+    const buyerCashback = ethers.utils.formatUnits(await Platform.balancesForCashbackInEth(buyer.address))
+    const userCashback = ethers.utils.formatUnits(await Platform.balancesForCashbackInEth(user.address))
+
+    expect(await NftMarketplace.connect(buyer).claimCashbackInEth()).
+    to.changeEtherBalance(buyer, ethers.utils.parseUnits(buyerCashback,"ether"))
+    
+    expect(await NftMarketplace.connect(user).claimCashbackInEth()).
+    to.changeEtherBalance(user, ethers.utils.parseUnits(userCashback,"ether"))
+
   });
 
   it("it should allow owner to cancel nft bid", async function () {
@@ -150,6 +164,7 @@ describe("NftMarketplaceTest", function () {
     expect(await NftMarketplace.isBuyable(0)).to.be.eq(false)
 
   });
+
 
   it("it should allow buyer to make lising offer to buy nft and seller to accept it", async function () {
 
@@ -211,17 +226,38 @@ it("it allows listing offer maker to take their eth back,if seller accepted othe
   
 })
 
-it("it allows to rent rentable nft ",async function (){
+it("it allows to rent rentable nft and get cashback in und",async function (){
+
   expect(await NftMarketplace.connect(buyer).rentNFT(
     0,
     1,
     {
     value:ethers.utils.parseUnits("2.1","ether")
     }
+    
   ))
+
+  const userCashbackETH =  ethers.utils.formatUnits(await Platform.balancesForCashbackInEth(user.address))
+  const userCashbackUND =  ethers.utils.formatUnits(await Platform.balancesForCashbackInUndas(user.address))
+  const buyerCashbackETH =  ethers.utils.formatUnits(await Platform.balancesForCashbackInEth(buyer.address))
+  const buyerCashbackUND =  ethers.utils.formatUnits(await Platform.balancesForCashbackInUndas(buyer.address))
+
+  await expect(() => NftMarketplace.connect(buyer).claimCashbackInUndas()).
+  to.changeTokenBalance(OnlyOneToken,buyer,ethers.utils.parseUnits(buyerCashbackUND,18));
+  
+  await expect(() => NftMarketplace.connect(user).claimCashbackInUndas()).
+  to.changeTokenBalance(OnlyOneToken,user,ethers.utils.parseUnits(userCashbackUND,18));
+  
+  await expect(() => NftMarketplace.connect(buyer).claimCashbackInEth()).
+  to.changeEtherBalance(buyer,ethers.utils.parseUnits(buyerCashbackETH,"ether"));
+  
+  await expect(() => NftMarketplace.connect(user).claimCashbackInEth()).
+  to.changeEtherBalance(user,ethers.utils.parseUnits(userCashbackETH,"ether"));
+
 })
 
 it("it allows to make offer to rent nft and allows to accept it",async function (){
+
   //buyer offers 1 eth as collar + 0,5 eth as premium
   expect(await NftMarketplace.connect(buyer).stakingOffer(
     0,
@@ -243,6 +279,7 @@ it("it allows to make offer to rent nft and allows to accept it",async function 
 })
 
 it("it allows to stop renting nft and give collateral back to buyer ",async function (){
+  
   expect(await NftMarketplace.connect(buyer).stakingOffer(
     0,
     ethers.utils.parseUnits("1","ether"),
@@ -270,13 +307,12 @@ it("it allows to stop renting nft and give collateral back to buyer ",async func
     0,
      )).to.changeEtherBalance(buyer,
       ethers.utils.parseUnits("1","ether"))
-
-      // console.log('after stopping rental ' + ethers.utils.formatUnits(await buyer.getBalance()) + ' / ' + ethers.utils.formatUnits(await user.getBalance()))
-
-      // console.log(ethers.utils.formatUnits(await Platform.connect(owner).tokenCashback(buyer.address)))
       // console.log(ethers.utils.formatUnits(await Platform.connect(owner).tokenCashback(owner.address)))
 
-      // console.log(await Platform.connect(owner).tokenCashback(user))
 })
+// it("it allows to lock token during locking period",async function () {
+//     expect(await Platform.connect(user).lockTokens(20000000)).to.emit(Platform,"Lock")
+
+// })
 
 });

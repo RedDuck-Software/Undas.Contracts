@@ -8,25 +8,38 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/draft-IERC20Permit.sol";
 import "hardhat/console.sol";
 
-contract Platform is ReentrancyGuard {
+contract Platform{
 
-   address private owner;
    IERC20 private stakingToken;
 
-   uint256 private timeperiodToClaim = block.timestamp + 60 seconds;//time before claiming would be available
-   uint256 private weekTimePeriod = block.timestamp + 70 seconds; //7day week cycle
-   uint256 private cooldownTime = 60 seconds;
+   uint256 private timeperiodToClaim;
+   uint256 private cycleTimeperiod;
+   uint256 private cooldownTime;
+   uint256 private ContractBalanceForDividends;
+   uint256 public lockedEtherCashBack;
+   uint256 public lockedTokenCashback;
+   address private owner;
+   address private marketplace;
 
    struct stackingInfo{
        uint256 amount;
        uint256 readyTimeToWithdraw;
    }
 
-   mapping(address => stackingInfo) public balances;
+   mapping(address => stackingInfo) public _balancesOfLockedTokens;
+   mapping (address => uint256) public balancesForCashbackInUndas;
+   mapping (address => uint256) public balancesForCashbackInEth;
 
-   constructor(address _owner,address _token){
+   //1 min = 60 / 1 day = 86400/ 1 week = 604 800
+   constructor(address _owner,address _token,
+   uint256 _timeperiodToClaim,uint256 _cycleTimeperiod,uint256 _cooldownTime){
+
+       timeperiodToClaim = block.timestamp + _timeperiodToClaim;
+       cycleTimeperiod = block.timestamp + _cycleTimeperiod;
+       cooldownTime = _cooldownTime;
        stakingToken = IERC20(_token);
        owner = _owner;
+
    }
     
    event Lock(address sender,uint amount);
@@ -42,15 +55,57 @@ contract Platform is ReentrancyGuard {
    event FailedToClaimDividends(address claimer,bool isAllowedToClaim);
 
    function reset() private {
-       
-       if(isCompletedWeeklyCycle()){
+       if(isEndedTimeCycle()){
            timeperiodToClaim = block.timestamp + 60 seconds;
-           weekTimePeriod = block.timestamp + 70 seconds;
+           cycleTimeperiod = block.timestamp + 70 seconds;
        }
-
    }
 
-   function isClaimingPeriod() public view returns(bool){
+   function setMarketplaceAddress(address _marketplace) public only(owner) {
+        marketplace = _marketplace;
+    }   
+
+
+    function addCashback(address cashbackee1, address cashbackee2,
+    uint256 amount,bool isTokenFee) external only(marketplace) {
+            if(isTokenFee){
+            balancesForCashbackInUndas[cashbackee1] += amount;
+            balancesForCashbackInUndas[cashbackee2] += amount;
+            }else{
+            balancesForCashbackInEth[cashbackee1] += amount;
+            balancesForCashbackInEth[cashbackee2] += amount;
+            }
+    }
+   
+   function receiveWithLockedCashback() external payable only(marketplace) {
+        lockedEtherCashBack += msg.value;
+    }
+
+   function receiveCashbackInUndas(address cashbackee) external only(marketplace) {
+       uint256 withdrawalAmount = balancesForCashbackInUndas[cashbackee];
+       require(withdrawalAmount > 0,"no funds to withdraw");
+    //    require(isClaimingPeriod() == true,"you can claim cashback only at 'claiming period'");
+       balancesForCashbackInUndas[cashbackee] = 0;
+       stakingToken.transfer(cashbackee,withdrawalAmount);
+       lockedTokenCashback -= withdrawalAmount;
+   }
+   
+    function receiveCashbackInEth(address cashbackee) external only(marketplace) {
+       uint256 withdrawalAmount = balancesForCashbackInEth[cashbackee];
+       require(withdrawalAmount > 0,"no funds to withdraw");
+    //    require(lockedEtherCashBack < address(this).balance,"not enough funds on contract balance");
+    //    require(isClaimingPeriod() == true,"you can claim cashback only at 'claiming period'");       
+       payable(cashbackee).transfer(withdrawalAmount);
+       balancesForCashbackInEth[cashbackee] = 0;
+       lockedEtherCashBack -= withdrawalAmount;
+   }
+
+   modifier only(address who) {
+        require(msg.sender == who, "only address fail");
+        _;
+   }
+   
+   function isClaimingPeriod()public view returns(bool){
         if(timeLeftUntilAllowingToClaim() == 0){
             return true;
         }
@@ -60,8 +115,8 @@ contract Platform is ReentrancyGuard {
         }
     }
 
-    function isCompletedWeeklyCycle() public view returns(bool){
-        if(timeLeftUntilWeeklyCycleEnds() == 0){
+    function isEndedTimeCycle() public view returns(bool){
+        if(timeLeftUntilTimeCycleEnds() == 0){
             return true;
         }
         else
@@ -70,10 +125,9 @@ contract Platform is ReentrancyGuard {
         }
     }
 
-
-    function timeLeftUntilWeeklyCycleEnds() public view returns(uint256){
-        return weekTimePeriod >= 
-        block.timestamp ?weekTimePeriod - block.timestamp:0;
+    function timeLeftUntilTimeCycleEnds() public view returns(uint256){
+        return cycleTimeperiod >= 
+        block.timestamp ?cycleTimeperiod - block.timestamp:0;
     }
 
     function timeLeftUntilAllowingToClaim() public view returns(uint256){
@@ -84,27 +138,25 @@ contract Platform is ReentrancyGuard {
    function lockTokens(uint _amount) external {
 
        if(!isClaimingPeriod()){
-
        stakingToken.transferFrom(msg.sender, address(this), _amount);
-       balances[msg.sender].amount += _amount;
+       _balancesOfLockedTokens[msg.sender].amount += _amount;
+       ContractBalanceForDividends += _amount;
 
-        emit Lock(msg.sender, _amount);
+       emit Lock(msg.sender, _amount);
 
-       }
-       else{
+       }else{
         emit LockFailed(msg.sender,!isClaimingPeriod());
        }
        
    } 
 
    function unlockTokens(uint _amount) external {
-       require(_amount <= balances[msg.sender].amount ,"wrong amount to unlock");
-
+       require(_amount <= _balancesOfLockedTokens[msg.sender].amount ,"wrong amount to unlock");
+        
        if(!isClaimingPeriod()){
-           
-           balances[msg.sender].amount -= _amount;
+           _balancesOfLockedTokens[msg.sender].amount -= _amount;
            stakingToken.transfer(msg.sender, _amount);
-
+           ContractBalanceForDividends -= _amount;
            emit Unlock(msg.sender, _amount);
        }
        else{
@@ -112,37 +164,39 @@ contract Platform is ReentrancyGuard {
        }
    }
 
-   function cooldownOnClaiming(address _staker) public view returns(uint256 timeleft){
-        return balances[_staker].readyTimeToWithdraw >= 
-        block.timestamp ? balances[_staker].readyTimeToWithdraw - block.timestamp:0;
+   function isClaimAvailableForUser(address _staker) public view returns(uint256 timeleft){
+        return _balancesOfLockedTokens[_staker].readyTimeToWithdraw >= 
+        block.timestamp ? _balancesOfLockedTokens[_staker].readyTimeToWithdraw - block.timestamp:0;
     }
    
-   function claimDividends() public {
+   function claimDividends()public {
        reset();
-
+       
        if(isClaimingPeriod()){
-       require(cooldownOnClaiming(msg.sender) == 0,"NOT READY YET");
+       require(isClaimAvailableForUser(msg.sender) == 0,"NOT READY YET");
        
        address payable staker = payable(msg.sender);
 
-       uint256 amount = balances[staker].amount;
-       uint256 contractBalance = stakingToken.balanceOf(address(this));
-       uint256 payment =  amount / contractBalance;
+       uint256 amount = _balancesOfLockedTokens[staker].amount;
+       uint256 payment =  amount / ContractBalanceForDividends;//todo normal formula
 
        stakingToken.transfer(msg.sender, payment);
         //user unable to claim several times
-       balances[msg.sender].readyTimeToWithdraw = block.timestamp + cooldownTime;
+       _balancesOfLockedTokens[msg.sender].readyTimeToWithdraw = block.timestamp + cooldownTime;
        
        emit DividendsPaid(msg.sender,payment);
+    
        }
        else{
+
        emit FailedToClaimDividends(msg.sender,isClaimingPeriod());
+
        }
    }
 
-   function getContractBalance()public view returns(uint){
-       return stakingToken.balanceOf(address(this));
-   } 
+    function lockTokenCashback(uint256 amount) external only(marketplace) {
+        lockedTokenCashback += amount;
+    }
 
 }
 
