@@ -66,25 +66,25 @@ contract Platform{
     }   
 
 
-    function addCashback(address cashbackee1, address cashbackee2,
-    uint256 amount,bool isTokenFee) external only(marketplace) {
-            if(isTokenFee){
+    function addCashback(address cashbackee1, address cashbackee2, uint256 amount, bool isTokenFee) external payable only(marketplace) {
+        if (isTokenFee) {
+            stakingToken.transferFrom(cashbackee1, address(this), amount); // distribute between stakingToken vs feeToken
+            stakingToken.transferFrom(cashbackee2, address(this), amount);
             balancesForCashbackInUndas[cashbackee1] += amount;
             balancesForCashbackInUndas[cashbackee2] += amount;
-            }else{
+            lockedTokenCashback += amount * 2;
+        } else {
+            require (msg.value == amount * 2, "not enough value for cashback");
             balancesForCashbackInEth[cashbackee1] += amount;
             balancesForCashbackInEth[cashbackee2] += amount;
-            }
-    }
-   
-   function receiveWithLockedCashback() external payable only(marketplace) {
-        lockedEtherCashBack += msg.value;
+            lockedEtherCashBack += amount * 2;
+        }
     }
 
    function receiveCashbackInUndas(address cashbackee) external only(marketplace) {
        uint256 withdrawalAmount = balancesForCashbackInUndas[cashbackee];
-       require(withdrawalAmount > 0,"no funds to withdraw");
-    //    require(isClaimingPeriod() == true,"you can claim cashback only at 'claiming period'");
+       require(withdrawalAmount > 0, "no funds to withdraw");
+       
        balancesForCashbackInUndas[cashbackee] = 0;
        stakingToken.transfer(cashbackee,withdrawalAmount);
        lockedTokenCashback -= withdrawalAmount;
@@ -193,10 +193,5 @@ contract Platform{
 
        }
    }
-
-    function lockTokenCashback(uint256 amount) external only(marketplace) {
-        lockedTokenCashback += amount;
-    }
-
 }
 
