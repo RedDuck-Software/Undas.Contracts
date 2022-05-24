@@ -5,7 +5,7 @@ import UniswapFactory from '../node_modules/@uniswap/v2-core/build/UniswapV2Fact
 import { IERC20__factory} from "../typechain/factories/IERC20__factory";
 import IUniswapV2Pair from '../node_modules/@uniswap/v2-core/build/IUniswapV2Pair.json'
 import { platform } from "os";
-import { Marketplace } from "../typechain";
+import { Marketplace, UndasGeneralNFT } from "../typechain";
 const hre = require("hardhat");
 
 describe("NftMarketplaceTest", function () {
@@ -34,7 +34,7 @@ describe("NftMarketplaceTest", function () {
     WEth = await wrappedEth.deployed();
 
     const platform = await ethers.getContractFactory("Platform");
-    Platform = await platform.deploy(owner.address,OnlyOneToken.address,60,70,20);
+    Platform = await platform.deploy(owner.address,OnlyOneToken.address,518400,604800,172800);
     await Platform.deployed();
     
     const nft = await ethers.getContractFactory("UndasGeneralNFT",owner);
@@ -77,11 +77,15 @@ describe("NftMarketplaceTest", function () {
    //adding tokens to participants
    await OnlyOneToken.connect(owner).transfer(user.address,ethers.utils.parseUnits("20",18))
    await OnlyOneToken.connect(owner).transfer(buyer.address,ethers.utils.parseUnits("20",18))
+   await OnlyOneToken.connect(owner).transfer(buyer2.address,ethers.utils.parseUnits("20",18))
    //approving tokens to the market
    await OnlyOneToken.connect(user).approve(NftMarketplace.address,ethers.utils.parseUnits("10",18));
    await OnlyOneToken.connect(buyer).approve(NftMarketplace.address,ethers.utils.parseUnits("10",18));
+   await OnlyOneToken.connect(buyer2).approve(NftMarketplace.address,ethers.utils.parseUnits("10",18));
+
    await OnlyOneToken.connect(user).approve(Platform.address,ethers.utils.parseUnits("10",18));
-   await OnlyOneToken.connect(buyer).approve(Platform.address,ethers.utils.parseUnits("10",18));
+   await OnlyOneToken.connect(buyer).approve(Platform.address,ethers.utils.parseUnits("5",18));
+   await OnlyOneToken.connect(buyer2).approve(Platform.address,ethers.utils.parseUnits("5",18));
    //adding liqudity on pair undas/WEth
     await Router.connect(owner).addLiquidityETH( //1:1
         OnlyOneToken.address,
@@ -96,20 +100,29 @@ describe("NftMarketplaceTest", function () {
       )
     //minting NFT on user addr
     await Nft.connect(user).safeMintGeneral(
-        user.address,
-       "test",
-       "test nft",
-       "https://img.png"
-     );
-    //nft for renting
-     await Nft.connect(user).safeMintGeneral(
       user.address,
-     "test2",
+      "test",
+      "test nft",
+      "https://img.png"
+     );
+    //nft for renting 1
+    await Nft.connect(user).safeMintGeneral(
+      user.address,
+     "test",
      "test nft2",
      "https://img.png"
-   );
+    );
+    //nft for renting 2
+    await Nft.connect(user).safeMintGeneral(
+    user.address,
+   "test",
+   "test nft3",
+   "https://img.png"
+    );
+
+
     await Nft.connect(user).setApprovalForAll(NftMarketplace.address, true); 
-    //creating nft
+    
     expect(await NftMarketplace.connect(user).bidExternal(
       Nft.address,
       0,
@@ -120,24 +133,40 @@ describe("NftMarketplaceTest", function () {
       }
   )).to.emit(NftMarketplace,'Listed')
 
-    //rentable nft
-
+  
+    const latestBlock = await hre.ethers.provider.getBlock("latest")
+  
     expect(await NftMarketplace.connect(user).bidAndStake(
       Nft.address,
       1,
       ethers.utils.parseUnits("2","ether"),//collateral(zalog)
       ethers.utils.parseUnits("0.1","ether"),
-      Date.now() + 3600,//1 day;
+      latestBlock.timestamp + 1209600,//1 day;
       ethers.utils.parseUnits("2.0","ether"),//price
       0,
+      {
+        value: ethers.utils.parseUnits("0.08","ether"),//fee 2000*2/100
+      }
+    )).to.emit(NftMarketplace,'Listed')
+  
+    expect(await NftMarketplace.connect(user).bidAndStake(
+      Nft.address,
+      2,
+      ethers.utils.parseUnits("2","ether"),//collateral(zalog)
+      ethers.utils.parseUnits("0.1","ether"),
+      latestBlock.timestamp + 1209600,//1 day;
+      ethers.utils.parseUnits("2.0","ether"),//price
+      1,
       {
         value: ethers.utils.parseUnits("0.04","ether"),//fee 2000*2/100
       }
     )).to.emit(NftMarketplace,'Listed')
 
+
+
   });
   
-  it("it should allow to buy nft and to get cashback in eth", async function () {
+  it("it should allow to buy nft and to get", async function () {
 
     expect(await NftMarketplace.connect(buyer).buyToken(
         0,    
@@ -146,14 +175,7 @@ describe("NftMarketplaceTest", function () {
         }
     )).to.emit(NftMarketplace,"Sale")
     
-    const buyerCashback = ethers.utils.formatUnits(await Platform.balancesForCashbackInEth(buyer.address))
-    const userCashback = ethers.utils.formatUnits(await Platform.balancesForCashbackInEth(user.address))
 
-    expect(await NftMarketplace.connect(buyer).claimCashbackInEth()).
-    to.changeEtherBalance(buyer, ethers.utils.parseUnits(buyerCashback,"ether"))
-    
-    expect(await NftMarketplace.connect(user).claimCashbackInEth()).
-    to.changeEtherBalance(user, ethers.utils.parseUnits(userCashback,"ether"))
 
   });
 
@@ -212,48 +234,35 @@ it("it allows listing offer maker to take their eth back,if seller accepted othe
         }
         )).to.emit(NftMarketplace,"ListingOffer").to.changeEtherBalance(
           buyer2,ethers.utils.parseUnits("-1.5","ether"));
-
+          
     //seller accepting offer of buyer2
     expect(await NftMarketplace.connect(user).acceptListingOffer(
         0,    
-        buyer2.address
+        buyer.address
        )).to.emit(NftMarketplace,"Sale")      
 
+
     //buyer should manualy take his eth back
-    expect(await NftMarketplace.connect(buyer).cancelListingOffer(
-        0
-      )).to.changeEtherBalance(buyer,ethers.utils.parseUnits("1","ether"))   
-  
+
+    expect(await NftMarketplace.connect(buyer2).cancelListingOffer(
+      0
+    )).to.emit(NftMarketplace,"ListingOffer").to.changeEtherBalance(buyer2,ethers.utils.parseUnits("1.5","ether"))
+
+
 })
 
-it("it allows to rent rentable nft and get cashback in und",async function (){
+it("it allows to rent rentable nft",async function (){
 
   expect(await NftMarketplace.connect(buyer).rentNFT(
     0,
-    1,
+    0,
     {
-    value:ethers.utils.parseUnits("2.1","ether")
+    value:ethers.utils.parseUnits("2.12","ether") // collateral + premium + (premium * _premiumFeePercentage / 100)
     }
-    
+
   ))
-
-  const userCashbackETH =  ethers.utils.formatUnits(await Platform.balancesForCashbackInEth(user.address))
-  const userCashbackUND =  ethers.utils.formatUnits(await Platform.balancesForCashbackInUndas(user.address))
-  const buyerCashbackETH =  ethers.utils.formatUnits(await Platform.balancesForCashbackInEth(buyer.address))
-  const buyerCashbackUND =  ethers.utils.formatUnits(await Platform.balancesForCashbackInUndas(buyer.address))
-
-  await expect(() => NftMarketplace.connect(buyer).claimCashbackInUndas()).
-  to.changeTokenBalance(OnlyOneToken,buyer,ethers.utils.parseUnits(buyerCashbackUND,18));
-  
-  await expect(() => NftMarketplace.connect(user).claimCashbackInUndas()).
-  to.changeTokenBalance(OnlyOneToken,user,ethers.utils.parseUnits(userCashbackUND,18));
-  
-  await expect(() => NftMarketplace.connect(buyer).claimCashbackInEth()).
-  to.changeEtherBalance(buyer,ethers.utils.parseUnits(buyerCashbackETH,"ether"));
-  
-  await expect(() => NftMarketplace.connect(user).claimCashbackInEth()).
-  to.changeEtherBalance(user,ethers.utils.parseUnits(userCashbackETH,"ether"));
-
+    //   console.log(ethers.utils.formatUnits(await NftMarketplace.getContractBalance(),"ether"))
+    // console.log(ethers.utils.formatUnits(await Platform.getContractBalance(),"ether"))
 })
 
 it("it allows to make offer to rent nft and allows to accept it",async function (){
@@ -264,10 +273,10 @@ it("it allows to make offer to rent nft and allows to accept it",async function 
     ethers.utils.parseUnits("1","ether"),
     ethers.utils.parseUnits("0.5","ether"),
     {
-      value:ethers.utils.parseUnits("1.5","ether")//collarate+premium
+      value:ethers.utils.parseUnits("1.6","ether") // collateral + premium + (premium * _premiumFeePercentage / 100)
     }
     )).to.emit(NftMarketplace,'StakingOffered').to.changeEtherBalance(buyer,
-      ethers.utils.parseUnits("-1.5","ether"))
+      ethers.utils.parseUnits("-1.6","ether"))
 
   expect(await NftMarketplace.connect(user).acceptStakingOffer(
     0,
@@ -285,10 +294,10 @@ it("it allows to stop renting nft and give collateral back to buyer ",async func
     ethers.utils.parseUnits("1","ether"),
     ethers.utils.parseUnits("0.5","ether"),
     {
-      value:ethers.utils.parseUnits("1.5","ether")//collarate+premium
+      value:ethers.utils.parseUnits("1.6","ether")//collarate+premium
     }
     )).to.emit(NftMarketplace,'StakingOffered').to.changeEtherBalance(buyer,
-      ethers.utils.parseUnits("-1.5","ether"))
+      ethers.utils.parseUnits("-1.6","ether"))
 
   expect(await NftMarketplace.connect(user).acceptStakingOffer(
     0,
@@ -307,12 +316,106 @@ it("it allows to stop renting nft and give collateral back to buyer ",async func
     0,
      )).to.changeEtherBalance(buyer,
       ethers.utils.parseUnits("1","ether"))
-      // console.log(ethers.utils.formatUnits(await Platform.connect(owner).tokenCashback(owner.address)))
+
+    })
+it("it allows to lock /unlock token during locking period/and not allows to lock them during claiming one",async function () {
+
+    expect(await Platform.connect(user).lockTokens(20000000)).to.emit(Platform,"Lock")  
+    expect(await Platform.connect(user).unlockTokens(20000000)).to.emit(Platform,"Unlock")
+
+    await expect(Platform.connect(user).unlockTokens(20000000)).to.be.revertedWith("wrong amount to unlock")
+
+    await Platform.provider.send("evm_increaseTime", [518400])
+    await Platform.provider.send("evm_mine")
+
+    expect(await Platform.connect(user).lockTokens(20000000)).to.emit(Platform,"LockFailed")
+
+    
+})
+
+it("it allows to pay premium/ and allows to pay it extra time",async function () {
+
+  expect(await NftMarketplace.connect(buyer).rentNFT(
+        0,
+        1,
+        {
+        value:ethers.utils.parseUnits("2.12","ether") // collateral + premium + (premium * _premiumFeePercentage / 100)
+        }
+  ))
+
+    await Nft.connect(buyer).setApprovalForAll(
+      NftMarketplace.address,
+      true
+    )
+   
+    await expect(NftMarketplace.connect(user).claimCollateral(0))
+    .to.be.revertedWith("premiums have been paid and deadline is yet to be reached");
+    
+    await NftMarketplace.connect(buyer).payPremium(0,1,{
+      value:ethers.utils.parseUnits("0.1","ether")
+    })
+
+    await NftMarketplace.provider.send("evm_increaseTime", [604800])//1  week past
+    await NftMarketplace.provider.send("evm_mine")
+
+    await expect(NftMarketplace.connect(buyer).payPremium(0,1,{
+      value:ethers.utils.parseUnits("0.1","ether")
+    })).to.be.revertedWith("too many payments")
+
+
+    // console.log(await NftMarketplace.paymentsDue(0))
+
+    NftMarketplace.connect(buyer).stopRental(0);
 
 })
-// it("it allows to lock token during locking period",async function () {
-//     expect(await Platform.connect(user).lockTokens(20000000)).to.emit(Platform,"Lock")
+it("it allows to claim dividends",async function() {
 
-// })
+      await Platform.connect(buyer).lockTokens(500000000000000)
+      await Platform.connect(user).lockTokens(300000000000000)
+      await Platform.connect(buyer2).lockTokens(400000000000000)
+      
+        expect(await NftMarketplace.connect(buyer).rentNFT(
+          0,//stakiing id 
+          1,
+          {
+          value:ethers.utils.parseUnits("2.12","ether") // collateral + premium + (premium * _premiumFeePercentage / 100)
+          }
+        ))
 
-});
+        expect(await NftMarketplace.connect(buyer2).rentNFT(
+            1,
+            1,
+            {
+            value:ethers.utils.parseUnits("2.12","ether") // collateral + premium + (premium * _premiumFeePercentage / 100)
+            }
+        ))
+
+        await Platform.provider.send("evm_increaseTime", [518400])//setting time to claiming period 
+        await Platform.provider.send("evm_mine")
+
+        console.log("user undas balance before claiming " + ethers.utils.formatUnits(await OnlyOneToken.balanceOf(user.address),18));
+        console.log("user eth balance before claiming " + ethers.utils.formatUnits(await user.getBalance(),"ether"))
+
+        expect(await Platform.connect(user).claimDividends()).to.emit(Platform,"DividendsPaid").to.changeEtherBalance(user, ethers.utils.parseUnits("0.01", "ether"))
+
+        console.log("user undas balance after claiming " + ethers.utils.formatUnits(await OnlyOneToken.balanceOf(user.address),18));
+        console.log("user eth balance after claiming " + ethers.utils.formatUnits(await user.getBalance(),"ether"))
+        
+        await expect(Platform.connect(user).claimDividends()).to.be.revertedWith("NOT READY YET")
+
+        console.log("buyer2 undas balance before claiming " + ethers.utils.formatUnits(await OnlyOneToken.balanceOf(buyer2.address),18));
+        console.log("buyer2 eth balance before claiming " + ethers.utils.formatUnits(await buyer2.getBalance(),18))
+      
+        expect(await Platform.connect(buyer2).claimDividends()).to.emit(Platform,"DividendsPaid")
+
+        console.log("buyer2 undas balance after claiming " + ethers.utils.formatUnits(await OnlyOneToken.balanceOf(buyer2.address),18));
+        console.log("buyer2 eth balance after claiming " + ethers.utils.formatUnits(await buyer2.getBalance(),18))
+
+        await expect(Platform.connect(buyer2).claimDividends()).to.be.revertedWith("NOT READY YET")
+
+
+
+
+})
+
+})
