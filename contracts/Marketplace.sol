@@ -2,10 +2,11 @@
 pragma solidity ^0.8.0;
 
 import "hardhat/console.sol";
-import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+
 import "./UniswapV2Library.sol";
 import "./Platform.sol";
 
@@ -168,17 +169,7 @@ contract Marketplace is Initializable {
             factory = _factory;
             wETH = _wETH;
         }
-    // constructor(
-    //     address _platform,
-    //     address _token,
-    //     address _NFTTokenDistributionWhiteLister,
-    //     uint256 _tokensDistributionAmount,
-    //     uint256 _maxCollateralEligibleForTokens,
-    //     address _factory,
-    //     address _wETH
-    // ) {
-        
-    // }
+
 
     function whiteListNFTToggle(address nft, bool whitelist) external {
         require(msg.sender == NFTTokenDistributionWhiteLister, "fuck off .|.");
@@ -194,7 +185,7 @@ contract Marketplace is Initializable {
     ) private {
         uint256 expectedValue = (priceWei * bidFeePercent) / 100;
         require(
-            IERC721(tokenContract).isApprovedForAll(
+            IERC721Upgradeable(tokenContract).isApprovedForAll(
                 address(msg.sender),
                 address(this)
             ),
@@ -202,7 +193,7 @@ contract Marketplace is Initializable {
         );
        
         require(
-            IERC721(tokenContract).ownerOf(tokenId) == msg.sender,
+            IERC721Upgradeable(tokenContract).ownerOf(tokenId) == msg.sender,
             "token ownership"
         );
         require(
@@ -270,7 +261,7 @@ contract Marketplace is Initializable {
         address buyer
     ) private nonReentrant {
         Listing storage listing = _listings[listingId];
-        IERC721 token = IERC721(listing.token);
+        IERC721Upgradeable token = IERC721Upgradeable(listing.token);
 
         require(buyer != listing.seller, "Seller cannot be buyer");
         require(value == price, "Insufficient payment");
@@ -333,7 +324,7 @@ contract Marketplace is Initializable {
 
     function isBuyable(uint256 listingId) public view returns (bool) {
         Listing memory listing = _listings[listingId];
-        IERC721 token = IERC721(listing.token);
+        IERC721Upgradeable token = IERC721Upgradeable(listing.token);
 
         return
             token.ownerOf(listing.tokenId) == listing.seller &&
@@ -354,7 +345,7 @@ contract Marketplace is Initializable {
         uint256 feeValue = (bidFeePercent * collateralWei) / 100;
 
         require(
-            IERC721(tokenContract).isApprovedForAll(
+            IERC721Upgradeable(tokenContract).isApprovedForAll(
                 address(msg.sender),
                 address(this)
             ),
@@ -362,7 +353,7 @@ contract Marketplace is Initializable {
         );
 
         require(
-            IERC721(tokenContract).ownerOf(tokenId) == msg.sender,
+            IERC721Upgradeable(tokenContract).ownerOf(tokenId) == msg.sender,
             "token ownership"
         );
 
@@ -500,7 +491,7 @@ contract Marketplace is Initializable {
 
     function stopStaking(uint256 stakingIndex) public nonReentrant {
         require(
-            IERC721(_stakings[stakingIndex].token).isApprovedForAll(
+            IERC721Upgradeable(_stakings[stakingIndex].token).isApprovedForAll(
                 address(msg.sender),
                 address(this)
             ),
@@ -513,7 +504,7 @@ contract Marketplace is Initializable {
         );
 
         require(
-            IERC721(_stakings[stakingIndex].token).ownerOf(
+            IERC721Upgradeable(_stakings[stakingIndex].token).ownerOf(
                 _stakings[stakingIndex].tokenId
             ) == msg.sender,
             "token ownership"
@@ -526,11 +517,11 @@ contract Marketplace is Initializable {
         Staking storage staking = _stakings[stakingId];
 
         return
-            IERC721(staking.token).isApprovedForAll(
+            IERC721Upgradeable(staking.token).isApprovedForAll(
                 address(staking.maker),
                 address(this)
             ) &&
-            IERC721(_stakings[stakingId].token).ownerOf(
+            IERC721Upgradeable(_stakings[stakingId].token).ownerOf(
                 _stakings[stakingId].tokenId
             ) ==
             _stakings[stakingId].maker &&
@@ -564,7 +555,7 @@ contract Marketplace is Initializable {
         StakingExtension memory stakingExt = _stakingsExtension[stakingId];
         require(taker != staking.maker, "Maker cannot be taker");
         require(
-            IERC721(staking.token).isApprovedForAll(
+            IERC721Upgradeable(staking.token).isApprovedForAll(
                 address(staking.maker),
                 address(this)
             ),
@@ -582,7 +573,7 @@ contract Marketplace is Initializable {
 
         _stakings[stakingId] = staking;
 
-        IERC721(staking.token).safeTransferFrom(
+        IERC721Upgradeable(staking.token).safeTransferFrom(
             staking.maker,
             staking.taker,
             staking.tokenId
@@ -756,7 +747,7 @@ contract Marketplace is Initializable {
             tokenPaymentsAmount;
         uint256 tokensToIssue = tokensDistributionAmount * eligibleClaims;
 
-        IERC20(undasToken).transfer(maker, tokensToIssue); // it is assumed that tokens have been allocated for this contract earlier.
+        IERC20Upgradeable(undasToken).transfer(maker, tokensToIssue); // it is assumed that tokens have been allocated for this contract earlier.
 
         return eligibleClaims;
     }
@@ -777,7 +768,7 @@ contract Marketplace is Initializable {
         staking.status = StakeStatus.FinishedRentForNFT;
         
         // return nft
-        IERC721(staking.token).safeTransferFrom(
+        IERC721Upgradeable(staking.token).safeTransferFrom(
             staking.taker,
             staking.maker,
             staking.tokenId
@@ -853,7 +844,7 @@ contract Marketplace is Initializable {
     function _takeFeeValueDistribution (bool isToken, uint256 feeValue) internal returns (uint256 etherFeeTaken, uint256 cashbackAmount) { 
         uint256 _cashbackPercent;
 
-        if (IERC20(undasToken).balanceOf(msg.sender) < minUndasBalanceForCashback) { // abuse possible
+        if (IERC20Upgradeable(undasToken).balanceOf(msg.sender) < minUndasBalanceForCashback) { // abuse possible
             _cashbackPercent = 0;
         }
         else
@@ -868,7 +859,7 @@ contract Marketplace is Initializable {
 
             uint256 tokenFee = UniswapV2Library.getAmountsOut(factory, feeValue, path)[1] * discountForTokenFeePercent / 100; // 50% saving
            
-            IERC20(undasToken).transferFrom(msg.sender, platform, tokenFee);
+            IERC20Upgradeable(undasToken).transferFrom(msg.sender, platform, tokenFee);
 
             cashbackAmount = (tokenFee * _cashbackPercent) / 100;
             return (0, cashbackAmount);
