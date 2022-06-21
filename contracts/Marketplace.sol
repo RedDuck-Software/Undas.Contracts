@@ -4,17 +4,20 @@ pragma solidity ^0.8.0;
 import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./UniswapV2Library.sol";
 import "./Platform.sol";
 
-contract Marketplace is ReentrancyGuard {
+contract Marketplace is Initializable {
     enum ListingStatus {
         Active,
         Sold,
         Cancelled
     }
-
+    modifier nonReentrant(){
+        _;
+    }
     enum StakeStatus {
         Quoted,
         Staking,
@@ -138,35 +141,44 @@ contract Marketplace is ReentrancyGuard {
     uint256 constant discountForTokenFeePercent = 50;
 
     address payable public platform ;
-    address public immutable undasToken;
+    address public  undasToken;
 
-    uint256 public immutable tokensDistributionAmount;
-    uint256 public immutable maxCollateralEligibleForTokens;
-    uint256 public immutable tokensDistributionEnd;
+    uint256 public  tokensDistributionAmount;
+    uint256 public  maxCollateralEligibleForTokens;
+    uint256 public  tokensDistributionEnd;
     mapping(address => bool) public NFTsEligibleForTokenDistribution; // protection against DOS
-    address public immutable NFTTokenDistributionWhiteLister; // whitelisting smart contract
+    address public  NFTTokenDistributionWhiteLister; // whitelisting smart contract
 
-    address public immutable factory;
-    address public immutable wETH;
-
-    constructor(
-        address _platform,
+    address public  factory;
+    address public  wETH;
+    
+    function initialize(address _platform,
         address _token,
         address _NFTTokenDistributionWhiteLister,
         uint256 _tokensDistributionAmount,
         uint256 _maxCollateralEligibleForTokens,
         address _factory,
-        address _wETH
-    ) {
-        platform = payable(_platform);
-        undasToken = _token;
-        NFTTokenDistributionWhiteLister = _NFTTokenDistributionWhiteLister;
-        tokensDistributionAmount = _tokensDistributionAmount;
-        maxCollateralEligibleForTokens = _maxCollateralEligibleForTokens;
-        tokensDistributionEnd = block.timestamp + tokensDistributionDuration;
-        factory = _factory;
-        wETH = _wETH;
-    }
+        address _wETH) public initializer {
+            platform = payable(_platform);
+            undasToken = _token;
+            NFTTokenDistributionWhiteLister = _NFTTokenDistributionWhiteLister;
+            tokensDistributionAmount = _tokensDistributionAmount;
+            maxCollateralEligibleForTokens = _maxCollateralEligibleForTokens;
+            tokensDistributionEnd = block.timestamp + tokensDistributionDuration;
+            factory = _factory;
+            wETH = _wETH;
+        }
+    // constructor(
+    //     address _platform,
+    //     address _token,
+    //     address _NFTTokenDistributionWhiteLister,
+    //     uint256 _tokensDistributionAmount,
+    //     uint256 _maxCollateralEligibleForTokens,
+    //     address _factory,
+    //     address _wETH
+    // ) {
+        
+    // }
 
     function whiteListNFTToggle(address nft, bool whitelist) external {
         require(msg.sender == NFTTokenDistributionWhiteLister, "fuck off .|.");
@@ -181,7 +193,6 @@ contract Marketplace is ReentrancyGuard {
         bool isTokenFee
     ) private {
         uint256 expectedValue = (priceWei * bidFeePercent) / 100;
-
         require(
             IERC721(tokenContract).isApprovedForAll(
                 address(msg.sender),

@@ -5,6 +5,7 @@ pragma solidity >=0.8.0;
 import "@uniswap/v2-core/contracts/interfaces/IUniswapV2Pair.sol";
 import "hardhat/console.sol";
 import "@uniswap/v2-core/contracts/interfaces/IUniswapV2Factory.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 library UniswapV2Library {
     // returns sorted token addresses, used to handle return values from pairs sorted in this order

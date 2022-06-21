@@ -1,0 +1,3342 @@
+{
+  "manifestVersion": "3.2",
+  "admin": {
+    "address": "0x22E88889b4C3b4088DB9f9cf29E2608Dc3D274f1",
+    "txHash": "0x29d78596ca6c8c1e3fc36cc9d90b675fac0b0617f9b7b6ec4b30239a6fdf076c"
+  },
+  "proxies": [
+    {
+      "address": "0x06D0B2B3EeE51d8134df5d5EA3F21ac7BE8e4B74",
+      "txHash": "0x0faab4ee17d33d08a8b7e40b77b4d0abdb2900b952d777f98a7b5cd78a345c26",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x42a7A944237cDEA5451CdCb63c3aD55594557672",
+      "txHash": "0x71913bb28ed2ddb6b4e16025e7cb840b79e91c1f4406a06f9df369b3f58c3028",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x109Ac064cc6763D52DA3f2c377e0835176E3607C",
+      "txHash": "0x709b646b11ed1deedf0658382fbf9dfc0127a3e2ccd4c82386bf86705e301556",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x8Da57166348Ce65c83BFfA925326c5F8183b15d8",
+      "txHash": "0x1399e5e75b1478851d32810c2d0c97538dd5bb9acb36d878cd01d89e580ecf3a",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x3544073279FC2deBb1e6201aEd5444359e9d60e6",
+      "txHash": "0xe868c99d52329784c2f713aa4be8a464cd1c5c246a35c42d1378d19f89f19448",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xdDEaf041BFCCB2Dea0C8142154167A4bDF4c6725",
+      "txHash": "0x8d8464be83a523038a0b4e913314203eb06ecc008233df37ee856540db64389f",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xb0B10cCE0b906d4ed7B7A95C39242b39d050703d",
+      "txHash": "0xf31e9fce92f6d84d5acdd4f3dc351b26006e2bba0eb5ee2eb4cdab7105bacdef",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x4668B297C5de24771f8E0673Dd89Fcc3bB123Ab9",
+      "txHash": "0xb5e87fb4931412038264c34e5776c3db779a3feb4fc7619bfd6d816c5befa85d",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x75677e3FA820be995F2cF1dAc6AEB816656E7e61",
+      "txHash": "0x787b49eb96ee4e7524f21336ac5cd1a28743f137bab591aff27cc2be5de98913",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x337B1035435A288795b56D2c352E5f79Ee3D4bA6",
+      "txHash": "0x5113dbd48c30cf295f82666988cbb3e9b7fae4d71600f6927fd097b6fe6237a6",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x7d6e5b2456FF9881D7486E57db5cE84a68026596",
+      "txHash": "0xf7b8d62536e2e81267f4b66058c2dea19411107755b3157d06c0b931780c0fe6",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x174C608B4cD1A309ADeC0aD64b4651a9Fca8181B",
+      "txHash": "0xec1c96752b5f3e49dad28016fb79563aaa3a9e5490af59f06b2b214a267a3ffe",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xC106Cc19ddE292F90c579FD6942f01Cb287bcb19",
+      "txHash": "0x27264299b3b38256684e9869e4a289835303c82870387efb9924d070eabf89d8",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x8415C8D3Ab24b2698398be8F7f4A7a757f09C8F1",
+      "txHash": "0x95d8a41d89853ba142530373d7481aadb52308cae0fb0f812f121ee1d895177d",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x3d2a172597513356e1Ab98E47C366610F371cf7C",
+      "txHash": "0xd9fcd8c664599403714a3ed0618c210a3f6def79eedf9e20d759194ec444573f",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xbCA4633B3D2C6B3593344526637A5F93cE0bCd8e",
+      "txHash": "0xfb7f2fb6ab8b318dda9a6b576b2c353dbdcbb74ef7e8642657c7f95435be7ac9",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x2e3a73E14e5d2cD1466b708799CA17A7F004Cb70",
+      "txHash": "0xe9009655400fa3df288ab99a196abbbd3abe3bd8feab02e8aac50c179f703645",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xa28D44D5e7787d57bDCAB379Bd7dD1028514e52B",
+      "txHash": "0x4dcbf72adb893d57afa982db268be6048eff800e28ea0c88ceb1fab9adbd9052",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xe7016596C0260b1A81406B07AF8FE4801682c0A4",
+      "txHash": "0xa62ed7f05ce69d0d3ec536711550bbdc38795b29bb4fd238f046ca8a8be36f3b",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x4C4e20FED1E4303910fB36A35A361d7A543f9B84",
+      "txHash": "0xf02b4b4b9e33ff8861292c93af6f9a9d91c0269e0229c8615cc196ba993231be",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x5AbB4FC79184B8652Fb8c9A108635433E53d4fFE",
+      "txHash": "0x2b1f5785200da488eb1b20690d4e49ccc9ca727b4ce8dd7f02b458eb1cca5b65",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x9341F5598Fce94C49aef7d22055DC8C8192e6401",
+      "txHash": "0x3d74125136fed2726730ca488addfea601b8be8d60652d1f097a6749ffa2a158",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xbEe52A7414Fdd1648b3174534D9f0592061B0916",
+      "txHash": "0x9a4212e2f2fc2e83ee74c006f88a9965eebce223b96a76551f8b17888a7a4eaa",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xDE6EE815D94484fc3b3DCb148522062468E35695",
+      "txHash": "0x945d8fac51ffc692fd747259e5e283edcfeb5583fdcc03151c8aa8c6e96c5f17",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xB4449f82629431662DdE53bB304d3ceDCbcA5f51",
+      "txHash": "0x597dd0038e17f758c4f2619f8cfc5e2508b20b7f0af5e404d86597d3c52baedf",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x0525E1B506deB85f477026F4072aC98fA4A398C7",
+      "txHash": "0xcaa1520f8b1a81c75274c1ed4aafc5e28abaa45d70d6f5916ae8d42076c149f9",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x09144acC06e3CF23f2612f6D7EE076a7e7ab60D6",
+      "txHash": "0xb726ac5384202d081ecbb8adc55ff7fe26132ab3d6a254946e570170b578631c",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xb2c11Dd7b9654b62b94F013CF94c155E27939D75",
+      "txHash": "0x8812d74ba29344558312ef609bf6e3b987373c30146c1363f0aded7207937659",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xd19A590105313a7ed7E1661654dd6667F9Da1eEc",
+      "txHash": "0x453bc280c2bec749fd131b68023ed62912e4cb9e2407226fe22a9258745c4c1d",
+      "kind": "transparent"
+    }
+  ],
+  "impls": {
+    "2eb9455a5f5204ba163962dabd1a264dc0fb05921cfae0459c1718ff4c78ea2c": {
+      "address": "0xfe118c4F4c903D333662dA5676d62613742C90E4",
+      "txHash": "0xe57186a0a8115b47a0bc9b1ab94733e06a50c1adcbc30455bf333d2660c8701b",
+      "layout": {
+        "storage": [
+          {
+            "label": "stakingToken",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_contract(IERC20)768",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:13"
+          },
+          {
+            "label": "timeperiodToClaim",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:15"
+          },
+          {
+            "label": "cycleTimeperiod",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_uint256",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:16"
+          },
+          {
+            "label": "cooldownTime",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_uint256",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:17"
+          },
+          {
+            "label": "stakedUndasTokens",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_uint256",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:19"
+          },
+          {
+            "label": "lockedEtherCashBack",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_uint256",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:21"
+          },
+          {
+            "label": "lockedTokenCashback",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_uint256",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:22"
+          },
+          {
+            "label": "resetClaimTimePeriod",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_uint256",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:24"
+          },
+          {
+            "label": "resetCycleTimePeriod",
+            "offset": 0,
+            "slot": "8",
+            "type": "t_uint256",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:25"
+          },
+          {
+            "label": "contractTokenBalance",
+            "offset": 0,
+            "slot": "9",
+            "type": "t_uint256",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:27"
+          },
+          {
+            "label": "contractEtherBalance",
+            "offset": 0,
+            "slot": "10",
+            "type": "t_uint256",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:28"
+          },
+          {
+            "label": "owner",
+            "offset": 0,
+            "slot": "11",
+            "type": "t_address",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:30"
+          },
+          {
+            "label": "marketplace",
+            "offset": 0,
+            "slot": "12",
+            "type": "t_address",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:31"
+          },
+          {
+            "label": "_balancesOfLockedTokens",
+            "offset": 0,
+            "slot": "13",
+            "type": "t_mapping(t_address,t_struct(stackingInfo)7365_storage)",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:38"
+          },
+          {
+            "label": "balancesForCashbackInUndas",
+            "offset": 0,
+            "slot": "14",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:40"
+          },
+          {
+            "label": "balancesForCashbackInEth",
+            "offset": 0,
+            "slot": "15",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:42"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_contract(IERC20)768": {
+            "label": "contract IERC20",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_address,t_struct(stackingInfo)7365_storage)": {
+            "label": "mapping(address => struct Platform.stackingInfo)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(stackingInfo)7365_storage": {
+            "label": "struct Platform.stackingInfo",
+            "members": [
+              {
+                "label": "amount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "readyTimeToWithdraw",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        }
+      }
+    },
+    "5cbea192e3500a0f361c88d0a579917925357143fe3c200cfda8bdc5c2b7aba3": {
+      "address": "0xCeF433a8Cd9804982179b1bf206B342cAD9795a2",
+      "txHash": "0xd6a7f64c19cbf47add6c8fd909367f4df90c564fdcaa133870583608655ac3b3",
+      "layout": {
+        "storage": [
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuard",
+            "src": "@openzeppelin/contracts/security/ReentrancyGuard.sol:37"
+          },
+          {
+            "label": "_listingsLastIndex",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:112"
+          },
+          {
+            "label": "_listings",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_mapping(t_uint256,t_struct(Listing)4104_storage)",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:113"
+          },
+          {
+            "label": "_stakingsLastIndex",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:115"
+          },
+          {
+            "label": "_stakings",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_mapping(t_uint256,t_struct(Staking)4130_storage)",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:117"
+          },
+          {
+            "label": "_stakingsExtension",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_mapping(t_uint256,t_struct(StakingExtension)4135_storage)",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:118"
+          },
+          {
+            "label": "_listingOffers",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_mapping(t_uint256,t_mapping(t_address,t_uint256))",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:120"
+          },
+          {
+            "label": "_stakingOffers",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_mapping(t_uint256,t_mapping(t_address,t_struct(StakingOffer)4145_storage))",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:121"
+          },
+          {
+            "label": "nftListingIds",
+            "offset": 0,
+            "slot": "8",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_struct(OptionalUint)4140_storage))",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:124"
+          },
+          {
+            "label": "nftStakingIds",
+            "offset": 0,
+            "slot": "9",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_struct(OptionalUint)4140_storage))",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:127"
+          },
+          {
+            "label": "platform",
+            "offset": 0,
+            "slot": "10",
+            "type": "t_address_payable",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:140"
+          },
+          {
+            "label": "undasToken",
+            "offset": 0,
+            "slot": "11",
+            "type": "t_address",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:141"
+          },
+          {
+            "label": "tokensDistributionAmount",
+            "offset": 0,
+            "slot": "12",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:143"
+          },
+          {
+            "label": "maxCollateralEligibleForTokens",
+            "offset": 0,
+            "slot": "13",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:144"
+          },
+          {
+            "label": "tokensDistributionEnd",
+            "offset": 0,
+            "slot": "14",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:145"
+          },
+          {
+            "label": "NFTsEligibleForTokenDistribution",
+            "offset": 0,
+            "slot": "15",
+            "type": "t_mapping(t_address,t_bool)",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:146"
+          },
+          {
+            "label": "NFTTokenDistributionWhiteLister",
+            "offset": 0,
+            "slot": "16",
+            "type": "t_address",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:147"
+          },
+          {
+            "label": "factory",
+            "offset": 0,
+            "slot": "17",
+            "type": "t_address",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:149"
+          },
+          {
+            "label": "wETH",
+            "offset": 0,
+            "slot": "18",
+            "type": "t_address",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:150"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_address_payable": {
+            "label": "address payable",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_enum(ListingStatus)4078": {
+            "label": "enum Marketplace.ListingStatus",
+            "members": [
+              "Active",
+              "Sold",
+              "Cancelled"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_enum(StakeStatus)4084": {
+            "label": "enum Marketplace.StakeStatus",
+            "members": [
+              "Quoted",
+              "Staking",
+              "FinishedRentForNFT",
+              "FinishedRentForCollateral",
+              "Cancelled"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint256,t_struct(OptionalUint)4140_storage))": {
+            "label": "mapping(address => mapping(uint256 => struct Marketplace.OptionalUint))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(StakingOffer)4145_storage)": {
+            "label": "mapping(address => struct Marketplace.StakingOffer)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_mapping(t_address,t_struct(StakingOffer)4145_storage))": {
+            "label": "mapping(uint256 => mapping(address => struct Marketplace.StakingOffer))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_mapping(t_address,t_uint256))": {
+            "label": "mapping(uint256 => mapping(address => uint256))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Listing)4104_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.Listing)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(OptionalUint)4140_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.OptionalUint)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Staking)4130_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.Staking)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(StakingExtension)4135_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.StakingExtension)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(Listing)4104_storage": {
+            "label": "struct Marketplace.Listing",
+            "members": [
+              {
+                "label": "status",
+                "type": "t_enum(ListingStatus)4078",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "seller",
+                "type": "t_address",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "price",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "token",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "tokenId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "startListingUTC",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "tokenPaymentsAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "cashback",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "isTokenFee",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "7"
+              }
+            ],
+            "numberOfBytes": "256"
+          },
+          "t_struct(OptionalUint)4140_storage": {
+            "label": "struct Marketplace.OptionalUint",
+            "members": [
+              {
+                "label": "valueExists",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "value",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Staking)4130_storage": {
+            "label": "struct Marketplace.Staking",
+            "members": [
+              {
+                "label": "status",
+                "type": "t_enum(StakeStatus)4084",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "maker",
+                "type": "t_address",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "taker",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "collateral",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "premium",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "startRentalUTC",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "startStakingUTC",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "paymentsAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "tokenPaymentsAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "7"
+              },
+              {
+                "label": "deadline",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "8"
+              },
+              {
+                "label": "token",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "9"
+              },
+              {
+                "label": "tokenId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "10"
+              }
+            ],
+            "numberOfBytes": "352"
+          },
+          "t_struct(StakingExtension)4135_storage": {
+            "label": "struct Marketplace.StakingExtension",
+            "members": [
+              {
+                "label": "cashback",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "isTokenFee",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(StakingOffer)4145_storage": {
+            "label": "struct Marketplace.StakingOffer",
+            "members": [
+              {
+                "label": "collateral",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "premium",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        }
+      }
+    },
+    "e141e7eb0c8cb402a1cf72e2cb93aaa348c494b24369e1c3932881dbb3fda47f": {
+      "address": "0x25F212c1735392D918dd40ab846BF1316f6Eb6ED",
+      "txHash": "0x24718ff2197a44b15a04fcbf0728c76bb905269eed4299e74b10d15d27b518f8",
+      "layout": {
+        "storage": [
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuard",
+            "src": "@openzeppelin/contracts/security/ReentrancyGuard.sol:37"
+          },
+          {
+            "label": "_listingsLastIndex",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:112"
+          },
+          {
+            "label": "_listings",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_mapping(t_uint256,t_struct(Listing)4104_storage)",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:113"
+          },
+          {
+            "label": "_stakingsLastIndex",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:115"
+          },
+          {
+            "label": "_stakings",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_mapping(t_uint256,t_struct(Staking)4130_storage)",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:117"
+          },
+          {
+            "label": "_stakingsExtension",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_mapping(t_uint256,t_struct(StakingExtension)4135_storage)",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:118"
+          },
+          {
+            "label": "_listingOffers",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_mapping(t_uint256,t_mapping(t_address,t_uint256))",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:120"
+          },
+          {
+            "label": "_stakingOffers",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_mapping(t_uint256,t_mapping(t_address,t_struct(StakingOffer)4145_storage))",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:121"
+          },
+          {
+            "label": "nftListingIds",
+            "offset": 0,
+            "slot": "8",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_struct(OptionalUint)4140_storage))",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:124"
+          },
+          {
+            "label": "nftStakingIds",
+            "offset": 0,
+            "slot": "9",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_struct(OptionalUint)4140_storage))",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:127"
+          },
+          {
+            "label": "platform",
+            "offset": 0,
+            "slot": "10",
+            "type": "t_address_payable",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:140"
+          },
+          {
+            "label": "undasToken",
+            "offset": 0,
+            "slot": "11",
+            "type": "t_address",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:141"
+          },
+          {
+            "label": "tokensDistributionAmount",
+            "offset": 0,
+            "slot": "12",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:143"
+          },
+          {
+            "label": "maxCollateralEligibleForTokens",
+            "offset": 0,
+            "slot": "13",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:144"
+          },
+          {
+            "label": "tokensDistributionEnd",
+            "offset": 0,
+            "slot": "14",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:145"
+          },
+          {
+            "label": "NFTsEligibleForTokenDistribution",
+            "offset": 0,
+            "slot": "15",
+            "type": "t_mapping(t_address,t_bool)",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:146"
+          },
+          {
+            "label": "NFTTokenDistributionWhiteLister",
+            "offset": 0,
+            "slot": "16",
+            "type": "t_address",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:147"
+          },
+          {
+            "label": "factory",
+            "offset": 0,
+            "slot": "17",
+            "type": "t_address",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:149"
+          },
+          {
+            "label": "wETH",
+            "offset": 0,
+            "slot": "18",
+            "type": "t_address",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:150"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_address_payable": {
+            "label": "address payable",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_enum(ListingStatus)4078": {
+            "label": "enum Marketplace.ListingStatus",
+            "members": [
+              "Active",
+              "Sold",
+              "Cancelled"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_enum(StakeStatus)4084": {
+            "label": "enum Marketplace.StakeStatus",
+            "members": [
+              "Quoted",
+              "Staking",
+              "FinishedRentForNFT",
+              "FinishedRentForCollateral",
+              "Cancelled"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint256,t_struct(OptionalUint)4140_storage))": {
+            "label": "mapping(address => mapping(uint256 => struct Marketplace.OptionalUint))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(StakingOffer)4145_storage)": {
+            "label": "mapping(address => struct Marketplace.StakingOffer)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_mapping(t_address,t_struct(StakingOffer)4145_storage))": {
+            "label": "mapping(uint256 => mapping(address => struct Marketplace.StakingOffer))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_mapping(t_address,t_uint256))": {
+            "label": "mapping(uint256 => mapping(address => uint256))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Listing)4104_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.Listing)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(OptionalUint)4140_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.OptionalUint)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Staking)4130_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.Staking)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(StakingExtension)4135_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.StakingExtension)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(Listing)4104_storage": {
+            "label": "struct Marketplace.Listing",
+            "members": [
+              {
+                "label": "status",
+                "type": "t_enum(ListingStatus)4078",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "seller",
+                "type": "t_address",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "price",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "token",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "tokenId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "startListingUTC",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "tokenPaymentsAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "cashback",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "isTokenFee",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "7"
+              }
+            ],
+            "numberOfBytes": "256"
+          },
+          "t_struct(OptionalUint)4140_storage": {
+            "label": "struct Marketplace.OptionalUint",
+            "members": [
+              {
+                "label": "valueExists",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "value",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Staking)4130_storage": {
+            "label": "struct Marketplace.Staking",
+            "members": [
+              {
+                "label": "status",
+                "type": "t_enum(StakeStatus)4084",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "maker",
+                "type": "t_address",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "taker",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "collateral",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "premium",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "startRentalUTC",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "startStakingUTC",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "paymentsAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "tokenPaymentsAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "7"
+              },
+              {
+                "label": "deadline",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "8"
+              },
+              {
+                "label": "token",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "9"
+              },
+              {
+                "label": "tokenId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "10"
+              }
+            ],
+            "numberOfBytes": "352"
+          },
+          "t_struct(StakingExtension)4135_storage": {
+            "label": "struct Marketplace.StakingExtension",
+            "members": [
+              {
+                "label": "cashback",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "isTokenFee",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(StakingOffer)4145_storage": {
+            "label": "struct Marketplace.StakingOffer",
+            "members": [
+              {
+                "label": "collateral",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "premium",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        }
+      }
+    },
+    "33a0453fb287ddbe50efbc65b4499f2150ad9dc849676cfb9e47b4e18a6ee7cd": {
+      "address": "0x00DecC089fC0Ee274DEA6aF2b152bC51E9184B92",
+      "txHash": "0x256267f0d264c4c02b88aa1d63471b45227cfc19b88a7e36621f1ea077c82731",
+      "layout": {
+        "storage": [
+          {
+            "label": "stakingToken",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_contract(IERC20)768",
+            "contract": "PlatformV2",
+            "src": "contracts/Platform copy.sol:13"
+          },
+          {
+            "label": "timeperiodToClaim",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "PlatformV2",
+            "src": "contracts/Platform copy.sol:15"
+          },
+          {
+            "label": "cycleTimeperiod",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_uint256",
+            "contract": "PlatformV2",
+            "src": "contracts/Platform copy.sol:16"
+          },
+          {
+            "label": "cooldownTime",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_uint256",
+            "contract": "PlatformV2",
+            "src": "contracts/Platform copy.sol:17"
+          },
+          {
+            "label": "stakedUndasTokens",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_uint256",
+            "contract": "PlatformV2",
+            "src": "contracts/Platform copy.sol:19"
+          },
+          {
+            "label": "lockedEtherCashBack",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_uint256",
+            "contract": "PlatformV2",
+            "src": "contracts/Platform copy.sol:21"
+          },
+          {
+            "label": "lockedTokenCashback",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_uint256",
+            "contract": "PlatformV2",
+            "src": "contracts/Platform copy.sol:22"
+          },
+          {
+            "label": "resetClaimTimePeriod",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_uint256",
+            "contract": "PlatformV2",
+            "src": "contracts/Platform copy.sol:24"
+          },
+          {
+            "label": "resetCycleTimePeriod",
+            "offset": 0,
+            "slot": "8",
+            "type": "t_uint256",
+            "contract": "PlatformV2",
+            "src": "contracts/Platform copy.sol:25"
+          },
+          {
+            "label": "contractTokenBalance",
+            "offset": 0,
+            "slot": "9",
+            "type": "t_uint256",
+            "contract": "PlatformV2",
+            "src": "contracts/Platform copy.sol:27"
+          },
+          {
+            "label": "contractEtherBalance",
+            "offset": 0,
+            "slot": "10",
+            "type": "t_uint256",
+            "contract": "PlatformV2",
+            "src": "contracts/Platform copy.sol:28"
+          },
+          {
+            "label": "owner",
+            "offset": 0,
+            "slot": "11",
+            "type": "t_address",
+            "contract": "PlatformV2",
+            "src": "contracts/Platform copy.sol:30"
+          },
+          {
+            "label": "marketplace",
+            "offset": 0,
+            "slot": "12",
+            "type": "t_address",
+            "contract": "PlatformV2",
+            "src": "contracts/Platform copy.sol:31"
+          },
+          {
+            "label": "_balancesOfLockedTokens",
+            "offset": 0,
+            "slot": "13",
+            "type": "t_mapping(t_address,t_struct(stackingInfo)6621_storage)",
+            "contract": "PlatformV2",
+            "src": "contracts/Platform copy.sol:38"
+          },
+          {
+            "label": "balancesForCashbackInUndas",
+            "offset": 0,
+            "slot": "14",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "PlatformV2",
+            "src": "contracts/Platform copy.sol:40"
+          },
+          {
+            "label": "balancesForCashbackInEth",
+            "offset": 0,
+            "slot": "15",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "PlatformV2",
+            "src": "contracts/Platform copy.sol:42"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_contract(IERC20)768": {
+            "label": "contract IERC20",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_address,t_struct(stackingInfo)6621_storage)": {
+            "label": "mapping(address => struct PlatformV2.stackingInfo)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(stackingInfo)6621_storage": {
+            "label": "struct PlatformV2.stackingInfo",
+            "members": [
+              {
+                "label": "amount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "readyTimeToWithdraw",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        }
+      }
+    },
+    "20d0daab6ce4a20f9f90797b3e71879cf7c4a1dc017b2a245e6997558ef778da": {
+      "address": "0x6ED0fE0088a175d770dD11580Cfe4e025C9Cb2B9",
+      "txHash": "0x29e7e1e0cf06db06ceb1d73360f2ac0166d5fccaab1b07410479fa651321ca39",
+      "layout": {
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts/proxy/utils/Initializable.sol:39"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts/proxy/utils/Initializable.sol:44"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuard",
+            "src": "@openzeppelin/contracts/security/ReentrancyGuard.sol:37"
+          },
+          {
+            "label": "_listingsLastIndex",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:113"
+          },
+          {
+            "label": "_listings",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_mapping(t_uint256,t_struct(Listing)4181_storage)",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:114"
+          },
+          {
+            "label": "_stakingsLastIndex",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:116"
+          },
+          {
+            "label": "_stakings",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_mapping(t_uint256,t_struct(Staking)4207_storage)",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:118"
+          },
+          {
+            "label": "_stakingsExtension",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_mapping(t_uint256,t_struct(StakingExtension)4212_storage)",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:119"
+          },
+          {
+            "label": "_listingOffers",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_mapping(t_uint256,t_mapping(t_address,t_uint256))",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:121"
+          },
+          {
+            "label": "_stakingOffers",
+            "offset": 0,
+            "slot": "8",
+            "type": "t_mapping(t_uint256,t_mapping(t_address,t_struct(StakingOffer)4222_storage))",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:122"
+          },
+          {
+            "label": "nftListingIds",
+            "offset": 0,
+            "slot": "9",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_struct(OptionalUint)4217_storage))",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:125"
+          },
+          {
+            "label": "nftStakingIds",
+            "offset": 0,
+            "slot": "10",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_struct(OptionalUint)4217_storage))",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:128"
+          },
+          {
+            "label": "platform",
+            "offset": 0,
+            "slot": "11",
+            "type": "t_address_payable",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:141"
+          },
+          {
+            "label": "undasToken",
+            "offset": 0,
+            "slot": "12",
+            "type": "t_address",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:142"
+          },
+          {
+            "label": "tokensDistributionAmount",
+            "offset": 0,
+            "slot": "13",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:144"
+          },
+          {
+            "label": "maxCollateralEligibleForTokens",
+            "offset": 0,
+            "slot": "14",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:145"
+          },
+          {
+            "label": "tokensDistributionEnd",
+            "offset": 0,
+            "slot": "15",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:146"
+          },
+          {
+            "label": "NFTsEligibleForTokenDistribution",
+            "offset": 0,
+            "slot": "16",
+            "type": "t_mapping(t_address,t_bool)",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:147"
+          },
+          {
+            "label": "NFTTokenDistributionWhiteLister",
+            "offset": 0,
+            "slot": "17",
+            "type": "t_address",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:148"
+          },
+          {
+            "label": "factory",
+            "offset": 0,
+            "slot": "18",
+            "type": "t_address",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:150"
+          },
+          {
+            "label": "wETH",
+            "offset": 0,
+            "slot": "19",
+            "type": "t_address",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:151"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_address_payable": {
+            "label": "address payable",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_enum(ListingStatus)4155": {
+            "label": "enum Marketplace.ListingStatus",
+            "members": [
+              "Active",
+              "Sold",
+              "Cancelled"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_enum(StakeStatus)4161": {
+            "label": "enum Marketplace.StakeStatus",
+            "members": [
+              "Quoted",
+              "Staking",
+              "FinishedRentForNFT",
+              "FinishedRentForCollateral",
+              "Cancelled"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint256,t_struct(OptionalUint)4217_storage))": {
+            "label": "mapping(address => mapping(uint256 => struct Marketplace.OptionalUint))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(StakingOffer)4222_storage)": {
+            "label": "mapping(address => struct Marketplace.StakingOffer)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_mapping(t_address,t_struct(StakingOffer)4222_storage))": {
+            "label": "mapping(uint256 => mapping(address => struct Marketplace.StakingOffer))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_mapping(t_address,t_uint256))": {
+            "label": "mapping(uint256 => mapping(address => uint256))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Listing)4181_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.Listing)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(OptionalUint)4217_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.OptionalUint)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Staking)4207_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.Staking)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(StakingExtension)4212_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.StakingExtension)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(Listing)4181_storage": {
+            "label": "struct Marketplace.Listing",
+            "members": [
+              {
+                "label": "status",
+                "type": "t_enum(ListingStatus)4155",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "seller",
+                "type": "t_address",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "price",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "token",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "tokenId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "startListingUTC",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "tokenPaymentsAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "cashback",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "isTokenFee",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "7"
+              }
+            ],
+            "numberOfBytes": "256"
+          },
+          "t_struct(OptionalUint)4217_storage": {
+            "label": "struct Marketplace.OptionalUint",
+            "members": [
+              {
+                "label": "valueExists",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "value",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Staking)4207_storage": {
+            "label": "struct Marketplace.Staking",
+            "members": [
+              {
+                "label": "status",
+                "type": "t_enum(StakeStatus)4161",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "maker",
+                "type": "t_address",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "taker",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "collateral",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "premium",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "startRentalUTC",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "startStakingUTC",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "paymentsAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "tokenPaymentsAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "7"
+              },
+              {
+                "label": "deadline",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "8"
+              },
+              {
+                "label": "token",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "9"
+              },
+              {
+                "label": "tokenId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "10"
+              }
+            ],
+            "numberOfBytes": "352"
+          },
+          "t_struct(StakingExtension)4212_storage": {
+            "label": "struct Marketplace.StakingExtension",
+            "members": [
+              {
+                "label": "cashback",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "isTokenFee",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(StakingOffer)4222_storage": {
+            "label": "struct Marketplace.StakingOffer",
+            "members": [
+              {
+                "label": "collateral",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "premium",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        }
+      }
+    },
+    "5b492f827fc46f453b86e3af1ce851635430b0f63e3d8bae955e6365d1d9dc30": {
+      "address": "0x09b3904AB2187144b72589a9a68d2d2A650c23ff",
+      "txHash": "0x58b243380a60ed0954482667f53b795db66462e5186645c2261aeb7df7418bba",
+      "layout": {
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts/proxy/utils/Initializable.sol:39"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts/proxy/utils/Initializable.sol:44"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuard",
+            "src": "@openzeppelin/contracts/security/ReentrancyGuard.sol:38"
+          },
+          {
+            "label": "_listingsLastIndex",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:112"
+          },
+          {
+            "label": "_listings",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_mapping(t_uint256,t_struct(Listing)4183_storage)",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:113"
+          },
+          {
+            "label": "_stakingsLastIndex",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:115"
+          },
+          {
+            "label": "_stakings",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_mapping(t_uint256,t_struct(Staking)4209_storage)",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:117"
+          },
+          {
+            "label": "_stakingsExtension",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_mapping(t_uint256,t_struct(StakingExtension)4214_storage)",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:118"
+          },
+          {
+            "label": "_listingOffers",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_mapping(t_uint256,t_mapping(t_address,t_uint256))",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:120"
+          },
+          {
+            "label": "_stakingOffers",
+            "offset": 0,
+            "slot": "8",
+            "type": "t_mapping(t_uint256,t_mapping(t_address,t_struct(StakingOffer)4224_storage))",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:121"
+          },
+          {
+            "label": "nftListingIds",
+            "offset": 0,
+            "slot": "9",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_struct(OptionalUint)4219_storage))",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:124"
+          },
+          {
+            "label": "nftStakingIds",
+            "offset": 0,
+            "slot": "10",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_struct(OptionalUint)4219_storage))",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:127"
+          },
+          {
+            "label": "platform",
+            "offset": 0,
+            "slot": "11",
+            "type": "t_address_payable",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:140"
+          },
+          {
+            "label": "undasToken",
+            "offset": 0,
+            "slot": "12",
+            "type": "t_address",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:141"
+          },
+          {
+            "label": "tokensDistributionAmount",
+            "offset": 0,
+            "slot": "13",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:143"
+          },
+          {
+            "label": "maxCollateralEligibleForTokens",
+            "offset": 0,
+            "slot": "14",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:144"
+          },
+          {
+            "label": "tokensDistributionEnd",
+            "offset": 0,
+            "slot": "15",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:145"
+          },
+          {
+            "label": "NFTsEligibleForTokenDistribution",
+            "offset": 0,
+            "slot": "16",
+            "type": "t_mapping(t_address,t_bool)",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:146"
+          },
+          {
+            "label": "NFTTokenDistributionWhiteLister",
+            "offset": 0,
+            "slot": "17",
+            "type": "t_address",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:147"
+          },
+          {
+            "label": "factory",
+            "offset": 0,
+            "slot": "18",
+            "type": "t_address",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:149"
+          },
+          {
+            "label": "wETH",
+            "offset": 0,
+            "slot": "19",
+            "type": "t_address",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:150"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_address_payable": {
+            "label": "address payable",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_enum(ListingStatus)4157": {
+            "label": "enum Marketplace.ListingStatus",
+            "members": [
+              "Active",
+              "Sold",
+              "Cancelled"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_enum(StakeStatus)4163": {
+            "label": "enum Marketplace.StakeStatus",
+            "members": [
+              "Quoted",
+              "Staking",
+              "FinishedRentForNFT",
+              "FinishedRentForCollateral",
+              "Cancelled"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint256,t_struct(OptionalUint)4219_storage))": {
+            "label": "mapping(address => mapping(uint256 => struct Marketplace.OptionalUint))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(StakingOffer)4224_storage)": {
+            "label": "mapping(address => struct Marketplace.StakingOffer)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_mapping(t_address,t_struct(StakingOffer)4224_storage))": {
+            "label": "mapping(uint256 => mapping(address => struct Marketplace.StakingOffer))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_mapping(t_address,t_uint256))": {
+            "label": "mapping(uint256 => mapping(address => uint256))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Listing)4183_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.Listing)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(OptionalUint)4219_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.OptionalUint)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Staking)4209_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.Staking)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(StakingExtension)4214_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.StakingExtension)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(Listing)4183_storage": {
+            "label": "struct Marketplace.Listing",
+            "members": [
+              {
+                "label": "status",
+                "type": "t_enum(ListingStatus)4157",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "seller",
+                "type": "t_address",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "price",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "token",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "tokenId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "startListingUTC",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "tokenPaymentsAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "cashback",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "isTokenFee",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "7"
+              }
+            ],
+            "numberOfBytes": "256"
+          },
+          "t_struct(OptionalUint)4219_storage": {
+            "label": "struct Marketplace.OptionalUint",
+            "members": [
+              {
+                "label": "valueExists",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "value",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Staking)4209_storage": {
+            "label": "struct Marketplace.Staking",
+            "members": [
+              {
+                "label": "status",
+                "type": "t_enum(StakeStatus)4163",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "maker",
+                "type": "t_address",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "taker",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "collateral",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "premium",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "startRentalUTC",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "startStakingUTC",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "paymentsAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "tokenPaymentsAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "7"
+              },
+              {
+                "label": "deadline",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "8"
+              },
+              {
+                "label": "token",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "9"
+              },
+              {
+                "label": "tokenId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "10"
+              }
+            ],
+            "numberOfBytes": "352"
+          },
+          "t_struct(StakingExtension)4214_storage": {
+            "label": "struct Marketplace.StakingExtension",
+            "members": [
+              {
+                "label": "cashback",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "isTokenFee",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(StakingOffer)4224_storage": {
+            "label": "struct Marketplace.StakingOffer",
+            "members": [
+              {
+                "label": "collateral",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "premium",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        }
+      }
+    },
+    "b2e361013b059ae1b1f6400180c915b2f9abd05ce2772de9d60244646cd120ff": {
+      "address": "0xE664ffa02E9961B8230d2Bb6889B2488D499A6c4",
+      "txHash": "0xf47f291a98f64b468d038f958b0b295ec79c6daa50002c472015f67a75934cf0",
+      "layout": {
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts/proxy/utils/Initializable.sol:39"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts/proxy/utils/Initializable.sol:44"
+          },
+          {
+            "label": "_listingsLastIndex",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:115"
+          },
+          {
+            "label": "_listings",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_mapping(t_uint256,t_struct(Listing)4188_storage)",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:116"
+          },
+          {
+            "label": "_stakingsLastIndex",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:118"
+          },
+          {
+            "label": "_stakings",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_mapping(t_uint256,t_struct(Staking)4214_storage)",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:120"
+          },
+          {
+            "label": "_stakingsExtension",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_mapping(t_uint256,t_struct(StakingExtension)4219_storage)",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:121"
+          },
+          {
+            "label": "_listingOffers",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_mapping(t_uint256,t_mapping(t_address,t_uint256))",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:123"
+          },
+          {
+            "label": "_stakingOffers",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_mapping(t_uint256,t_mapping(t_address,t_struct(StakingOffer)4229_storage))",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:124"
+          },
+          {
+            "label": "nftListingIds",
+            "offset": 0,
+            "slot": "8",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_struct(OptionalUint)4224_storage))",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:127"
+          },
+          {
+            "label": "nftStakingIds",
+            "offset": 0,
+            "slot": "9",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_struct(OptionalUint)4224_storage))",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:130"
+          },
+          {
+            "label": "platform",
+            "offset": 0,
+            "slot": "10",
+            "type": "t_address_payable",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:143"
+          },
+          {
+            "label": "undasToken",
+            "offset": 0,
+            "slot": "11",
+            "type": "t_address",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:144"
+          },
+          {
+            "label": "tokensDistributionAmount",
+            "offset": 0,
+            "slot": "12",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:146"
+          },
+          {
+            "label": "maxCollateralEligibleForTokens",
+            "offset": 0,
+            "slot": "13",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:147"
+          },
+          {
+            "label": "tokensDistributionEnd",
+            "offset": 0,
+            "slot": "14",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:148"
+          },
+          {
+            "label": "NFTsEligibleForTokenDistribution",
+            "offset": 0,
+            "slot": "15",
+            "type": "t_mapping(t_address,t_bool)",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:149"
+          },
+          {
+            "label": "NFTTokenDistributionWhiteLister",
+            "offset": 0,
+            "slot": "16",
+            "type": "t_address",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:150"
+          },
+          {
+            "label": "factory",
+            "offset": 0,
+            "slot": "17",
+            "type": "t_address",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:152"
+          },
+          {
+            "label": "wETH",
+            "offset": 0,
+            "slot": "18",
+            "type": "t_address",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:153"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_address_payable": {
+            "label": "address payable",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_enum(ListingStatus)4158": {
+            "label": "enum Marketplace.ListingStatus",
+            "members": [
+              "Active",
+              "Sold",
+              "Cancelled"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_enum(StakeStatus)4168": {
+            "label": "enum Marketplace.StakeStatus",
+            "members": [
+              "Quoted",
+              "Staking",
+              "FinishedRentForNFT",
+              "FinishedRentForCollateral",
+              "Cancelled"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint256,t_struct(OptionalUint)4224_storage))": {
+            "label": "mapping(address => mapping(uint256 => struct Marketplace.OptionalUint))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(StakingOffer)4229_storage)": {
+            "label": "mapping(address => struct Marketplace.StakingOffer)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_mapping(t_address,t_struct(StakingOffer)4229_storage))": {
+            "label": "mapping(uint256 => mapping(address => struct Marketplace.StakingOffer))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_mapping(t_address,t_uint256))": {
+            "label": "mapping(uint256 => mapping(address => uint256))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Listing)4188_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.Listing)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(OptionalUint)4224_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.OptionalUint)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Staking)4214_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.Staking)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(StakingExtension)4219_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.StakingExtension)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(Listing)4188_storage": {
+            "label": "struct Marketplace.Listing",
+            "members": [
+              {
+                "label": "status",
+                "type": "t_enum(ListingStatus)4158",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "seller",
+                "type": "t_address",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "price",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "token",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "tokenId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "startListingUTC",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "tokenPaymentsAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "cashback",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "isTokenFee",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "7"
+              }
+            ],
+            "numberOfBytes": "256"
+          },
+          "t_struct(OptionalUint)4224_storage": {
+            "label": "struct Marketplace.OptionalUint",
+            "members": [
+              {
+                "label": "valueExists",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "value",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Staking)4214_storage": {
+            "label": "struct Marketplace.Staking",
+            "members": [
+              {
+                "label": "status",
+                "type": "t_enum(StakeStatus)4168",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "maker",
+                "type": "t_address",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "taker",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "collateral",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "premium",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "startRentalUTC",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "startStakingUTC",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "paymentsAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "tokenPaymentsAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "7"
+              },
+              {
+                "label": "deadline",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "8"
+              },
+              {
+                "label": "token",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "9"
+              },
+              {
+                "label": "tokenId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "10"
+              }
+            ],
+            "numberOfBytes": "352"
+          },
+          "t_struct(StakingExtension)4219_storage": {
+            "label": "struct Marketplace.StakingExtension",
+            "members": [
+              {
+                "label": "cashback",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "isTokenFee",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(StakingOffer)4229_storage": {
+            "label": "struct Marketplace.StakingOffer",
+            "members": [
+              {
+                "label": "collateral",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "premium",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        }
+      }
+    },
+    "5b714f23fbb8dac782395e9fcd51cc347ed8cc9e78387fa77c18accf444efc95": {
+      "address": "0x1708076ed7A97C5345b6A34afc0e627c56a9Eff2",
+      "txHash": "0xdd611eca21d3dd0cbe1a0dcf87c99708a60df5713086844193a1a613c65d786a",
+      "layout": {
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:62",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:67"
+          },
+          {
+            "label": "_listingsLastIndex",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:115"
+          },
+          {
+            "label": "_listings",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_mapping(t_uint256,t_struct(Listing)4494_storage)",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:116"
+          },
+          {
+            "label": "_stakingsLastIndex",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:118"
+          },
+          {
+            "label": "_stakings",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_mapping(t_uint256,t_struct(Staking)4520_storage)",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:120"
+          },
+          {
+            "label": "_stakingsExtension",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_mapping(t_uint256,t_struct(StakingExtension)4525_storage)",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:121"
+          },
+          {
+            "label": "_listingOffers",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_mapping(t_uint256,t_mapping(t_address,t_uint256))",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:123"
+          },
+          {
+            "label": "_stakingOffers",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_mapping(t_uint256,t_mapping(t_address,t_struct(StakingOffer)4535_storage))",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:124"
+          },
+          {
+            "label": "nftListingIds",
+            "offset": 0,
+            "slot": "8",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_struct(OptionalUint)4530_storage))",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:127"
+          },
+          {
+            "label": "nftStakingIds",
+            "offset": 0,
+            "slot": "9",
+            "type": "t_mapping(t_address,t_mapping(t_uint256,t_struct(OptionalUint)4530_storage))",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:130"
+          },
+          {
+            "label": "platform",
+            "offset": 0,
+            "slot": "10",
+            "type": "t_address_payable",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:143"
+          },
+          {
+            "label": "undasToken",
+            "offset": 0,
+            "slot": "11",
+            "type": "t_address",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:144"
+          },
+          {
+            "label": "tokensDistributionAmount",
+            "offset": 0,
+            "slot": "12",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:146"
+          },
+          {
+            "label": "maxCollateralEligibleForTokens",
+            "offset": 0,
+            "slot": "13",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:147"
+          },
+          {
+            "label": "tokensDistributionEnd",
+            "offset": 0,
+            "slot": "14",
+            "type": "t_uint256",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:148"
+          },
+          {
+            "label": "NFTsEligibleForTokenDistribution",
+            "offset": 0,
+            "slot": "15",
+            "type": "t_mapping(t_address,t_bool)",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:149"
+          },
+          {
+            "label": "NFTTokenDistributionWhiteLister",
+            "offset": 0,
+            "slot": "16",
+            "type": "t_address",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:150"
+          },
+          {
+            "label": "factory",
+            "offset": 0,
+            "slot": "17",
+            "type": "t_address",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:152"
+          },
+          {
+            "label": "wETH",
+            "offset": 0,
+            "slot": "18",
+            "type": "t_address",
+            "contract": "Marketplace",
+            "src": "contracts/Marketplace.sol:153"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_address_payable": {
+            "label": "address payable",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_enum(ListingStatus)4464": {
+            "label": "enum Marketplace.ListingStatus",
+            "members": [
+              "Active",
+              "Sold",
+              "Cancelled"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_enum(StakeStatus)4474": {
+            "label": "enum Marketplace.StakeStatus",
+            "members": [
+              "Quoted",
+              "Staking",
+              "FinishedRentForNFT",
+              "FinishedRentForCollateral",
+              "Cancelled"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_uint256,t_struct(OptionalUint)4530_storage))": {
+            "label": "mapping(address => mapping(uint256 => struct Marketplace.OptionalUint))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(StakingOffer)4535_storage)": {
+            "label": "mapping(address => struct Marketplace.StakingOffer)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_mapping(t_address,t_struct(StakingOffer)4535_storage))": {
+            "label": "mapping(uint256 => mapping(address => struct Marketplace.StakingOffer))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_mapping(t_address,t_uint256))": {
+            "label": "mapping(uint256 => mapping(address => uint256))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Listing)4494_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.Listing)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(OptionalUint)4530_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.OptionalUint)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Staking)4520_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.Staking)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(StakingExtension)4525_storage)": {
+            "label": "mapping(uint256 => struct Marketplace.StakingExtension)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(Listing)4494_storage": {
+            "label": "struct Marketplace.Listing",
+            "members": [
+              {
+                "label": "status",
+                "type": "t_enum(ListingStatus)4464",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "seller",
+                "type": "t_address",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "price",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "token",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "tokenId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "startListingUTC",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "tokenPaymentsAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "cashback",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "isTokenFee",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "7"
+              }
+            ],
+            "numberOfBytes": "256"
+          },
+          "t_struct(OptionalUint)4530_storage": {
+            "label": "struct Marketplace.OptionalUint",
+            "members": [
+              {
+                "label": "valueExists",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "value",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Staking)4520_storage": {
+            "label": "struct Marketplace.Staking",
+            "members": [
+              {
+                "label": "status",
+                "type": "t_enum(StakeStatus)4474",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "maker",
+                "type": "t_address",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "taker",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "collateral",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "premium",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "startRentalUTC",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "startStakingUTC",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "paymentsAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "tokenPaymentsAmount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "7"
+              },
+              {
+                "label": "deadline",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "8"
+              },
+              {
+                "label": "token",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "9"
+              },
+              {
+                "label": "tokenId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "10"
+              }
+            ],
+            "numberOfBytes": "352"
+          },
+          "t_struct(StakingExtension)4525_storage": {
+            "label": "struct Marketplace.StakingExtension",
+            "members": [
+              {
+                "label": "cashback",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "isTokenFee",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(StakingOffer)4535_storage": {
+            "label": "struct Marketplace.StakingOffer",
+            "members": [
+              {
+                "label": "collateral",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "premium",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    },
+    "2a0286007cf756080c87c91d78d1588fb71200bc061404fe1f99237d3f3bec25": {
+      "address": "0x2c527Dc549D8adb82113179472553Fc3316b3295",
+      "txHash": "0x2ff2218b916aa858ce059b20a7159a797eab80ae17889cbb9b8d8122505d1d75",
+      "layout": {
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:62",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:67"
+          },
+          {
+            "label": "stakingToken",
+            "offset": 2,
+            "slot": "0",
+            "type": "t_contract(IERC20)1153",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:14"
+          },
+          {
+            "label": "timeperiodToClaim",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:16"
+          },
+          {
+            "label": "cycleTimeperiod",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_uint256",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:17"
+          },
+          {
+            "label": "cooldownTime",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_uint256",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:18"
+          },
+          {
+            "label": "stakedUndasTokens",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_uint256",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:20"
+          },
+          {
+            "label": "lockedEtherCashBack",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_uint256",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:22"
+          },
+          {
+            "label": "lockedTokenCashback",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_uint256",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:23"
+          },
+          {
+            "label": "resetClaimTimePeriod",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_uint256",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:25"
+          },
+          {
+            "label": "resetCycleTimePeriod",
+            "offset": 0,
+            "slot": "8",
+            "type": "t_uint256",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:26"
+          },
+          {
+            "label": "contractTokenBalance",
+            "offset": 0,
+            "slot": "9",
+            "type": "t_uint256",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:28"
+          },
+          {
+            "label": "contractEtherBalance",
+            "offset": 0,
+            "slot": "10",
+            "type": "t_uint256",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:29"
+          },
+          {
+            "label": "owner",
+            "offset": 0,
+            "slot": "11",
+            "type": "t_address",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:31"
+          },
+          {
+            "label": "marketplace",
+            "offset": 0,
+            "slot": "12",
+            "type": "t_address",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:32"
+          },
+          {
+            "label": "_balancesOfLockedTokens",
+            "offset": 0,
+            "slot": "13",
+            "type": "t_mapping(t_address,t_struct(stackingInfo)7760_storage)",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:39"
+          },
+          {
+            "label": "balancesForCashbackInUndas",
+            "offset": 0,
+            "slot": "14",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:41"
+          },
+          {
+            "label": "balancesForCashbackInEth",
+            "offset": 0,
+            "slot": "15",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "Platform",
+            "src": "contracts/Platform.sol:43"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_contract(IERC20)1153": {
+            "label": "contract IERC20",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_address,t_struct(stackingInfo)7760_storage)": {
+            "label": "mapping(address => struct Platform.stackingInfo)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(stackingInfo)7760_storage": {
+            "label": "struct Platform.stackingInfo",
+            "members": [
+              {
+                "label": "amount",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "readyTimeToWithdraw",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    }
+  }
+}

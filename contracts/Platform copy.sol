@@ -4,15 +4,13 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/draft-IERC20Permit.sol";
 import "hardhat/console.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
-contract Platform is Initializable{
+contract PlatformV2{
 
-   IERC20Upgradeable private stakingToken;
+   IERC20 private stakingToken;
 
    uint256 private timeperiodToClaim;
    uint256 private cycleTimeperiod;
@@ -44,14 +42,14 @@ contract Platform is Initializable{
    mapping (address => uint256) public balancesForCashbackInEth;
 
    //1 min = 60 / 1 day = 86400/ 1 week = 604800
-   function initialize(address _owner,address _token,uint256 _timeperiodToClaim,uint256 _cycleTimeperiod,uint256 _cooldownTime) public initializer {
+   function initialize(address _owner,address _token,uint256 _timeperiodToClaim,uint256 _cycleTimeperiod,uint256 _cooldownTime) external{
 
        timeperiodToClaim = block.timestamp + _timeperiodToClaim;
        cycleTimeperiod = block.timestamp + _cycleTimeperiod;
        resetClaimTimePeriod = _timeperiodToClaim;
        resetCycleTimePeriod = _cycleTimeperiod;
        cooldownTime = _cooldownTime;
-       stakingToken = IERC20Upgradeable(_token);
+       stakingToken = IERC20(_token);
        owner = _owner;
 
    }
@@ -96,6 +94,9 @@ contract Platform is Initializable{
         marketplace = _marketplace;
     }   
 
+    function test() public returns(string memory){
+        return 'test';
+    }
 
     function addCashback(address cashbackee1, address cashbackee2, uint256 amount, bool isTokenFee) external payable only(marketplace) {
 
