@@ -1,16 +1,17 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/utils/Context.sol";
-import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/token/ERC20/extensions/draft-IERC20Permit.sol";
+import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/draft-IERC20PermitUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "hardhat/console.sol";
 
-contract Platform{
+contract Platform is Initializable{
 
-   IERC20 private stakingToken;
+   IERC20Upgradeable private stakingToken;
 
    uint256 private timeperiodToClaim;
    uint256 private cycleTimeperiod;
@@ -41,15 +42,15 @@ contract Platform{
 
    mapping (address => uint256) public balancesForCashbackInEth;
 
-   //1 min = 60 / 1 day = 86400/ 1 week = 604 800
-   constructor(address _owner,address _token,uint256 _timeperiodToClaim,uint256 _cycleTimeperiod,uint256 _cooldownTime){
+   //1 min = 60 / 1 day = 86400/ 1 week = 604800
+   function initialize(address _owner,address _token,uint256 _timeperiodToClaim,uint256 _cycleTimeperiod,uint256 _cooldownTime) public initializer {
 
        timeperiodToClaim = block.timestamp + _timeperiodToClaim;
        cycleTimeperiod = block.timestamp + _cycleTimeperiod;
        resetClaimTimePeriod = _timeperiodToClaim;
        resetCycleTimePeriod = _cycleTimeperiod;
        cooldownTime = _cooldownTime;
-       stakingToken = IERC20(_token);
+       stakingToken = IERC20Upgradeable(_token);
        owner = _owner;
 
    }

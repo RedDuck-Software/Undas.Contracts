@@ -5,6 +5,10 @@ import "@nomiclabs/hardhat-etherscan";
 import "@nomiclabs/hardhat-waffle";
 import "@typechain/hardhat";
 import "hardhat-gas-reporter";
+import '@openzeppelin/hardhat-upgrades';
+import "@nomiclabs/hardhat-etherscan";
+
+
 
 dotenv.config();
 
@@ -14,8 +18,10 @@ const config: HardhatUserConfig = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 1000,
+        runs: 200,
+        
       },
+
     },
   },
   networks: {
@@ -24,9 +30,16 @@ const config: HardhatUserConfig = {
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
+    goerli: {
+      url: "https://eth-goerli.alchemyapi.io/v2/J8woMfRg2pXG2YeaBGECv8ipKZQ355yp",
+      accounts: ['76c7ed9f19562992ffcce10d1ac5e153cf6649fef21749565727b22dc8822167'],allowUnlimitedContractSize :true
+      
+
+    },
     hardhat: {
       forking: {
-        url: "https://eth-mainnet.alchemyapi.io/v2/Mcj-7QjykaA5ENafDasRsx-CDHMqCNRa",
+        url: "https://eth-goerli.alchemyapi.io/v2/J8woMfRg2pXG2YeaBGECv8ipKZQ355yp",
+        
       },
     },
   },
@@ -35,7 +48,7 @@ const config: HardhatUserConfig = {
     currency: "USD",
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY,
+    apiKey: 'W22PSMDAMFFG229SH9JP5EEFM1E2DVZNK4',
   }
 };
 

@@ -7,8 +7,8 @@
     "test": "npx hardhat test"
   },
   "devDependencies": {
-    "@nomiclabs/hardhat-ethers": "^2.0.0",
-    "@nomiclabs/hardhat-etherscan": "^2.1.3",
+    "@nomiclabs/hardhat-ethers": "^2.0.6",
+    "@nomiclabs/hardhat-etherscan": "^3.1.0",
     "@nomiclabs/hardhat-waffle": "^2.0.0",
     "@openzeppelin/contracts": "^4.4.1",
     "@tenderly/hardhat-tenderly": "^1.0.13",
@@ -29,7 +29,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-promise": "^5.1.0",
     "ethereum-waffle": "^3.0.0",
-    "ethers": "^5.0.0",
+    "ethers": "^5.6.9",
     "hardhat": "^2.8.0",
     "hardhat-gas-reporter": "^1.0.4",
     "prettier": "^2.3.2",
@@ -41,6 +41,9 @@
     "typescript": "^4.5.2"
   },
   "dependencies": {
+    "@openzeppelin/contracts-upgradeable": "^4.6.0",
+    "@openzeppelin/hardhat-upgrades": "^1.19.0",
+    "@remix-project/remixd": "^0.6.4",
     "@uniswap/v2-core": "^1.0.1",
     "@uniswap/v2-periphery": "^1.1.0-beta.0"
   }
