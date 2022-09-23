@@ -10,7 +10,7 @@ import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 import "./UniswapV2Library.sol";
 import "./Platform.sol";
 
-contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
+contract MarketplaceMVPV3 is Initializable,ReentrancyGuardUpgradeable {
     using AddressUpgradeable for address payable;
 
     enum ListingStatus {
@@ -131,7 +131,7 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
 
     event StakingOfferAccepted(uint256 stakingId, address taker);
 
-    event Rental(uint256 rentalId, address taker);
+    event Rental(uint256 rentalId, address taker, address maker, uint256 startRentalUTC);
 
     event CancelBid(uint256 listingId, address seller);
 
@@ -204,7 +204,7 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
 
 
     function whiteListNFTToggle(address nft, bool whitelist) external {
-        require(msg.sender == NFTTokenDistributionWhiteLister, "fuck off .|.");
+        require(msg.sender == NFTTokenDistributionWhiteLister, "1");
 
         NFTsEligibleForTokenDistribution[nft] = whitelist;
     }
@@ -221,20 +221,20 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
                 address(msg.sender),
                 address(this)
             ),
-            "!allowance"
+            "2"
         );
         
         require(
             IERC721Upgradeable(tokenContract).ownerOf(tokenId) == msg.sender,
-            "token ownership"
+            "3"
         );
         require(
             isTokenFee || msg.value >= expectedValue,//changed to '>=' because in case bidAndStake we need to send x2 fee cuz it will run payable(platform).transfer(feeValue) 2 times
-            "!bidFee"
+            "4"
         );
         require(
             !nftListingIds[tokenContract][tokenId].valueExists,
-            "already exists listing"
+            "5"
         );
 
         _listings[_listingsLastIndex] = Listing(
@@ -273,14 +273,14 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
     function listingOffer(uint256 listingId) external payable nonReentrant {
         Listing storage listing = _listings[listingId];
 
-        require(msg.sender != listing.seller, "Seller cannot be buyer");
-        require(isBuyable(listingId), "not buyable");
+        require(msg.sender != listing.seller, "6");
+        require(isBuyable(listingId), "7");
 
         _listingOffers[listingId][msg.sender] += msg.value;
 
         uint256 totalOfferValue = _listingOffers[listingId][msg.sender];
 
-        require(totalOfferValue < listing.price, "Too high offer");
+        require(totalOfferValue < listing.price, "8");
 
         emit ListingOffer(listingId, msg.sender, totalOfferValue);
     }
@@ -289,7 +289,7 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
         IERC721Upgradeable token = IERC721Upgradeable(tokenContract);
         address tokenOwner = token.ownerOf(tokenId);
         
-        require(tokenOwner != msg.sender, "owner cannot offer");
+        require(tokenOwner != msg.sender, "9");
 
         _offersForNotListedTokens[_offerLastIndex] = OfferForNotListedToken(
             OfferStatus.Active,
@@ -311,8 +311,8 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
         IERC721Upgradeable token = IERC721Upgradeable(tokenContract);
         OfferForNotListedToken memory offer = _offersForNotListedTokens[offerId];
     
-        require(offer.status == OfferStatus.Active,"!offer status");
-        require(offer.to == msg.sender, "only nft owner can accept offer");
+        require(offer.status == OfferStatus.Active,"10");
+        require(offer.to == msg.sender, "11");
 
         offer.status = OfferStatus.Accepted;
         payable(offer.to).transfer(offer.offerPrice);
@@ -326,8 +326,8 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
      function denyOfferForNotListedToken(uint256 offerId) public  {
         OfferForNotListedToken memory offer = _offersForNotListedTokens[offerId];
     
-        require(offer.status == OfferStatus.Active,"!offer status");
-        require(offer.to == msg.sender, "only nft owner can accept offer");
+        require(offer.status == OfferStatus.Active,"12");
+        require(offer.to == msg.sender, "13");
         payable(offer.from).transfer(offer.offerPrice);
         offer.status = OfferStatus.Denied;
         //we need to call approve at front-end
@@ -338,8 +338,8 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
     function cancelOfferForNotListedToken(uint256 offerId) public  {
         OfferForNotListedToken memory offer = _offersForNotListedTokens[offerId];
     
-        require(offer.status == OfferStatus.Active,"!offer status");
-        require(offer.from == msg.sender,"!onle maker can cancel");
+        require(offer.status == OfferStatus.Active,"14");
+        require(offer.from == msg.sender,"15");
 
         payable(offer.from).transfer(offer.offerPrice);
         offer.status = OfferStatus.Canceled;
@@ -356,22 +356,22 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
         uint256 value,
         address buyer
     ) private nonReentrant {
-        Listing storage listing = _listings[listingId];
+        
         IERC721Upgradeable token = IERC721Upgradeable(listing.token);
 
-        require(buyer != listing.seller, "Seller cannot be buyer");
-        require(value == price, "Insufficient payment");
-        require(isBuyable(listingId), "not buyable");
+        require(buyer != listing.seller, "16");
+        require(value == price, "17");
+        require(isBuyable(listingId), "18");
 
         listing.status = ListingStatus.Sold;
 
         token.safeTransferFrom(listing.seller, buyer, listing.tokenId);
         payable(listing.seller).transfer(price);
-
+        
         nftListingIds[listing.token][listing.tokenId] = OptionalUint(
             false,
             listingId
-        );    
+        );
 
         giveCashback(listing.seller, buyer, listing.cashback,listing.isTokenFee);
     
@@ -385,11 +385,16 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
 
     function acceptListingOffer(uint256 listingId, address taker) external {
         Listing memory listing = _listings[listingId];
-        require(msg.sender == listing.seller, "non-seller");
+        require(msg.sender == listing.seller, "19");
 
         uint256 offerValue = _listingOffers[listingId][taker];
         _listingOffers[listingId][taker] = 0;
         buyTokenInternal(listingId, offerValue, offerValue, taker);
+        
+         nftListingIds[listing.token][listing.tokenId] = OptionalUint(
+            false,
+            listingId
+        );
 
         emit ListingOfferCompleted(listingId, taker);
     }
@@ -397,14 +402,17 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
     function cancel(uint256 listingId) public nonReentrant {
         Listing storage listing = _listings[listingId];
 
-        require(msg.sender == listing.seller, "Only seller can cancel listing");
+        require(msg.sender == listing.seller, "20");
         require(
             listing.status == ListingStatus.Active,
-            "Listing is not active"
+            "21"
         );
 
         listing.status = ListingStatus.Cancelled;
-
+        nftListingIds[listing.token][listing.tokenId] = OptionalUint(
+            false,
+            listingId
+        );
         emit CancelBid(listingId, listing.seller);
     }
 
@@ -428,14 +436,14 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
 
     // innovation from Only1NFT team - renting & staking
     // is coded below
-    function quoteForStaking(
-        address tokenContract,
-        uint256 tokenId,
-        uint256 collateralWei,
-        uint256 premiumWei,
-        uint256 deadlineUTC,
-        bool isTokenFee
-    ) private {
+    function quoteForStaking(               
+        address tokenContract,              
+        uint256 tokenId,                    
+        uint256 collateralWei,                      
+        uint256 premiumWei,                     
+        uint256 deadlineUTC,//580000 week for ex I want to give my nft for rent for 580000 seconds
+        bool isTokenFee                     
+    ) private {                             
         uint256 feeValue = (bidFeePercent * collateralWei) / 100;
 
         require(
@@ -443,18 +451,18 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
                 address(msg.sender),
                 address(this)
             ),
-            "allowance not set"
+            "22"
         );
 
         require(
             IERC721Upgradeable(tokenContract).ownerOf(tokenId) == msg.sender,
-            "token ownership"
+            "23"
         );
 
-        require(isTokenFee || msg.value >= feeValue, "!bidFee"); // TODO: Test
+        require(isTokenFee || msg.value >= feeValue, "24"); // TODO: Test
         require(
             !nftStakingIds[tokenContract][tokenId].valueExists,
-            "already staked"
+            "25"
         );
 
         Staking memory stakingQuote = Staking(
@@ -487,7 +495,7 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
             tokenId,
             collateralWei,
             premiumWei,
-            deadlineUTC
+            deadlineUTC//timeForRent
         );
 
         nftStakingIds[tokenContract][tokenId] = OptionalUint(
@@ -508,11 +516,11 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
         uint256 _premium
     ) public payable nonReentrant {
         Staking memory staking = _stakings[stakingId];
-        require(staking.maker != msg.sender, "only taker can offer");
+        require(staking.maker != msg.sender, "25");
         // require(msg.value == _collateral + _premium + (_premium * premiumFeePercentage / 100), "not enough value"); // _collateral+_premium+_fee //refactored
-        require(isEnoughValueWasSend(msg.value, _collateral, _premium, premiumFeePercentage),"not enough value");
-        require(_collateral > 0 && _premium > 0, "empty offer");
-        require(canRentNFT(stakingId), "cannot rent");
+        require(isEnoughValueWasSend(msg.value, _collateral, _premium, premiumFeePercentage),"26");
+        require(_collateral > 0 && _premium > 0, "27");
+        require(canRentNFT(stakingId), "28");
 
         StakingOffer memory offer = _stakingOffers[stakingId][msg.sender];
         payable(msg.sender).transfer(offer.premium * premiumFeePercentage / 100);
@@ -523,10 +531,12 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
         require(
             offer.collateral < staking.collateral ||
                 offer.premium < staking.premium,
-            "collateral&premium"
+            "29"
         );
-
+        //dasdasd
         _stakingOffers[stakingId][msg.sender] = offer;
+        
+        
 
         emit StakingOffered(
             stakingId,
@@ -554,7 +564,7 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
         bool isTokenFee
     ) public {
         Staking memory staking = _stakings[stakingId];
-        require(msg.sender == staking.maker, "non-maker");
+        require(msg.sender == staking.maker, "30");
 
         StakingOffer memory offer = _stakingOffers[stakingId][taker];
         _stakingOffers[stakingId][taker] = StakingOffer(0, 0,offer.stakingOfferId);
@@ -564,6 +574,11 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
             offer.premium,
             taker,
             isTokenFee
+        );
+        
+        nftStakingIds[staking.token][staking.tokenId] = OptionalUint(
+            false,
+            stakingId
         );
 
         emit StakingOfferAccepted(stakingId, taker);
@@ -575,6 +590,13 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
 
         payable(msg.sender).transfer(offer.collateral + offer.premium + (offer.premium * premiumFeePercentage / 100));
         emit StakingOffered(stakingId, msg.sender, 0, 0, offer.stakingOfferId);
+    }
+
+    function cancelListingOffer(uint256 listingId) external nonReentrant {
+        uint256 offerValue = _listingOffers[listingId][msg.sender];
+        _listingOffers[listingId][msg.sender] = 0;
+        payable(msg.sender).transfer(offerValue);
+        emit ListingOffer(listingId, msg.sender, 0);
     }
 
     function getStaking(uint256 stakingId)
@@ -591,22 +613,28 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
                 address(msg.sender),
                 address(this)
             ),
-            "allowance not set"
+            "31"
         );
 
         require(
             _stakings[stakingIndex].status == StakeStatus.Quoted,
-            "should be status quoted"
+            "32"
         );
 
         require(
             IERC721Upgradeable(_stakings[stakingIndex].token).ownerOf(
                 _stakings[stakingIndex].tokenId
             ) == msg.sender,
-            "token ownership"
+            "33"
         );
+        Staking memory staking = _stakings[stakingIndex];
 
         _stakings[stakingIndex].status = StakeStatus.Cancelled;
+
+        nftStakingIds[staking.token][staking.tokenId] = OptionalUint(
+                    false,
+                    stakingIndex
+                );
 
         emit CancelStaking(stakingIndex);
         
@@ -631,8 +659,8 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
         Staking memory staking = _stakings[stakingId];
        
         // require(msg.value == staking.collateral + staking.premium + (staking.premium * premiumFeePercentage / 100), "!value"); // refactored
-        require(isEnoughValueWasSend(msg.value, staking.collateral, staking.premium, premiumFeePercentage), "!isEnoughValueWasSend");
-        require(msg.sender != staking.maker, "Maker cannot be taker");
+        require(isEnoughValueWasSend(msg.value, staking.collateral, staking.premium, premiumFeePercentage), "34");
+        require(msg.sender != staking.maker, "35");
         
         rentNFTInternal(
             stakingId,
@@ -652,18 +680,18 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
     ) private nonReentrant {
         Staking memory staking = _stakings[stakingId];
         StakingExtension memory stakingExt = _stakingsExtension[stakingId];
-        require(taker != staking.maker, "Maker cannot be taker");
+        require(taker != staking.maker, "36");
         require(
             IERC721Upgradeable(staking.token).isApprovedForAll(
                 address(staking.maker),
                 address(this)
             ),
-            "!allowance"
+            "37"
         );
 
-        require(staking.status == StakeStatus.Quoted, "status");
+        require(staking.status == StakeStatus.Quoted, "38");
 
-        staking.startRentalUTC = block.timestamp;
+        staking.startRentalUTC = block.timestamp;//(blocktimestamp + 580000) - 1312312322
         staking.taker = taker;
         staking.status = StakeStatus.Staking;
         staking.paymentsAmount = 1;//!
@@ -678,10 +706,11 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
             staking.tokenId
         );
 
-         nftStakingIds[staking.token][staking.tokenId] = OptionalUint(
+        nftStakingIds[staking.token][staking.tokenId] = OptionalUint(
             false,
             stakingId
         );
+
         // give the cashback for creating the staking
         // Platform(platform).addCashback(staking.maker, staking.taker, stakingExt.cashback, stakingExt.isTokenFee); //refactored
         giveCashback(staking.maker, staking.taker, stakingExt.cashback, stakingExt.isTokenFee);
@@ -694,7 +723,7 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
         // give the cashback from the premium
         giveCashback(staking.maker , staking.taker , cashback , isTokenFee);
 
-        emit Rental(stakingId, taker);
+        emit Rental(stakingId, taker , staking.maker,staking.startRentalUTC);
 
     }
 
@@ -718,9 +747,9 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
 
         uint256 totalFee = (staking.premium * premiumFeePercentage / 100);
 
-        require(staking.status == StakeStatus.Staking, "status != staking");
-        require(msg.value == (isToken ? staking.premium : staking.premium + totalFee), "premium");
-        require(block.timestamp < staking.deadline, "deadline reached");//
+        require(staking.status == StakeStatus.Staking, "39");
+        require(msg.value == (isToken ? staking.premium : staking.premium + totalFee), "40");
+        require(block.timestamp < staking.deadline, "41");//
 
         uint256 maxPayments = (staking.deadline - staking.startRentalUTC) / premiumPeriod;//max payments == 0
 
@@ -731,7 +760,7 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
 
 
         //staking.paymentsAmount=1 maxPaymenrts = 1
-        require(staking.paymentsAmount + 1 <= maxPayments, "too many payments");//max paymetns too big number
+        require(staking.paymentsAmount + 1 <= maxPayments, "42");//max paymetns too big number
 
         staking.paymentsAmount++;
 
@@ -751,7 +780,7 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
     { // TODO test: how many payments remaining upd:r
         Staking memory staking = _stakings[stakingId];
 
-        require(staking.status == StakeStatus.Staking, "status");
+        require(staking.status == StakeStatus.Staking, "43");
         
         uint256 timestampLimitedToDeadline = block.timestamp < staking.deadline
             ? block.timestamp
@@ -799,11 +828,11 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
     // require that premium was not paid, and if so, give the previous owner of NFT (maker) the collateral.
     function claimCollateral(uint256 stakingId) public nonReentrant {
         Staking storage staking = _stakings[stakingId];
-        require(staking.status == StakeStatus.Staking, "status != staking");
-        require(staking.maker == msg.sender, "not maker");
+        require(staking.status == StakeStatus.Staking, "44");
+        require(staking.maker == msg.sender, "45");
         require(
             isCollateralClaimable(stakingId),
-            "premiums have been paid and deadline is yet to be reached"
+            "46"
         );
 
         staking.status = StakeStatus.FinishedRentForCollateral;
@@ -844,8 +873,8 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
         address maker,
         address token
     ) private nonReentrant returns (uint256) {
-        require(block.timestamp < tokensDistributionEnd, "ended");
-        require(NFTsEligibleForTokenDistribution[token], "bad NFT");
+        require(block.timestamp < tokensDistributionEnd, "47");
+        require(NFTsEligibleForTokenDistribution[token], "48");
 
         uint256 eligibleClaims = (block.timestamp - stakingStartUTC) /
             tokensDistributionFrequency -
@@ -859,14 +888,14 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
 
     function stopRental(uint256 stakingId) public nonReentrant {
         Staking storage staking = _stakings[stakingId];
-        require(staking.status == StakeStatus.Staking, "non-active staking");
-        require(staking.taker == msg.sender, "not taker");
+        require(staking.status == StakeStatus.Staking, "49");
+        require(staking.taker == msg.sender, "50");
 
         uint256 requiredPayments = (block.timestamp - staking.startRentalUTC) /
             premiumPeriod;
         require(
             staking.paymentsAmount >= requiredPayments,
-            "premiums have not been paid"
+            "51"
         );
 
         // change status
@@ -896,7 +925,7 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
         uint256 priceWei,
         bool isTokenFee
     ) external payable nonReentrant {
-        require(msg.value != 0, "msgvaluezero");
+        require(msg.value != 0, "52");
  
         quoteForStaking(
             tokenContract,
@@ -978,7 +1007,7 @@ contract MarketplaceDeployV is Initializable,ReentrancyGuardUpgradeable {
             return (feeValue, cashbackAmount);
         }
     }
-    
+
    receive() external payable{
     
    }

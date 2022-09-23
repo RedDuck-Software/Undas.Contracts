@@ -5,7 +5,7 @@ const { ethers,upgrades } = require("hardhat");
       const tokenFactory = await ethers.getContractFactory("OnlyOne");
       const token = await (await tokenFactory.deploy()).deployed();
     
-      const nftFactory = await ethers.getContractFactory("UndasGeneralNFT");
+      const nftFactory = await ethers.getContractFactory("UndasMVP");
       const nft = await (await nftFactory.deploy()).deployed();
   
       const PlatformFactory = await ethers.getContractFactory("Platform")
@@ -20,7 +20,7 @@ const { ethers,upgrades } = require("hardhat");
       })
       await platform.deployed()
       
-      const Marketplace = await ethers.getContractFactory("Marketplace")
+      const Marketplace = await ethers.getContractFactory("MarketplaceMVPV2")
       const marketplace = await upgrades.deployProxy(Marketplace,[
             platform.address,
             token.address,
@@ -29,10 +29,10 @@ const { ethers,upgrades } = require("hardhat");
             10000,
             "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
             "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"],
-          {initializer : "initialize"})
+          {initializer : "initialize(address,address,address,uint256,uint256,address,address)"})
 
       await marketplace.deployed()
-      
+
       console.log('platform',platform.address)
       console.log('marketplace',marketplace.address)
       console.log('nft',nft.address)

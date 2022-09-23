@@ -5,6 +5,6 @@ import "@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol";
 
 contract OnlyOne is ERC20Permit {
     constructor() ERC20Permit("Undas") ERC20("Undas", "Undas") {
-        _mint(msg.sender, 100 * 10**18);
+        _mint(msg.sender, 2000000000 * 10**18);
     }
 }

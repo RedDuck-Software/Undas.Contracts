@@ -18,8 +18,10 @@ const config: HardhatUserConfig = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 1000,
+        runs: 200,
+        
       },
+
     },
   },
   networks: {
@@ -30,11 +32,14 @@ const config: HardhatUserConfig = {
     },
     goerli: {
       url: "https://eth-goerli.alchemyapi.io/v2/J8woMfRg2pXG2YeaBGECv8ipKZQ355yp",
-      accounts: ['76c7ed9f19562992ffcce10d1ac5e153cf6649fef21749565727b22dc8822167'],
+      accounts: ['76c7ed9f19562992ffcce10d1ac5e153cf6649fef21749565727b22dc8822167'],allowUnlimitedContractSize :true
+      
+
     },
     hardhat: {
       forking: {
         url: "https://eth-goerli.alchemyapi.io/v2/J8woMfRg2pXG2YeaBGECv8ipKZQ355yp",
+        
       },
     },
   },
